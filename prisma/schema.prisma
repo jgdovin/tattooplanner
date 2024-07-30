@@ -42,14 +42,33 @@ model Session {
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+enum Role {
+  ARTIST
+  CUSTOMER
+  ADMIN
+}
+
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
+  id                 String             @id @default(cuid())
+  name               String?
+  email              String?            @unique
+  emailVerified      DateTime?
+  image              String?
+  role               Role               @default(CUSTOMER)
+  accounts           Account[]
+  sessions           Session[]
+  projectsAsCustomer Project[]          @relation("ProjectCustomer")
+  projectsAsArtist   Project[]          @relation("ProjectArtist")
+  artistToCustomers  ArtistToCustomer[] @relation("ArtistOnCustomer")
+  customerToArtists  ArtistToCustomer[] @relation("CustomerOnArtist")
+}
+
+model ArtistToCustomer {
+  id         String @id @default(cuid())
+  artistId   String
+  customerId String
+  artist     User   @relation("ArtistOnCustomer", fields: [artistId], references: [id], onDelete: Cascade)
+  customer   User   @relation("CustomerOnArtist", fields: [customerId], references: [id], onDelete: Cascade)
 }
 
 model VerificationToken {
@@ -58,4 +77,15 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Project {
+  id        String   @id @default(cuid())
+  name      String
+  userId    String
+  customer  User     @relation("ProjectCustomer", fields: [userId], references: [id], onDelete: Cascade)
+  artistId  String
+  artist    User     @relation("ProjectArtist", fields: [artistId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
