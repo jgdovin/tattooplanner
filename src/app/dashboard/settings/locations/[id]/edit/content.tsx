@@ -23,7 +23,7 @@ export default function Content({ data, formData }: any) {
     setSuccess({});
   };
   return (
-    <div className="flex flex-col w-3/4 mt-5 ml-16">
+    <div className="flex flex-col w-[800px] mt-5 ml-16">
       <div className="self-end">
         <Button
           variant="ghost"
@@ -72,7 +72,9 @@ export default function Content({ data, formData }: any) {
             });
         }}
       />
-      <Button form="locationForm">Save Changes</Button>
+      <Button form="locationForm" className="mt-10">
+        Save Changes
+      </Button>
     </div>
   );
 }

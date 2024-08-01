@@ -18,6 +18,7 @@ export async function POST(request: Request) {
       user: { connect: { id: session.user.id } },
     },
   });
+
   revalidatePath("/dashboard/settings/locations");
-  return Response.json(res);
+  return Response.json({ error: "Unauthorized" }, { status: 401 });
 }

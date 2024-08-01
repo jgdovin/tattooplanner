@@ -40,14 +40,16 @@ export async function PATCH(
 ) {
   const { id } = params;
 
-  if (!id || id === "undefined")
+  if (!id || id === "undefined") {
     return Response.json(
       { error: true, message: "id is required" },
       { status: 400 }
     );
-  const updateLocation = await prisma.location.update({
-    where: { id },
-    data: await req.json(),
-  });
+  }
+  console.log(req.json());
+  // const updateLocation = await prisma.location.update({
+  //   where: { id },
+  //   data: await req.json(),
+  // });
   return Response.json({ success: "true" });
 }

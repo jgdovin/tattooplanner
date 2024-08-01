@@ -33,6 +33,28 @@ const defaultValues = {
   city: "",
   state: "",
   zip: "",
+  type: "PHYSICAL",
+  monStart: "09:00",
+  monEnd: "17:00",
+  monClosed: false,
+  tueStart: "09:00",
+  tueEnd: "17:00",
+  tueClosed: false,
+  wedStart: "09:00",
+  wedEnd: "17:00",
+  wedClosed: false,
+  thuStart: "09:00",
+  thuEnd: "17:00",
+  thuClosed: false,
+  friStart: "09:00",
+  friEnd: "17:00",
+  friClosed: false,
+  satStart: "09:00",
+  satEnd: "17:00",
+  satClosed: true,
+  sunStart: "09:00",
+  sunEnd: "17:00",
+  sunClosed: true,
 };
 
 export function LocationDialog({
@@ -46,6 +68,7 @@ export function LocationDialog({
   });
   const handleSubmit = (submittedData: z.infer<typeof formSchema>) => {
     // submit to api
+    console.log(submittedData);
     const url = `/api/location`;
     const response = fetch(url, {
       method: "POST",
@@ -71,7 +94,7 @@ export function LocationDialog({
           Add <FontAwesomeIcon className="pl-1" icon={faPlus} />
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[525px]">
+      <DialogContent className="max-h-screen max-w-[780px] overflow-y-auto m-10">
         <DialogHeader>
           <DialogTitle>Add Location</DialogTitle>
           <DialogDescription>
@@ -81,7 +104,7 @@ export function LocationDialog({
         <LocationForm form={form} handleSubmit={handleSubmit} />
         <DialogFooter>
           <Button form="locationForm" type="submit">
-            Save changes
+            Save Location
           </Button>
         </DialogFooter>
       </DialogContent>
