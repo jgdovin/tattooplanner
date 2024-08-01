@@ -2,10 +2,16 @@
 import { SessionProvider } from "next-auth/react";
 import { Session } from "next-auth";
 import Link from "next/link";
-import { faGauge, faPalette, faUser } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faBuilding,
+  faGauge,
+  faPalette,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
+import { MenuLink } from "@/components/custom/MenuLink";
 import { Header } from "@/components/custom/Header";
 import { Footer } from "@/components/custom/Footer";
+
 export default function RootLayout({
   children,
   session,
@@ -29,30 +35,23 @@ export default function RootLayout({
                 </Link>
               </div>
               <div className="flex-1 overflow-auto py-2">
-                <nav className="grid items-start px-4 text-sm font-medium">
-                  <Link
-                    className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
-                    href="/dashboard"
-                  >
-                    <FontAwesomeIcon className="pr-3" icon={faGauge} />
-                    Dashboard
-                  </Link>
-
-                  <Link
-                    className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
+                <nav className="grid gap-1 px-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2">
+                  <MenuLink text="Dashboard" href="/dashboard" icon={faGauge} />
+                  <MenuLink
+                    text="Customers"
                     href="/dashboard/customers"
-                  >
-                    <FontAwesomeIcon className="pr-3" icon={faUser} />
-                    Customers
-                  </Link>
-
-                  <Link
-                    className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
+                    icon={faUser}
+                  />
+                  <MenuLink
+                    text="Projects"
                     href="/dashboard/projects"
-                  >
-                    <FontAwesomeIcon className="pr-3" icon={faPalette} />
-                    Projects
-                  </Link>
+                    icon={faPalette}
+                  />
+                  <MenuLink
+                    text="Locations"
+                    href="/dashboard/settings/locations"
+                    icon={faBuilding}
+                  />
                 </nav>
               </div>
             </div>

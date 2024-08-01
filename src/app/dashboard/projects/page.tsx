@@ -1,8 +1,20 @@
 import { DataTable } from "@/components/custom/data-table";
 import { columns, Project } from "./columns";
 import prisma from "@/lib/prisma";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { getServerSession } from "next-auth";
+import { UploadButton } from "@/lib/uploadthing";
 
-export default async function Home() {
+export default async function Page() {
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return (
+      <main className="p-10">
+        <h1 className="text-2xl font-bold">Projects</h1>
+        <DataTable columns={columns} data={[]} />
+      </main>
+    );
+  }
   const projects = await prisma.project.findMany({
     include: {
       customer: true,
@@ -15,8 +27,7 @@ export default async function Home() {
   })) as Project[];
   return (
     <main className="p-10">
-      <h1 className="text-2xl font-bold">Projects</h1>
-      <DataTable columns={columns} data={data} />
+      <DataTable title="Projects" columns={columns} data={data} />
     </main>
   );
 }

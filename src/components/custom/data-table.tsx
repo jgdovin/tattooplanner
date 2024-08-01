@@ -19,11 +19,15 @@ import {
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  title?: string;
+  CreateButton?: any;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  title,
+  CreateButton,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
@@ -33,6 +37,12 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="rounded-md border">
+      {title || CreateButton ? (
+        <div className="flex flex-row justify-between bg-gray-100 dark:bg-gray-800 px-4 py-2 border-b">
+          {CreateButton ? <CreateButton /> : <div />}
+          <h2 className="text-lg font-bold flex-grow text-center">{title}</h2>
+        </div>
+      ) : null}
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (

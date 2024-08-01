@@ -61,6 +61,43 @@ model User {
   projectsAsArtist   Project[]          @relation("ProjectArtist")
   artistToCustomers  ArtistToCustomer[] @relation("ArtistOnCustomer")
   customerToArtists  ArtistToCustomer[] @relation("CustomerOnArtist")
+  locations          Location[]
+}
+
+model businessHours {
+  id         String   @id @default(cuid())
+  locationId String
+  location   Location @relation(fields: [locationId], references: [id])
+  day        String
+  open       Int      @default(900)
+  close      Int      @default(1700)
+  closed     Boolean  @default(false)
+
+  @@unique([locationId, day])
+}
+
+enum LocationType {
+  PHYSICAL
+  MOBILE
+}
+
+model Location {
+  id           String          @id @default(cuid())
+  name         String
+  nickname     String?         @default("")
+  description  String?         @default("")
+  phone        String?         @default("")
+  availability Json?
+  type         LocationType    @default(PHYSICAL)
+  address1     String?         @default("")
+  address2     String?         @default("")
+  city         String?         @default("")
+  state        String?         @default("")
+  zip          String?         @default("")
+  country      String          @default("US")
+  userId       String
+  hours        businessHours[]
+  user         User            @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model ArtistToCustomer {

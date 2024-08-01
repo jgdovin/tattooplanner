@@ -10,15 +10,9 @@ function MountainIcon(props: any) {
       viewBox="0 0 150.000000 150.000000"
       preserveAspectRatio="xMidYMid meet"
     >
-      <metadata>
-        Created by potrace 1.10, written by Peter Selinger 2001-2011
-      </metadata>
-      <g
-        transform="translate(0.000000,150.000000) scale(0.100000,-0.100000)"
-        fill="#000000"
-        stroke="none"
-      >
+      <g transform="translate(0.000000,150.000000) scale(0.100000,-0.100000)">
         <path
+          fill="red"
           d="M1138 1290 c-16 -16 -32 -30 -35 -30 -3 0 -18 11 -34 25 -31 25 -53
 25 -63 -2 -4 -10 11 -33 44 -66 28 -27 49 -51 48 -51 -2 -1 -11 -8 -20 -15
 -14 -10 -21 -11 -32 -2 -23 19 -61 -7 -160 -108 -85 -87 -88 -93 -83 -127 7
@@ -67,7 +61,10 @@ export function Logo({
 }: Readonly<LogoProps>) {
   return (
     <Link className="flex items-center gap-2" href="/">
-      <MountainIcon className={"h-6 w-6  text-pink-500"} />
+      <MountainIcon
+        style={"fill: pink"}
+        className={"h-6 w-6  stroke-pink-500"}
+      />
       <span
         className={`text-lg font-semibold ${
           dark ? "text-white" : "text-slate-900"
