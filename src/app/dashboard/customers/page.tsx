@@ -29,14 +29,7 @@ export default async function Home() {
 
   return (
     <main className="p-10">
-      <DataTable
-        createCallback={() => {
-          console.log("add new");
-        }}
-        title="Customers"
-        columns={columns}
-        data={data}
-      />
+      <DataTable title="Customers" columns={columns} data={data} />
     </main>
   );
 }

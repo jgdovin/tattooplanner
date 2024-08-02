@@ -46,10 +46,11 @@ export async function PATCH(
       { status: 400 }
     );
   }
-  console.log(req.json());
-  // const updateLocation = await prisma.location.update({
-  //   where: { id },
-  //   data: await req.json(),
-  // });
+  const data = await req.json();
+
+  const updateLocation = await prisma.location.update({
+    where: { id },
+    data,
+  });
   return Response.json({ success: "true" });
 }

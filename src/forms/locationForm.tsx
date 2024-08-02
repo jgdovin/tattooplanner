@@ -1,4 +1,3 @@
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   Form,
   FormField,
@@ -17,14 +16,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
-import { set } from "react-hook-form";
+import { useCallback, useEffect, useState } from "react";
+
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import * as z from "zod";
+import { useForm } from "react-hook-form";
 
 interface LocationFormProps {
-  form: any;
   handleSubmit: any;
+  defaultValues: any;
 }
 
 const InputField = ({ name, form, label }: any) => (
@@ -78,6 +79,7 @@ export const formSchema = z.object({
   sunStart: z.string().optional(),
   sunEnd: z.string().optional(),
   sunClosed: z.boolean().optional(),
+  timezone: z.string().optional(),
 });
 
 const daysOfWeek = [
@@ -117,15 +119,18 @@ const TimeField = ({ name, form, label }: any) => {
           control={form.control}
           name={`${name}Closed`}
           render={({ field }) => {
+            const { onChange } = field;
             return (
               <div className="flex items-center justify-end gap-2">
-                <Checkbox
+                <input
+                  type="checkbox"
                   {...field}
+                  checked={field.value}
                   id={`${name}Closed`}
-                  onCheckedChange={(val) => {
-                    setClosed(val);
+                  onChange={(e) => {
+                    onChange(e);
+                    setClosed(e.target.checked);
                   }}
-                  defaultChecked={["sun", "sat"].includes(name) ? true : false}
                 />
                 <Label htmlFor={`${name}Closed`}>Closed</Label>
               </div>
@@ -151,7 +156,37 @@ const TimeField = ({ name, form, label }: any) => {
   );
 };
 
-export function LocationForm({ form, handleSubmit }: LocationFormProps) {
+export function LocationForm({
+  handleSubmit,
+  defaultValues,
+}: LocationFormProps) {
+  const [timezones, setTimezones] = useState([]);
+  const form = useForm<z.infer<typeof formSchema>>({
+    defaultValues,
+    resolver: zodResolver(formSchema),
+  });
+
+  const { isDirty } = form.formState;
+  const handleBeforeUnload = useCallback(
+    (e: BeforeUnloadEvent) => {
+      if (isDirty) {
+        e.preventDefault();
+      }
+    },
+    [isDirty]
+  );
+  useEffect(() => {
+    window.addEventListener("beforeunload", handleBeforeUnload);
+  }, [handleBeforeUnload]);
+
+  useEffect(() => {
+    fetch("/api/timezone").then(async (res) => {
+      const json = await res.json();
+
+      console.log(json);
+    });
+  }, []);
+
   return (
     <Form {...form}>
       <form id="locationForm" onSubmit={form.handleSubmit(handleSubmit)}>

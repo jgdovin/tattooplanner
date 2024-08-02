@@ -20,5 +20,5 @@ export async function POST(request: Request) {
   });
 
   revalidatePath("/dashboard/settings/locations");
-  return Response.json({ error: "Unauthorized" }, { status: 401 });
+  return Response.json(res);
 }

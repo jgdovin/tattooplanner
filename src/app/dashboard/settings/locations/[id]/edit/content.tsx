@@ -1,21 +1,12 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { set, useForm } from "react-hook-form";
-import { z } from "zod";
-import { formSchema, LocationForm } from "@/forms/locationForm";
+import { LocationForm } from "@/forms/locationForm";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 
-export default function Content({ data, formData }: any) {
-  const form = useForm<z.infer<typeof formSchema>>({
-    defaultValues: formData || data,
-    resolver: zodResolver(formSchema),
-  });
-
+export default function Content({ defaultValues }: any) {
   const [errors, setErrors] = useState<any>({});
   const [success, setSuccess] = useState<any>({});
   const clearMessages = () => {
@@ -46,7 +37,7 @@ export default function Content({ data, formData }: any) {
         </div>
       )}
       <LocationForm
-        form={form}
+        defaultValues={defaultValues}
         handleSubmit={(formData: any) => {
           if (!formData.id) throw new Error("No Location ID provided");
           clearMessages();

@@ -18,7 +18,7 @@ export default async function Home({ params }: any) {
 
   return (
     <div className="flex flex-col w-1/4">
-      <Content data={formData} />
+      <Content defaultValues={formData} />
     </div>
   );
 }

@@ -9,8 +9,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { formSchema, LocationForm } from "@/forms/locationForm";
 import * as z from "zod";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -57,18 +55,9 @@ const defaultValues = {
   sunClosed: true,
 };
 
-export function LocationDialog({
-  isOpen,
-  setIsOpen,
-  formData,
-}: LocationDialogProps) {
-  const form = useForm<z.infer<typeof formSchema>>({
-    defaultValues: formData || defaultValues,
-    resolver: zodResolver(formSchema),
-  });
+export function LocationDialog({ isOpen, setIsOpen }: LocationDialogProps) {
   const handleSubmit = (submittedData: z.infer<typeof formSchema>) => {
     // submit to api
-    console.log(submittedData);
     const url = `/api/location`;
     const response = fetch(url, {
       method: "POST",
@@ -101,7 +90,10 @@ export function LocationDialog({
             Make changes to your location here. Click save when youre done.
           </DialogDescription>
         </DialogHeader>
-        <LocationForm form={form} handleSubmit={handleSubmit} />
+        <LocationForm
+          handleSubmit={handleSubmit}
+          defaultValues={defaultValues}
+        />
         <DialogFooter>
           <Button form="locationForm" type="submit">
             Save Location
