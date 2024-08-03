@@ -38,7 +38,6 @@ const defaultValues = {
 export function CustomerDialog({ isOpen, setIsOpen }: CustomerDialogProps) {
   const handleSubmit = (submittedData: z.infer<typeof formSchema>) => {
     // submit to api
-    window.removeEventListener("beforeunload", handleBeforeUnload);
     const url = `/api/customer`;
     const response = fetch(url, {
       method: "POST",
