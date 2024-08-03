@@ -63,23 +63,8 @@ export function CustomerDialog({ isOpen, setIsOpen }: CustomerDialogProps) {
     resolver: zodResolver(formSchema),
   });
   const { isDirty } = form.formState;
-  const handleBeforeUnload = useCallback(
-    (e: BeforeUnloadEvent) => {
-      if (isDirty) {
-        e.preventDefault();
-      }
-    },
-    [isDirty]
-  );
-  useEffect(() => {
-    console.log(isDirty);
-  }, [isDirty]);
-
-  useEffect(() => {
-    window.addEventListener("beforeunload", handleBeforeUnload);
-  }, [handleBeforeUnload]);
   const handleOpenChange = (open: boolean) => {
-    if (form.formState.isDirty) {
+    if (isDirty) {
       const close = confirm("Unsaved changes will be lost. Are you sure?");
       if (!close) {
         return;

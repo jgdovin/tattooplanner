@@ -1,10 +1,13 @@
 "use client";
 
-import { LocationForm } from "@/forms/locationForm";
+import { formSchema, LocationForm } from "@/forms/locationForm";
 import { Button } from "@/components/ui/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { isDirty, z } from "zod";
 
 export default function Client({ defaultValues }: any) {
   const [errors, setErrors] = useState<any>({});
@@ -13,6 +16,23 @@ export default function Client({ defaultValues }: any) {
     setErrors({});
     setSuccess({});
   };
+  const form = useForm<z.infer<typeof formSchema>>({
+    defaultValues,
+    resolver: zodResolver(formSchema),
+  });
+  const { isDirty } = form.formState;
+  const handleBeforeUnload = useCallback(
+    (e: BeforeUnloadEvent) => {
+      if (isDirty) {
+        e.preventDefault();
+      }
+    },
+    [isDirty]
+  );
+  useEffect(() => {
+    window.addEventListener("beforeunload", handleBeforeUnload);
+  }, [handleBeforeUnload]);
+
   return (
     <div className="flex flex-col w-[800px] mt-5 ml-16">
       <div className="self-end">
@@ -36,8 +56,9 @@ export default function Client({ defaultValues }: any) {
           Failed to update location: {errors.message}
         </div>
       )}
+
       <LocationForm
-        defaultValues={defaultValues}
+        form={form}
         handleSubmit={(formData: any) => {
           if (!formData.id) throw new Error("No Location ID provided");
           clearMessages();

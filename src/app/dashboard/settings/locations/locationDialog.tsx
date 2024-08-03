@@ -13,6 +13,9 @@ import { formSchema, LocationForm } from "@/forms/locationForm";
 import * as z from "zod";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { useCallback, useEffect } from "react";
 
 interface LocationDialogProps {
   isOpen: boolean;
@@ -31,7 +34,7 @@ const defaultValues = {
   city: "",
   state: "",
   zip: "",
-  type: "PHYSICAL",
+  type: "PHYSICAL" as const,
   monStart: "09:00",
   monEnd: "17:00",
   monClosed: false,
@@ -76,8 +79,26 @@ export function LocationDialog({ isOpen, setIsOpen }: LocationDialogProps) {
         console.log(err);
       });
   };
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    defaultValues,
+    resolver: zodResolver(formSchema),
+  });
+  const { isDirty } = form.formState;
+
+  const handleOpenChange = (open: boolean) => {
+    if (isDirty) {
+      const close = confirm("Unsaved changes will be lost. Are you sure?");
+      if (!close) {
+        return;
+      }
+    }
+    form.reset(defaultValues);
+    setIsOpen(open);
+  };
+
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <Button variant="outline">
           Add <FontAwesomeIcon className="pl-1" icon={faPlus} />
@@ -90,10 +111,7 @@ export function LocationDialog({ isOpen, setIsOpen }: LocationDialogProps) {
             Make changes to your location here. Click save when youre done.
           </DialogDescription>
         </DialogHeader>
-        <LocationForm
-          handleSubmit={handleSubmit}
-          defaultValues={defaultValues}
-        />
+        <LocationForm handleSubmit={handleSubmit} form={form} />
         <DialogFooter>
           <Button form="locationForm" type="submit">
             Save Location

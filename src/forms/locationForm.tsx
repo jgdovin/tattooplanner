@@ -18,14 +18,11 @@ import {
 import { Label } from "@/components/ui/label";
 import { useCallback, useEffect, useState } from "react";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-
 import * as z from "zod";
-import { useForm } from "react-hook-form";
 
 interface LocationFormProps {
   handleSubmit: any;
-  defaultValues: any;
+  form: any;
 }
 
 const InputField = ({ name, form, label }: any) => (
@@ -156,28 +153,8 @@ const TimeField = ({ name, form, label }: any) => {
   );
 };
 
-export function LocationForm({
-  handleSubmit,
-  defaultValues,
-}: LocationFormProps) {
+export function LocationForm({ handleSubmit, form }: LocationFormProps) {
   const [timezones, setTimezones] = useState([]);
-  const form = useForm<z.infer<typeof formSchema>>({
-    defaultValues,
-    resolver: zodResolver(formSchema),
-  });
-
-  const { isDirty } = form.formState;
-  const handleBeforeUnload = useCallback(
-    (e: BeforeUnloadEvent) => {
-      if (isDirty) {
-        e.preventDefault();
-      }
-    },
-    [isDirty]
-  );
-  useEffect(() => {
-    window.addEventListener("beforeunload", handleBeforeUnload);
-  }, [handleBeforeUnload]);
 
   useEffect(() => {
     fetch("/api/timezone").then(async (res) => {
