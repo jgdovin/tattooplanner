@@ -1,6 +1,6 @@
-import { getServerSession } from "next-auth";
+import { getServerSession, Session } from "next-auth";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
-import { UploadThingError, UTFiles } from "uploadthing/server";
+import { UploadThingError } from "uploadthing/server";
 import { authOptions } from "../auth/[...nextauth]/authOptions";
 
 const f = createUploadthing();
@@ -15,12 +15,12 @@ export const ourFileRouter = {
     // Set permissions and file types for this FileRoute
     .middleware(async ({ req, files }) => {
       // This code runs on your server before upload
-      const session = getServerSession(authOptions);
+      const session = await getServerSession(authOptions);
 
       // If you throw, the user will not be able to upload
       if (!session) throw new UploadThingError("Unauthorized");
 
-      return { userId: session?.id };
+      return { userId: session.user.id };
     })
     .onUploadComplete(async ({ metadata, file }) => {
       // This code RUNS ON YOUR SERVER after upload
