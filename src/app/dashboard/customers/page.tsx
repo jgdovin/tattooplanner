@@ -1,8 +1,10 @@
 import { DataTable } from "@/components/custom/data-table";
-import { columns, Customer } from "./columns";
+import { columns } from "./columns";
 import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import Client from "./client";
+
 export default async function Home() {
   const session = await getServerSession(authOptions);
   if (!session) {
@@ -13,23 +15,20 @@ export default async function Home() {
       </main>
     );
   }
-  const data = (await prisma.user.findMany({
+
+  const data = await prisma.customer.findMany({
     where: {
-      role: "CUSTOMER",
-      customerToArtists: {
+      artists: {
         some: {
-          artistId: session?.id,
+          id: session?.user?.id,
         },
       },
     },
-    include: {
-      customerToArtists: true,
-    },
-  })) as Customer[];
+  });
 
   return (
     <main className="p-10">
-      <DataTable title="Customers" columns={columns} data={data} />
+      <Client data={data} />
     </main>
   );
 }

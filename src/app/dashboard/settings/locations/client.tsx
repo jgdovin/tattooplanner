@@ -4,7 +4,7 @@ import { locationColumns } from "./columns";
 import { LocationDialog } from "./locationDialog";
 import { useState } from "react";
 
-export default function Content({ data }: any) {
+export default function Client({ data }: any) {
   const [isOpen, setIsOpen] = useState(false);
 
   const columns = locationColumns({ setIsOpen });

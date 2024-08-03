@@ -1,20 +1,25 @@
-import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import Client from "./client";
 import prisma from "@/lib/prisma";
-import { Location } from "../../columns";
-export default async function Home({ params }: any) {
+import { getServerSession } from "next-auth";
+import Client from "./client";
+
+export default async function Page({ params }: any) {
   const session = await getServerSession(authOptions);
   if (!session) throw new Error("Unauthorized");
   const { id } = params;
   if (!id) throw new Error("id is required");
 
-  const formData = (await prisma.location.findUnique({
+  const formData = await prisma.customer.findUnique({
     where: {
       id,
-      userId: session.user.id,
+      artists: {
+        some: {
+          id: session.user.id,
+        },
+      },
     },
-  })) as Location;
+  });
+  if (!formData) throw new Error("Customer not found");
 
   return (
     <div className="flex flex-col w-1/4">

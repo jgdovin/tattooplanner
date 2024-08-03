@@ -1,9 +1,9 @@
-import Content from "./contenxt";
+import Client from "./client";
 
 export default async function Page() {
   return (
     <div className="flex flex-col align-middle">
-      <Content />
+      <Client />
     </div>
   );
 }

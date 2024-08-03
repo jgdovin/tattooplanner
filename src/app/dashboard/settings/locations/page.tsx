@@ -2,7 +2,7 @@ import { Location } from "./columns";
 import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import Content from "./content";
+import Client from "./client";
 export default async function Home({ searchParams }: any) {
   const session = await getServerSession(authOptions);
 
@@ -15,7 +15,7 @@ export default async function Home({ searchParams }: any) {
   if (!searchParams.edit) {
     return (
       <main className="p-10">
-        <Content data={data} />
+        <Client data={data} />
       </main>
     );
   }
@@ -29,7 +29,7 @@ export default async function Home({ searchParams }: any) {
 
   return (
     <main className="p-10">
-      <Content data={data} formData={formData} />
+      <Client data={data} formData={formData} />
     </main>
   );
 }

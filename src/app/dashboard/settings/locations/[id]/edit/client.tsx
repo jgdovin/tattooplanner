@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 
-export default function Content({ defaultValues }: any) {
+export default function Client({ defaultValues }: any) {
   const [errors, setErrors] = useState<any>({});
   const [success, setSuccess] = useState<any>({});
   const clearMessages = () => {

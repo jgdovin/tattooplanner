@@ -2,7 +2,7 @@
 import { Calendar } from "@/components/ui/calendar";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
-export default function Content() {
+export default function Client() {
   const [date, setDate] = useState<Date | undefined>(new Date());
   useEffect(() => {
     console.log(date);

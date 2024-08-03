@@ -16,8 +16,8 @@ export async function DELETE(
   if (!id || id === "undefined")
     return Response.json({ error: "id is required" }, { status: 400 });
   try {
-    await prisma.location.delete({
-      where: { id, userId: session.user.id },
+    await prisma.customer.delete({
+      where: { id },
     });
     return Response.json({ success: "true" });
   } catch (e) {
@@ -39,7 +39,7 @@ export async function PATCH(
   }
   const data = await req.json();
   try {
-    await prisma.location.update({
+    await prisma.customer.update({
       where: { id },
       data,
     });
