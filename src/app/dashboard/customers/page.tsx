@@ -2,7 +2,7 @@ import { DataTable } from "@/components/custom/data-table";
 import { columns } from "./columns";
 import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
 import Client from "./client";
 
 export default async function Home() {

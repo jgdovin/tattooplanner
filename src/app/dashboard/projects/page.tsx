@@ -1,7 +1,7 @@
 import { DataTable } from "@/components/custom/data-table";
 import { columns, Project } from "./columns";
 import prisma from "@/lib/prisma";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
 import { getServerSession } from "next-auth";
 import { UploadButton } from "@/lib/uploadthing";
 
