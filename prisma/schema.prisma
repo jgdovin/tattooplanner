@@ -42,38 +42,32 @@ model Session {
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-enum Role {
-  ARTIST
-  CUSTOMER
-  ADMIN
-}
-
 model User {
-  id                 String             @id @default(cuid())
+  id                 String     @id @default(cuid())
   name               String?
-  email              String?            @unique
+  email              String?    @unique
   emailVerified      DateTime?
   image              String?
-  role               Role               @default(CUSTOMER)
   accounts           Account[]
   sessions           Session[]
-  projectsAsCustomer Project[]          @relation("ProjectCustomer")
-  projectsAsArtist   Project[]          @relation("ProjectArtist")
-  artistToCustomers  ArtistToCustomer[] @relation("ArtistOnCustomer")
-  customerToArtists  ArtistToCustomer[] @relation("CustomerOnArtist")
+  projectsAsCustomer Project[]  @relation("ProjectCustomer")
+  projectsAsArtist   Project[]  @relation("ProjectArtist")
   locations          Location[]
+  customers          customer[] @relation("customerArtists")
 }
 
-model businessHours {
-  id         String   @id @default(cuid())
-  locationId String
-  location   Location @relation(fields: [locationId], references: [id])
-  day        String
-  open       Int      @default(900)
-  close      Int      @default(1700)
-  closed     Boolean  @default(false)
-
-  @@unique([locationId, day])
+model customer {
+  id       String  @id @default(cuid())
+  name     String
+  email    String
+  phone    String
+  address1 String? @default("")
+  address2 String? @default("")
+  city     String? @default("")
+  state    String? @default("")
+  zip      String? @default("")
+  country  String? @default("US")
+  artists  User[]  @relation("customerArtists")
 }
 
 enum LocationType {
@@ -82,51 +76,42 @@ enum LocationType {
 }
 
 model Location {
-  id           String          @id @default(cuid())
+  id           String       @id @default(cuid())
   name         String
-  nickname     String?         @default("")
-  description  String?         @default("")
-  phone        String?         @default("")
+  nickname     String?      @default("")
+  description  String?      @default("")
+  phone        String?      @default("")
   availability Json?
-  type         LocationType    @default(PHYSICAL)
-  address1     String?         @default("")
-  address2     String?         @default("")
-  city         String?         @default("")
-  state        String?         @default("")
-  zip          String?         @default("")
-  country      String          @default("US")
-  monStart     String?         @default("")
-  monEnd       String?         @default("")
-  monClosed    Boolean?        @default(false)
-  tueStart     String?         @default("")
-  tueEnd       String?         @default("")
-  tueClosed    Boolean?        @default(false)
-  wedStart     String?         @default("")
-  wedEnd       String?         @default("")
-  wedClosed    Boolean?        @default(false)
-  thuStart     String?         @default("")
-  thuEnd       String?         @default("")
-  thuClosed    Boolean?        @default(false)
-  friStart     String?         @default("")
-  friEnd       String?         @default("")
-  friClosed    Boolean?        @default(false)
-  satStart     String?         @default("")
-  satEnd       String?         @default("")
-  satClosed    Boolean?        @default(false)
-  sunStart     String?         @default("")
-  sunEnd       String?         @default("")
-  sunClosed    Boolean?        @default(false)
+  type         LocationType @default(PHYSICAL)
+  address1     String?      @default("")
+  address2     String?      @default("")
+  city         String?      @default("")
+  state        String?      @default("")
+  zip          String?      @default("")
+  country      String       @default("US")
+  monStart     String?      @default("")
+  monEnd       String?      @default("")
+  monClosed    Boolean?     @default(false)
+  tueStart     String?      @default("")
+  tueEnd       String?      @default("")
+  tueClosed    Boolean?     @default(false)
+  wedStart     String?      @default("")
+  wedEnd       String?      @default("")
+  wedClosed    Boolean?     @default(false)
+  thuStart     String?      @default("")
+  thuEnd       String?      @default("")
+  thuClosed    Boolean?     @default(false)
+  friStart     String?      @default("")
+  friEnd       String?      @default("")
+  friClosed    Boolean?     @default(false)
+  satStart     String?      @default("")
+  satEnd       String?      @default("")
+  satClosed    Boolean?     @default(false)
+  sunStart     String?      @default("")
+  sunEnd       String?      @default("")
+  sunClosed    Boolean?     @default(false)
   userId       String
-  hours        businessHours[]
-  user         User            @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
-model ArtistToCustomer {
-  id         String @id @default(cuid())
-  artistId   String
-  customerId String
-  artist     User   @relation("ArtistOnCustomer", fields: [artistId], references: [id], onDelete: Cascade)
-  customer   User   @relation("CustomerOnArtist", fields: [customerId], references: [id], onDelete: Cascade)
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model VerificationToken {

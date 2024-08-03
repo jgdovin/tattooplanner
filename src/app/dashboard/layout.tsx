@@ -4,6 +4,7 @@ import { Session } from "next-auth";
 import Link from "next/link";
 import {
   faBuilding,
+  faCalendar,
   faGauge,
   faPalette,
   faUser,
@@ -51,6 +52,11 @@ export default function RootLayout({
                     text="Locations"
                     href="/dashboard/settings/locations"
                     icon={faBuilding}
+                  />
+                  <MenuLink
+                    text="Booking"
+                    href="/dashboard/booking"
+                    icon={faCalendar}
                   />
                 </nav>
               </div>
