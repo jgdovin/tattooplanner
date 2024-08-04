@@ -55,7 +55,7 @@ export default function RootLayout({
                   />
                   <MenuLink
                     text="Booking"
-                    href="/dashboard/booking"
+                    href="/book/clzbyabmk0004nq242mn914up"
                     icon={faCalendar}
                   />
                 </nav>

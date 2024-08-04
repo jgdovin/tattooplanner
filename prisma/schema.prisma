@@ -14,22 +14,23 @@ datasource db {
 }
 
 model Account {
-  id                 String  @id @default(cuid())
+  id                 String   @id @default(cuid())
   userId             String
   type               String
   provider           String
   providerAccountId  String
-  refresh_token      String? @db.Text
-  access_token       String? @db.Text
+  refresh_token      String?  @db.Text
+  access_token       String?  @db.Text
   expires_at         Int?
   token_type         String?
   scope              String?
-  id_token           String? @db.Text
+  id_token           String?  @db.Text
   session_state      String?
   oauth_token_secret String?
   oauth_token        String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @default(now()) @updatedAt
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
@@ -43,32 +44,40 @@ model Session {
 }
 
 model User {
-  id                 String     @id @default(cuid())
-  name               String?
-  email              String?    @unique
-  emailVerified      DateTime?
-  image              String?
-  accounts           Account[]
-  sessions           Session[]
-  projectsAsCustomer Project[]  @relation("ProjectCustomer")
-  projectsAsArtist   Project[]  @relation("ProjectArtist")
-  locations          Location[]
-  customers          customer[] @relation("customerArtists")
+  id            String     @id @default(cuid())
+  name          String?
+  email         String?    @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+  projects      Project[]
+  locations     Location[]
+  customers     Customer[] @relation("CustomerArtists")
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @default(now()) @updatedAt
 }
 
-model customer {
-  id       String  @id @default(cuid())
-  name     String
-  email    String
-  phone    String
-  notes    String? @default("")
-  address1 String? @default("")
-  address2 String? @default("")
-  city     String? @default("")
-  state    String? @default("")
-  zip      String? @default("")
-  country  String? @default("US")
-  artists  User[]  @relation("customerArtists")
+model Customer {
+  id                String    @id @default(cuid())
+  name              String
+  email             String
+  phone             String
+  validated         Boolean   @default(false)
+  mostRecentPin     String?
+  mostRecentPinDate DateTime? @default(now())
+  notes             String?   @default("")
+  address1          String?   @default("")
+  address2          String?   @default("")
+  city              String?   @default("")
+  state             String?   @default("")
+  zip               String?   @default("")
+  country           String?   @default("US")
+  artists           User[]    @relation("CustomerArtists")
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @default(now()) @updatedAt
+  Project           Project[]
+  Booking           Booking[]
 }
 
 enum LocationType {
@@ -112,7 +121,10 @@ model Location {
   sunEnd       String?      @default("")
   sunClosed    Boolean?     @default(false)
   userId       String
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @default(now()) @updatedAt
   user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Booking      Booking[]
 }
 
 model VerificationToken {
@@ -124,12 +136,31 @@ model VerificationToken {
 }
 
 model Project {
-  id        String   @id @default(cuid())
-  name      String
-  userId    String
-  customer  User     @relation("ProjectCustomer", fields: [userId], references: [id], onDelete: Cascade)
-  artistId  String
-  artist    User     @relation("ProjectArtist", fields: [artistId], references: [id], onDelete: Cascade)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         String    @id @default(cuid())
+  name       String
+  userId     String
+  artistId   String
+  artist     User      @relation(fields: [artistId], references: [id], onDelete: Cascade)
+  customerId String
+  customer   Customer  @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @default(now()) @updatedAt
+  Booking    Booking[]
+}
+
+model Booking {
+  id         String   @id @default(cuid())
+  projectId  String?
+  project    Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  locationId String
+  location   Location @relation(fields: [locationId], references: [id], onDelete: Cascade)
+  customerId String
+  customer   Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  date       DateTime
+  start      String
+  end        String?
+  duration   Int?
+  notes      String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now()) @updatedAt
 }
