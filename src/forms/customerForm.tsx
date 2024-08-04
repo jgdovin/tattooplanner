@@ -9,13 +9,10 @@ import {
 
 import { Input } from "@/components/ui/input";
 
-import { useCallback, useEffect, useState } from "react";
-
-import { zodResolver } from "@hookform/resolvers/zod";
-
 import * as z from "zod";
-import { useForm } from "react-hook-form";
 import { Textarea } from "@/components/ui/textarea";
+
+import { zPhone } from "./customValidation/zodPhoneValidate";
 
 interface LocationFormProps {
   handleSubmit: any;
@@ -47,7 +44,7 @@ const InputField = ({ name, form, label, textArea }: any) => (
 export const formSchema = z.object({
   name: z.string().min(3),
   email: z.string().email(),
-  phone: z.string(),
+  phone: zPhone,
   notes: z.string(),
   address1: z.string(),
   address2: z.string(),
