@@ -62,6 +62,7 @@ export function CustomerDialog({ isOpen, setIsOpen }: CustomerDialogProps) {
     resolver: zodResolver(formSchema),
   });
   const { isDirty } = form.formState;
+
   const handleOpenChange = (open: boolean) => {
     if (isDirty) {
       const close = confirm("Unsaved changes will be lost. Are you sure?");
@@ -88,7 +89,11 @@ export function CustomerDialog({ isOpen, setIsOpen }: CustomerDialogProps) {
         </DialogHeader>
         <CustomerForm handleSubmit={handleSubmit} form={form} />
         <DialogFooter>
-          <Button form="customerForm" type="submit">
+          <Button
+            form="customerForm"
+            type="submit"
+            disabled={form.formState.isSubmitting}
+          >
             Save Customer
           </Button>
         </DialogFooter>
