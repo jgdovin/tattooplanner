@@ -32,6 +32,7 @@
     "dayjs": "^1.11.12",
     "libphonenumber-js": "^1.11.5",
     "lucide-react": "^0.417.0",
+    "luxon": "^3.5.0",
     "next": "14.2.5",
     "next-auth": "^4.24.7",
     "next-themes": "^0.3.0",
@@ -41,12 +42,14 @@
     "react-day-picker": "8.10.1",
     "react-dom": "^18",
     "react-hook-form": "^7.52.1",
+    "slot-calculator": "^2.2.1",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
     "uploadthing": "^6.13.2",
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@types/luxon": "^3.4.2",
     "@types/node": "^20",
     "@types/nodemailer": "^6",
     "@types/react": "^18",
