@@ -7,7 +7,7 @@ export async function POST(request: Request) {
   const session = await getServerSession(authOptions);
 
   if (!session) {
-    return Response.json({ error: "Unauthorized" }, { status: 401 });
+    throw new Error("You shouldnt be here");
   }
 
   const body = await request.json();

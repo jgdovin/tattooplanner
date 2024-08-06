@@ -28,11 +28,6 @@ export async function POST(
   req: Request,
   { params }: { params: { id: string } }
 ) {
-  const session = await getServerSession(authOptions);
-
-  if (!session) {
-    return Response.json({ error: "Unauthorized" }, { status: 401 });
-  }
   const { id } = params;
   const { year, month, service } = await req.json();
 

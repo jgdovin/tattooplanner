@@ -6,6 +6,7 @@ import {
   faBuilding,
   faCalendar,
   faGauge,
+  faPaintBrush,
   faPalette,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
@@ -53,11 +54,16 @@ export default function RootLayout({
                     href="/dashboard/settings/locations"
                     icon={faBuilding}
                   />
+                  <MenuLink
+                    text="Services"
+                    href="/dashboard/settings/services"
+                    icon={faPaintBrush}
+                  />
                 </nav>
               </div>
             </div>
           </nav>
-          <main className="flex flex-col overflow-scroll">{children}</main>
+          <main className="flex flex-col overflow-auto">{children}</main>
         </div>
         <Footer />
       </div>
