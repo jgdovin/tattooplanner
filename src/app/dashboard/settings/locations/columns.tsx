@@ -37,6 +37,13 @@ export const locationColumns = ({ setIsOpen }: LocationColumnsProps) => {
         <div className="flex flex-row gap-4">
           <Button
             onClick={() => {
+              window.location.href = `/book/${row.original.id}`;
+            }}
+          >
+            Book
+          </Button>
+          <Button
+            onClick={() => {
               window.location.href = `/dashboard/settings/locations/${row.original.id}/edit`;
             }}
           >
