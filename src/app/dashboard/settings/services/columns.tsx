@@ -15,7 +15,7 @@ export type Service = {
   address1: string;
 };
 
-export const serviceColumns = () => {
+export const useServiceColumns = () => {
   const [, deleteService] = useAtom(deleteServiceAtom);
 
   return [

@@ -1,6 +1,6 @@
 "use client";
 import { DataTable } from "@/components/custom/data-table";
-import { serviceColumns } from "./columns";
+import { useServiceColumns } from "./columns";
 import { ServiceDialog } from "./serviceDialog";
 import { useEffect, useState } from "react";
 import { useAtom } from "jotai";
@@ -23,7 +23,7 @@ export default function Client() {
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const columns = serviceColumns();
+  const columns = useServiceColumns();
 
   return (
     <DataTable
