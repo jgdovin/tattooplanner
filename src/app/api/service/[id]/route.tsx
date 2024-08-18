@@ -21,7 +21,6 @@ export async function DELETE(
 }
 
 export async function PATCH(req: Request, { params }: { params: any }) {
-  console.log("testing");
   const { id } = params;
   if (!id || id === "undefined") {
     return Response.json(
@@ -37,7 +36,6 @@ export async function PATCH(req: Request, { params }: { params: any }) {
       where: { id },
       data,
     });
-    console.log(update);
     return Response.json({ success: "true" });
   } catch (e: any) {
     return Response.json(

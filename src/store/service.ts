@@ -1,7 +1,4 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
-import prisma from "@/lib/prisma";
 import { atom } from "jotai";
-import { getServerSession } from "next-auth";
 
 const EMPTY_SERVICE_DATA = {
   id: "",

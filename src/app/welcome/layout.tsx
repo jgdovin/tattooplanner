@@ -16,13 +16,11 @@ import { Footer } from "@/components/custom/Footer";
 
 export default function RootLayout({
   children,
-  session,
 }: Readonly<{
   children: React.ReactNode;
-  session: Session | null;
 }>) {
   return (
-    <SessionProvider session={session}>
+    <SessionProvider>
       <div className="flex flex-col h-screen justify-between bg-blue-200">
         <Header />
         <div className="h-full bg-red-200">

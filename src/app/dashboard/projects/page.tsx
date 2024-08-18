@@ -3,7 +3,6 @@ import { columns, Project } from "./columns";
 import prisma from "@/lib/prisma";
 import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
 import { getServerSession } from "next-auth";
-import { UploadButton } from "@/lib/uploadthing";
 
 export default async function Page() {
   const session = await getServerSession(authOptions);

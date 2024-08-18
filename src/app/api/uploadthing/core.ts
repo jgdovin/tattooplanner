@@ -1,4 +1,4 @@
-import { getServerSession, Session } from "next-auth";
+import { getServerSession } from "next-auth";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
 import { authOptions } from "../auth/[...nextauth]/authOptions";

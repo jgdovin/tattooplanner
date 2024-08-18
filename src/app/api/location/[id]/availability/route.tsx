@@ -1,8 +1,6 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
 import { Location } from "@/app/dashboard/settings/locations/columns";
 import prisma from "@/lib/prisma";
 import dayjs from "dayjs";
-import { getServerSession } from "next-auth";
 import duration from "dayjs/plugin/duration";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import { getSlots } from "slot-calculator";
