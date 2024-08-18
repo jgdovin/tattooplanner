@@ -16,7 +16,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+
+import { InputField } from "./components/inputField";
 
 import * as z from "zod";
 
@@ -24,24 +26,6 @@ interface LocationFormProps {
   handleSubmit: any;
   form: any;
 }
-
-const InputField = ({ name, form, label }: any) => (
-  <FormField
-    control={form.control}
-    name={name}
-    render={({ field }) => {
-      return (
-        <FormItem className="grid grid-cols-4 items-center gap-4">
-          <FormLabel className="text-right">{label}</FormLabel>
-          <FormControl className="col-span-3">
-            <Input type="text" {...field} />
-          </FormControl>
-          <FormMessage className="col-span-4 text-center" />
-        </FormItem>
-      );
-    }}
-  />
-);
 
 export const formSchema = z.object({
   name: z.string().min(3),

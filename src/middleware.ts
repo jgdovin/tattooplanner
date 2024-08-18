@@ -4,10 +4,13 @@ export default async function middleware(req: NextRequest) {
   const url = req.nextUrl.clone();
 
   // fetch here requires an absolute URL to the auth API route
-  const {
-    data: { auth },
-  } = await fetch(`${url.origin}/api/authSSR`, {
-    headers: req.headers,
+  const filteredHeaders = new Headers();
+  for (const [key, value] of req.headers.entries()) {
+    if (key === "content-length") continue;
+    filteredHeaders.append(key, value);
+  }
+  const res = await fetch(`http://localhost:3000/api/authSSR`, {
+    headers: filteredHeaders,
   })
     .then((res) => {
       const data = res.json();
@@ -15,9 +18,19 @@ export default async function middleware(req: NextRequest) {
       return data;
     })
     .catch(console.error);
+
+  if (!res) return;
+
+  const {
+    data: { auth },
+  } = res;
+
   // we patch the callback to send the user back to where auth was required
-  url.search = new URLSearchParams(`callbackUrl=${url}`).toString();
-  url.pathname = `/welcome`;
+  if (!auth) {
+    url.search = new URLSearchParams(`callbackUrl=${url}`).toString();
+    url.pathname = `/welcome`;
+  }
+
   return !auth ? NextResponse.redirect(url) : NextResponse.next();
 }
 export const config = {

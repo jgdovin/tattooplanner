@@ -8,6 +8,8 @@ import { ourFileRouter } from "./api/uploadthing/core";
 import "@uploadthing/react/styles.css";
 import { cn } from "@/lib/utils";
 
+import { Provider } from "jotai";
+
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
@@ -32,7 +34,9 @@ export default function RootLayout({
         )}
       >
         <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
-        <ThemeProvider attribute="class">{children}</ThemeProvider>
+        <ThemeProvider attribute="class">
+          <Provider>{children}</Provider>
+        </ThemeProvider>
       </body>
     </html>
   );

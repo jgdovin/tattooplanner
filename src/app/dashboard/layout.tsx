@@ -13,6 +13,7 @@ import {
 import { MenuLink } from "@/components/custom/MenuLink";
 import { Header } from "@/components/custom/Header";
 import { Footer } from "@/components/custom/Footer";
+import { Toaster } from "react-hot-toast";
 
 export default function RootLayout({
   children,
@@ -24,6 +25,7 @@ export default function RootLayout({
   return (
     <SessionProvider session={session}>
       <div className="flex flex-col h-screen justify-between">
+        <Toaster />
         <Header />
         <div className="grid grid-cols-[240px_1fr] h-full">
           <nav className="border-r bg-gray-100/40 dark:bg-gray-800/40">

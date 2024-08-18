@@ -12,15 +12,14 @@ import { isDirty, z } from "zod";
 export default function Client({ defaultValues }: any) {
   const [errors, setErrors] = useState<any>({});
   const [success, setSuccess] = useState<any>({});
-  const clearMessages = () => {
-    setErrors({});
-    setSuccess({});
-  };
+
   const form = useForm<z.infer<typeof formSchema>>({
     defaultValues,
     resolver: zodResolver(formSchema),
   });
+
   const { isDirty } = form.formState;
+
   const handleBeforeUnload = useCallback(
     (e: BeforeUnloadEvent) => {
       if (isDirty) {
@@ -29,9 +28,40 @@ export default function Client({ defaultValues }: any) {
     },
     [isDirty]
   );
+
   useEffect(() => {
     window.addEventListener("beforeunload", handleBeforeUnload);
   }, [handleBeforeUnload]);
+
+  const clearMessages = () => {
+    setErrors({});
+    setSuccess({});
+  };
+
+  const handleSubmit = (formData: any) => {
+    if (!formData.id) throw new Error("No Location ID provided");
+    clearMessages();
+    const url = `/api/location/${formData.id}`;
+    const response = fetch(url, {
+      method: "PATCH",
+      body: JSON.stringify(formData),
+    });
+    response
+      .then((res) => {
+        if (res.ok) {
+          setSuccess({ message: "Successfully updated location" });
+          return;
+        }
+        res.json().then((data) => {
+          if (data.error) setErrors({ message: data.message });
+        });
+      })
+      .catch((err) => {
+        console.log("ERROR", err);
+        setErrors({ message: err.message });
+        console.error(err);
+      });
+  };
 
   return (
     <div className="flex flex-col w-[800px] mt-5 ml-16">
@@ -57,33 +87,7 @@ export default function Client({ defaultValues }: any) {
         </div>
       )}
 
-      <LocationForm
-        form={form}
-        handleSubmit={(formData: any) => {
-          if (!formData.id) throw new Error("No Location ID provided");
-          clearMessages();
-          const url = `/api/location/${formData.id}`;
-          const response = fetch(url, {
-            method: "PATCH",
-            body: JSON.stringify(formData),
-          });
-          response
-            .then((res) => {
-              if (res.ok) {
-                setSuccess({ message: "Successfully updated location" });
-                return;
-              }
-              res.json().then((data) => {
-                if (data.error) setErrors({ message: data.message });
-              });
-            })
-            .catch((err) => {
-              console.log("ERROR", err);
-              setErrors({ message: err.message });
-              console.error(err);
-            });
-        }}
-      />
+      <LocationForm form={form} handleSubmit={handleSubmit} />
       <Button form="locationForm" className="mt-10">
         Save Changes
       </Button>

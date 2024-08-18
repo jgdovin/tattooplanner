@@ -107,9 +107,6 @@ export function LocationDialog({ isOpen, setIsOpen }: LocationDialogProps) {
       <DialogContent className="max-h-screen max-w-[780px] overflow-y-auto m-10">
         <DialogHeader>
           <DialogTitle>Add Location</DialogTitle>
-          <DialogDescription>
-            Make changes to your location here. Click save when youre done.
-          </DialogDescription>
         </DialogHeader>
         <LocationForm handleSubmit={handleSubmit} form={form} />
         <DialogFooter>

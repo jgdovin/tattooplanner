@@ -11,21 +11,18 @@ export async function DELETE(
   if (!id || id === "undefined")
     return Response.json({ error: "id is required" }, { status: 400 });
   try {
-    await prisma.location.delete({
+    await prisma.service.delete({
       where: { id, userId: session!.user.id },
     });
     return Response.json({ success: "true" });
   } catch (e) {
-    return Response.json({ error: "Location not found" }, { status: 404 });
+    return Response.json({ error: "Service not found" }, { status: 404 });
   }
 }
 
-export async function PATCH(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
+export async function PATCH(req: Request, { params }: { params: any }) {
+  console.log("testing");
   const { id } = params;
-
   if (!id || id === "undefined") {
     return Response.json(
       { error: true, message: "id is required" },
@@ -33,11 +30,14 @@ export async function PATCH(
     );
   }
   const data = await req.json();
+  // Handle locations
+  delete data.locations;
   try {
-    await prisma.location.update({
+    const update = await prisma.service.update({
       where: { id },
       data,
     });
+    console.log(update);
     return Response.json({ success: "true" });
   } catch (e: any) {
     return Response.json(

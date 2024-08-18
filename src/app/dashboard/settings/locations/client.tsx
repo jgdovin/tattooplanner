@@ -7,7 +7,7 @@ import { useState } from "react";
 export default function Client({ data }: any) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const columns = locationColumns({ setIsOpen });
+  const columns = locationColumns();
   return (
     <DataTable
       CreateButton={() => LocationDialog({ isOpen, setIsOpen })}

@@ -1,11 +1,13 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { deleteServiceAtom } from "@/store/service";
 import { ColumnDef } from "@tanstack/react-table";
+import { useAtom } from "jotai";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
-export type Location = {
+export type Service = {
   [key: string]: any;
   id: string;
   name: string;
@@ -13,26 +15,25 @@ export type Location = {
   address1: string;
 };
 
-interface LocationColumnsProps {
-  setIsOpen: any;
-}
+export const serviceColumns = () => {
+  const [, deleteService] = useAtom(deleteServiceAtom);
 
-export const locationColumns = ({ setIsOpen }: LocationColumnsProps) => {
   return [
     {
       accessorKey: "name",
       header: "Location Name",
     },
     {
-      accessorKey: "nickname",
-      header: "Location Nickname",
+      accessorKey: "duration",
+      header: "Duration",
     },
     {
-      accessorKey: "address1",
-      header: "Location Address",
+      accessorKey: "price",
+      header: "Price $",
     },
     {
       id: "actions",
+      header: "Actions",
       cell: ({ row }: any) => (
         <div className="flex flex-row gap-4">
           <Button
@@ -44,7 +45,7 @@ export const locationColumns = ({ setIsOpen }: LocationColumnsProps) => {
           </Button>
           <Button
             onClick={() => {
-              window.location.href = `/dashboard/settings/locations/${row.original.id}/edit`;
+              window.location.href = `/dashboard/settings/services/${row.original.id}/edit`;
             }}
           >
             Edit
@@ -52,14 +53,10 @@ export const locationColumns = ({ setIsOpen }: LocationColumnsProps) => {
           <Button
             onClick={() => {
               const del = confirm(
-                "Are you sure you want to delete this location?"
+                "Are you sure you want to delete this service?"
               );
               if (del) {
-                fetch(`/api/location/${row.original.id}`, {
-                  method: "DELETE",
-                }).then(() => {
-                  window.location.reload();
-                });
+                deleteService(row.original.id);
               }
             }}
           >

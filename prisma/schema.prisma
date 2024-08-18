@@ -173,8 +173,8 @@ model Service {
   price                  Float
   duration               String
   cancellationFee        Float
-  UserId                 String
-  user                   User       @relation(fields: [UserId], references: [id], onDelete: Cascade)
+  userId                 String
+  user                   User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   hidePriceFromCustomers Boolean    @default(false)
   bookableByCustomers    Boolean    @default(true)
   locations              Location[] @relation("LocationServices")

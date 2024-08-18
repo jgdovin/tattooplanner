@@ -13,11 +13,7 @@ export type Location = {
   address1: string;
 };
 
-interface LocationColumnsProps {
-  setIsOpen: any;
-}
-
-export const locationColumns = ({ setIsOpen }: LocationColumnsProps) => {
+export const locationColumns = () => {
   return [
     {
       accessorKey: "name",
