@@ -9,7 +9,7 @@ export default async function middleware(req: NextRequest) {
     if (key === "content-length") continue;
     filteredHeaders.append(key, value);
   }
-  const res = await fetch("/api/authSSR", {
+  const res = await fetch("https://tattooplanner.vercel.app/api/authSSR", {
     headers: filteredHeaders,
   })
     .then((res) => {
