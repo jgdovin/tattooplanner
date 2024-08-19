@@ -9,7 +9,7 @@ export default async function middleware(req: NextRequest) {
     if (key === "content-length") continue;
     filteredHeaders.append(key, value);
   }
-  const res = await fetch(`http://localhost:3000/api/authSSR`, {
+  const res = await fetch(`/api/authSSR`, {
     headers: filteredHeaders,
   })
     .then((res) => {

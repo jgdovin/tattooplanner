@@ -13,7 +13,6 @@ export async function POST(request: Request) {
   const locations = body.locations;
   delete body.locations;
 
-  console.log(session.user.id);
   const res = await prisma.service.create({
     data: {
       ...body,
