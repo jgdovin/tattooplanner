@@ -21,6 +21,7 @@ import { useForm } from "react-hook-form";
 import { useAtom } from "jotai";
 import {
   addServiceAtom,
+  EMPTY_SERVICE_DATA,
   fetchServiceAtom,
   updateServiceAtom,
 } from "@/store/service";
@@ -31,19 +32,6 @@ interface ServiceDialogProps {
   isEditing?: boolean;
   setIsEditing: (value: boolean) => void;
 }
-
-const defaultValues = {
-  name: "",
-  description: "",
-  price: 0,
-  duration: "01:00",
-  cancellationFee: 0,
-  hidePriceFromCustomers: false,
-  bookableByCustomers: true,
-  locations: [],
-  durationMinutes: "30",
-  durationHours: "0",
-};
 
 export function ServiceDialog({
   isOpen,
@@ -65,7 +53,7 @@ export function ServiceDialog({
   };
 
   const form = useForm<z.infer<typeof formSchema>>({
-    defaultValues: service || defaultValues,
+    defaultValues: service || EMPTY_SERVICE_DATA,
     resolver: zodResolver(formSchema),
   });
   const { isDirty } = form.formState;
@@ -80,7 +68,7 @@ export function ServiceDialog({
     setIsOpen(open);
     setIsEditing(false);
     setService("");
-    form.reset(defaultValues);
+    form.reset(EMPTY_SERVICE_DATA);
   };
 
   return (

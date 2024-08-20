@@ -15,7 +15,7 @@ export default async function Home({ searchParams }: any) {
   if (!searchParams.edit) {
     return (
       <main className="p-10">
-        <Client data={data} />
+        <Client />
       </main>
     );
   }
@@ -29,7 +29,7 @@ export default async function Home({ searchParams }: any) {
 
   return (
     <main className="p-10">
-      <Client data={data} formData={formData} />
+      <Client />
     </main>
   );
 }

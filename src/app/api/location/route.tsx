@@ -11,7 +11,7 @@ export async function POST(request: Request) {
   }
 
   const body = await request.json();
-
+  delete body.id;
   const res = await prisma.location.create({
     data: {
       ...body,
@@ -20,5 +20,19 @@ export async function POST(request: Request) {
   });
 
   revalidatePath("/dashboard/settings/locations");
+  return Response.json(res);
+}
+
+export async function GET(request: Request) {
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    throw new Error("You shouldnt be here");
+  }
+
+  const res = await prisma.location.findMany({
+    where: { userId: session.user.id },
+  });
+
   return Response.json(res);
 }

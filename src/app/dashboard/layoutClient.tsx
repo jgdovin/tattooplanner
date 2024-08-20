@@ -1,4 +1,5 @@
 "use client";
+
 import { Footer } from "@/components/custom/Footer";
 import { Header } from "@/components/custom/Header";
 import { MenuLink } from "@/components/custom/MenuLink";
@@ -36,11 +37,11 @@ export default function LayoutClient({
                   href="/dashboard/customers"
                   icon={faUser}
                 />
-                <MenuLink
+                {/* <MenuLink
                   text="Projects"
                   href="/dashboard/projects"
                   icon={faPalette}
-                />
+                /> */}
                 <MenuLink
                   text="Locations"
                   href="/dashboard/settings/locations"

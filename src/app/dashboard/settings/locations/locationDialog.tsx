@@ -1,13 +1,15 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+
+import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 
 import { formSchema, LocationForm } from "@/forms/locationForm";
 import * as z from "zod";
@@ -15,73 +17,43 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useCallback, useEffect } from "react";
+import { useAtom } from "jotai";
+import {
+  addLocationAtom,
+  EMPTY_LOCATION_DATA,
+  fetchLocationAtom,
+  updateLocationAtom,
+} from "@/store/location";
+import { DialogDescription } from "@radix-ui/react-dialog";
 
 interface LocationDialogProps {
   isOpen: boolean;
   setIsOpen: (value: boolean) => void;
-  locationId?: string;
-  formData?: any;
+  isEditing: boolean;
+  setIsEditing: (value: boolean) => void;
 }
 
-const defaultValues = {
-  name: "",
-  nickname: "",
-  description: "",
-  phone: "",
-  address1: "",
-  address2: "",
-  city: "",
-  state: "",
-  zip: "",
-  type: "PHYSICAL" as const,
-  monStart: "09:00",
-  monEnd: "17:00",
-  monClosed: false,
-  tueStart: "09:00",
-  tueEnd: "17:00",
-  tueClosed: false,
-  wedStart: "09:00",
-  wedEnd: "17:00",
-  wedClosed: false,
-  thuStart: "09:00",
-  thuEnd: "17:00",
-  thuClosed: false,
-  friStart: "09:00",
-  friEnd: "17:00",
-  friClosed: false,
-  satStart: "09:00",
-  satEnd: "17:00",
-  satClosed: true,
-  sunStart: "09:00",
-  sunEnd: "17:00",
-  sunClosed: true,
-};
+export function LocationDialog({
+  isOpen,
+  setIsOpen,
+  isEditing,
+  setIsEditing,
+}: LocationDialogProps) {
+  const [, addLocation] = useAtom(addLocationAtom);
+  const [, updateService] = useAtom(updateLocationAtom);
+  const [location, setLocation] = useAtom(fetchLocationAtom);
 
-export function LocationDialog({ isOpen, setIsOpen }: LocationDialogProps) {
   const handleSubmit = (submittedData: z.infer<typeof formSchema>) => {
-    // submit to api
-    const url = `/api/location`;
-    const response = fetch(url, {
-      method: "POST",
-      body: JSON.stringify(submittedData),
-    });
-    response
-      .then((res) => {
-        if (res.ok) {
-          setIsOpen(false);
-          window.location.reload();
-          return;
-        }
-        throw new Error("Failed to update location");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (isEditing) {
+      updateService(submittedData!);
+    } else {
+      addLocation(submittedData!);
+    }
+    setIsOpen(false);
   };
 
   const form = useForm<z.infer<typeof formSchema>>({
-    defaultValues,
+    defaultValues: location || EMPTY_LOCATION_DATA,
     resolver: zodResolver(formSchema),
   });
   const { isDirty } = form.formState;
@@ -93,27 +65,33 @@ export function LocationDialog({ isOpen, setIsOpen }: LocationDialogProps) {
         return;
       }
     }
-    form.reset(defaultValues);
     setIsOpen(open);
+    setIsEditing(false);
+    setLocation("");
+    form.reset(EMPTY_LOCATION_DATA);
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <Button variant="outline">
-          Add <FontAwesomeIcon className="pl-1" icon={faPlus} />
+          Create Location <FontAwesomeIcon className="pl-1" icon={faPlus} />
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-h-screen max-w-[780px] overflow-y-auto m-10">
-        <DialogHeader>
-          <DialogTitle>Add Location</DialogTitle>
-        </DialogHeader>
-        <LocationForm handleSubmit={handleSubmit} form={form} />
-        <DialogFooter>
-          <Button form="locationForm" type="submit">
-            Save Location
-          </Button>
-        </DialogFooter>
+      <DialogContent className="max-h-screen max-w-[880px] overflow-y-auto m-10">
+        <VisuallyHidden.Root>
+          <DialogHeader>
+            <DialogTitle>Add Location</DialogTitle>
+          </DialogHeader>
+          <DialogDescription>
+            {isEditing ? "Edit" : "Create"} a location
+          </DialogDescription>
+        </VisuallyHidden.Root>
+        <LocationForm
+          submitAction={handleSubmit}
+          form={form}
+          isEditing={isEditing}
+        />
       </DialogContent>
     </Dialog>
   );

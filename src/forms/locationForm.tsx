@@ -1,30 +1,32 @@
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormMessage,
-} from "@/components/ui/form";
+"use client";
 
-import { Input } from "@/components/ui/input";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
+
+import { Form } from "@/components/ui/form";
+
 import { useEffect, useState } from "react";
 
-import { InputField } from "./components/inputField";
+import {
+  InputField,
+  LocationInputField,
+  TimeField,
+} from "./components/inputField";
 
 import * as z from "zod";
+import { Button } from "@/components/ui/button";
 
 interface LocationFormProps {
-  handleSubmit: any;
+  submitAction: any;
   form: any;
+  isEditing: boolean;
 }
 
 export const formSchema = z.object({
@@ -60,7 +62,7 @@ export const formSchema = z.object({
   sunStart: z.string().optional(),
   sunEnd: z.string().optional(),
   sunClosed: z.boolean().optional(),
-  timezone: z.string().optional(),
+  // timezone: z.string().optional(),
 });
 
 const daysOfWeek = [
@@ -73,145 +75,102 @@ const daysOfWeek = [
   ["sat", "Saturday"],
 ];
 
-const TimeField = ({ name, form, label }: any) => {
-  const [closed, setClosed] = useState(form.getValues(`${name}Closed`));
-
-  return (
-    <div className="grid grid-cols-4 gap-2">
-      <FormField
-        control={form.control}
-        name={`${name}Start`}
-        render={({ field }) => {
-          return (
-            <div className="flex flex-col items-center justify-between col-span-2">
-              <Label className="w-full text-left">{label}</Label>
-              <Input
-                disabled={closed}
-                className={closed ? `bg-red-200 border border-red-400` : ``}
-                {...field}
-                type="time"
-              />
-            </div>
-          );
-        }}
-      />
-      <div className="grid items-center gap-4 ">
-        <FormField
-          control={form.control}
-          name={`${name}Closed`}
-          render={({ field }) => {
-            const { onChange } = field;
-            return (
-              <div className="flex items-center justify-end gap-2">
-                <input
-                  type="checkbox"
-                  {...field}
-                  checked={field.value}
-                  id={`${name}Closed`}
-                  onChange={(e) => {
-                    onChange(e);
-                    setClosed(e.target.checked);
-                  }}
-                />
-                <Label htmlFor={`${name}Closed`}>Closed</Label>
-              </div>
-            );
-          }}
-        />
-        <FormField
-          control={form.control}
-          name={`${name}End`}
-          render={({ field }) => {
-            return (
-              <Input
-                {...field}
-                disabled={closed}
-                className={closed ? `bg-red-200 border border-red-400` : ``}
-                type="time"
-              />
-            );
-          }}
-        />
-      </div>
-    </div>
-  );
-};
-
-export function LocationForm({ handleSubmit, form }: LocationFormProps) {
+export function LocationForm({
+  submitAction,
+  form,
+  isEditing,
+}: LocationFormProps) {
   const [timezones, setTimezones] = useState([]);
+  const formText = isEditing ? "Update" : "Create";
+  const [loading, setLoading] = useState(true);
+
+  const { handleSubmit } = form;
 
   useEffect(() => {
-    fetch("/api/timezone").then(async (res) => {
-      const json = await res.json();
-
-      console.log(json);
-    });
+    setLoading(false);
   }, []);
 
+  // useEffect(() => {
+  //   fetch("/api/timezone").then(async (res) => {
+  //     const json = await res.json();
+
+  //   });
+  // }, []);
+
   return (
-    <Form {...form}>
-      <form id="locationForm" onSubmit={form.handleSubmit(handleSubmit)}>
-        <div className="grid grid-cols-4 gap-4">
-          <div className="col-span-2">
-            <h1 className="w-full text-center font-bold text-xl mb-2">
-              Details
-            </h1>
-            <InputField name="name" form={form} label="Name" />
-            <InputField name="nickname" form={form} label="Nickname" />
-            <InputField name="description" form={form} label="Description" />
-            <InputField name="phone" form={form} label="Phone" />
-            <FormField
-              control={form.control}
-              name="type"
-              render={({ field }) => {
-                return (
-                  <FormItem className="grid grid-cols-4 items-center gap-4">
-                    <FormLabel className="text-right">Type</FormLabel>
-                    <FormControl className="col-span-3">
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <SelectTrigger className="col-span-3">
-                          <SelectValue placeholder="Type" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="PHYSICAL">
-                            Physical Location
-                          </SelectItem>
-                          <SelectItem value="MOBILE">
-                            Mobile Location
-                          </SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                    <FormMessage className="col-span-4 text-center" />
-                  </FormItem>
-                );
-              }}
-            />
-            <InputField name="address1" form={form} label="Address 1" />
-            <InputField name="address2" form={form} label="Address 2" />
-            <InputField name="city" form={form} label="City" />
-            <InputField name="state" form={form} label="State" />
-            <InputField name="zip" form={form} label="Zip" />
-          </div>
-          <div className="w-3/4 mx-auto flex flex-col gap-3 col-span-2">
-            <h1 className="w-full text-center font-bold text-xl mb-2">
-              Hours of Operation
-            </h1>
-            {daysOfWeek.map((day, index) => (
-              <TimeField
-                key={day[0]}
-                index={index}
-                name={day[0]}
-                form={form}
-                label={day[1]}
-              />
-            ))}
-          </div>
-        </div>
-      </form>
-    </Form>
+    <Card className="w-full max-w-4xl mx-auto">
+      <CardHeader>
+        <CardTitle>{formText} Service</CardTitle>
+        <CardDescription>
+          Define the details of your new service offering.
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <Form {...form}>
+          <form
+            id="locationForm"
+            onSubmit={handleSubmit(submitAction)}
+            className="grid grid-cols-4 gap-4"
+          >
+            <div className="grid col-span-2 gap-2">
+              <div className="grid gap-2">
+                <InputField name="name" form={form} label="Name" />
+              </div>
+              <div className="grid gap-2">
+                <InputField name="nickname" form={form} label="Nickname" />
+              </div>
+              <div className="grid gap-2">
+                <InputField
+                  name="description"
+                  form={form}
+                  label="Description"
+                />
+              </div>
+              <div className="grid gap-2">
+                <InputField name="phone" form={form} label="Phone" />
+              </div>
+              <div className="grid gap-2">
+                <InputField name="address1" form={form} label="Address 1" />
+              </div>
+              <div className="grid gap-2">
+                <InputField name="address2" form={form} label="Address 2" />
+              </div>
+              <div className="flex flex-row gap-2">
+                <InputField name="city" form={form} label="City" />
+                <InputField name="state" form={form} label="State" />
+              </div>
+
+              <div className="grid gap-2">
+                <InputField name="zip" form={form} label="Zip" />
+              </div>
+              <div className="grid gap-2">
+                <LocationInputField
+                  name="type"
+                  form={form}
+                  label="Location Type"
+                />
+              </div>
+            </div>
+            <div className="w-3/4 mx-auto flex flex-col gap-3 col-span-2">
+              <Label className="font-bold">Hours of Operation</Label>
+              {daysOfWeek.map((day, index) => (
+                <TimeField
+                  key={day[0]}
+                  index={index}
+                  name={day[0]}
+                  form={form}
+                  label={day[1]}
+                />
+              ))}
+            </div>
+          </form>
+        </Form>
+      </CardContent>
+      <CardFooter>
+        <Button form="locationForm" type="submit" disabled={loading}>
+          {formText} Location
+        </Button>
+      </CardFooter>
+    </Card>
   );
 }

@@ -2,6 +2,25 @@ import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../auth/[...nextauth]/authOptions";
 
+export async function GET(
+  req: Request,
+  { params }: { params: { id: string } }
+) {
+  const { id } = params;
+  const session = await getServerSession(authOptions);
+  if (!id || id === "undefined") {
+    return Response.json({ error: "id is required" }, { status: 400 });
+  }
+  try {
+    const location = await prisma.location.findUnique({
+      where: { id, userId: session!.user.id },
+    });
+    return Response.json(location);
+  } catch (e) {
+    return Response.json({ error: "Location not found" }, { status: 404 });
+  }
+}
+
 export async function DELETE(
   req: Request,
   { params }: { params: { id: string } }
@@ -25,6 +44,7 @@ export async function PATCH(
   { params }: { params: { id: string } }
 ) {
   const { id } = params;
+  const session = await getServerSession(authOptions);
 
   if (!id || id === "undefined") {
     return Response.json(
@@ -35,7 +55,7 @@ export async function PATCH(
   const data = await req.json();
   try {
     await prisma.location.update({
-      where: { id },
+      where: { id, userId: session!.user.id },
       data,
     });
     return Response.json({ success: "true" });

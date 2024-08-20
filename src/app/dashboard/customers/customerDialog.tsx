@@ -85,7 +85,7 @@ export function CustomerDialog({
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <Button variant="outline">
-          Add <FontAwesomeIcon className="pl-1" icon={faPlus} />
+          Create Customer <FontAwesomeIcon className="pl-1" icon={faPlus} />
         </Button>
       </DialogTrigger>
       <DialogContent className="max-h-screen max-w-[780px] overflow-y-auto m-10">

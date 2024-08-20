@@ -1,6 +1,6 @@
 import { atom } from "jotai";
 
-const EMPTY_SERVICE_DATA = {
+export const EMPTY_SERVICE_DATA = {
   id: "",
   name: "",
   description: "",
