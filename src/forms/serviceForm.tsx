@@ -30,8 +30,6 @@ import {
 import * as z from "zod";
 import { Form } from "@/components/ui/form";
 import { useEffect, useState } from "react";
-import { useAtom } from "jotai";
-import { fetchServiceAtom } from "@/store/service";
 
 export const formSchema = z.object({
   id: z.string().optional(),

@@ -1,8 +1,9 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { CustomerType } from "@/store/customer";
-import { ColumnDef } from "@tanstack/react-table";
+import { deleteCustomerAtom, fetchCustomerAtom } from "@/store/customer";
+import { SetStateAction, useAtom } from "jotai";
+import { Dispatch } from "react";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -12,49 +13,50 @@ export type Customer = {
   email: string;
 };
 
-export const columns: ColumnDef<CustomerType>[] = [
-  {
-    accessorKey: "name",
-    header: "Customer Name",
-  },
-  {
-    accessorKey: "email",
-    header: "Customer Email",
-  },
-  {
-    id: "actions",
-    cell: ({ row }: any) => {
-      return (
-        <div className="flex flex-row gap-4">
-          <Button
-            onClick={() => {
-              window.location.href = `/dashboard/customers/${row.original.id}/edit`;
-            }}
-          >
-            Edit
-          </Button>
-          <Button
-            onClick={() => {
-              const del = confirm(
-                "Are you sure you want to remove this customer from your history?"
-              );
-              if (del) {
-                fetch(`/api/customer/${row.original.id}`, {
-                  method: "DELETE",
-                }).then((res) => {
-                  if (!res.ok) {
-                    alert("Failed to delete customer");
-                    return;
-                  }
-                  window.location.reload();
-                });
-              }
-            }}
-          >
-            Delete
-          </Button>
-        </div>
-      );
+export const useCustomerColumns = (
+  setIsOpen: Dispatch<SetStateAction<boolean>>
+) => {
+  const [, setCustomer] = useAtom(fetchCustomerAtom);
+  const [, deleteCustomer] = useAtom(deleteCustomerAtom);
+
+  return [
+    {
+      accessorKey: "name",
+      header: "Customer Name",
     },
-  },
-];
+    {
+      accessorKey: "email",
+      header: "Customer Email",
+    },
+    {
+      id: "actions",
+      cell: ({ row }: any) => {
+        return (
+          <div className="flex flex-row gap-4">
+            <Button
+              onClick={() => {
+                setCustomer(row.original.id).then(() => {
+                  setIsOpen(true);
+                });
+              }}
+            >
+              Edit
+            </Button>
+            <Button
+              onClick={() => {
+                const del = confirm(
+                  "Are you sure you want to delete this service?"
+                );
+                if (del) {
+                  deleteCustomer(row.original.id);
+                }
+              }}
+            >
+              Delete
+            </Button>
+          </div>
+        );
+      },
+    },
+  ];
+};

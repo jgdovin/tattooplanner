@@ -103,7 +103,6 @@ export function ServiceDialog({
           </DialogHeader>
         </VisuallyHidden.Root>
         <ServiceForm
-          create="true"
           submitAction={handleSubmit}
           form={form}
           isEditing={isEditing}

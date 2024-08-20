@@ -71,7 +71,9 @@ export const addCustomerAtom = atom(
     const newCustomer = await res.json();
 
     set(customersAtom, (customers) =>
-      customers.map((c) => (c.id === "" ? newCustomer : c))
+      customers.map((c) =>
+        c.id === "" || c.id === undefined ? newCustomer : c
+      )
     );
   }
 );

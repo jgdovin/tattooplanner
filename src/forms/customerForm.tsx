@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Form,
   FormField,
@@ -13,33 +15,24 @@ import * as z from "zod";
 import { Textarea } from "@/components/ui/textarea";
 
 import { zPhone } from "./customValidation/zodPhoneValidate";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { InputField, TextareaField } from "./components/inputField";
+import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
 
 interface LocationFormProps {
-  handleSubmit: any;
+  submitAction: any;
   form: any;
+  isEditing: boolean;
 }
-
-const InputField = ({ name, form, label, textArea }: any) => (
-  <FormField
-    control={form.control}
-    name={name}
-    render={({ field }) => {
-      return (
-        <FormItem className="grid grid-cols-4 items-center gap-4">
-          <FormLabel className="text-right">{label}</FormLabel>
-          <FormControl className="col-span-3">
-            {textArea ? (
-              <Textarea {...field} />
-            ) : (
-              <Input type="text" {...field} />
-            )}
-          </FormControl>
-          <FormMessage className="col-span-4 text-center" />
-        </FormItem>
-      );
-    }}
-  />
-);
 
 export const formSchema = z.object({
   name: z.string().min(3, { message: "Name must be at least 3 characters" }),
@@ -54,9 +47,74 @@ export const formSchema = z.object({
   id: z.string().optional(),
 });
 
-export function CustomerForm({ handleSubmit, form }: LocationFormProps) {
+export function CustomerForm({
+  submitAction,
+  form,
+  isEditing,
+}: LocationFormProps) {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setLoading(false);
+  }, []);
+
+  const formText = isEditing ? "Update" : "Create";
+
   return (
     <Form {...form}>
+      <Card className="w-full max-w-2xl mx-auto">
+        <CardHeader>
+          <CardTitle>{formText} Customer</CardTitle>
+          <CardDescription>{formText} Customer details</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Form {...form}>
+            <form
+              id="customerForm"
+              onSubmit={form.handleSubmit(submitAction)}
+              className="grid gap-4"
+            >
+              <div className="grid gap-2">
+                <InputField name="name" form={form} label="Name" />
+              </div>
+              <div className="grid gap-2">
+                <InputField name="email" form={form} label="Email" />
+              </div>
+              <div className="grid gap-2">
+                <InputField name="phone" form={form} label="Phone" />
+              </div>
+              <div className="grid gap-2">
+                <TextareaField name="notes" form={form} label="Notes" />
+              </div>
+              <div className="grid gap-2">
+                <InputField name="address1" form={form} label="Address 1" />
+              </div>
+              <div className="grid gap-2">
+                <InputField name="address2" form={form} label="Address 2" />
+              </div>
+              <div className="grid gap-2">
+                <InputField name="city" form={form} label="City" />
+              </div>
+              <div className="grid gap-2">
+                <div className="flex gap-4">
+                  <div className="w-full">
+                    <InputField name="state" form={form} label="State" />
+                  </div>
+                  <div className="w-full">
+                    <InputField name="zip" form={form} label="Zip" />
+                  </div>
+                </div>
+              </div>
+            </form>
+          </Form>
+        </CardContent>
+        <CardFooter>
+          <Button form="customerForm" type="submit" disabled={loading}>
+            {formText} Customer
+          </Button>
+        </CardFooter>
+      </Card>
+      {/*       
       <form id="customerForm" onSubmit={form.handleSubmit(handleSubmit)}>
         <div className="grid grid-cols-4 gap-4">
           <div className="col-span-4">
@@ -79,7 +137,7 @@ export function CustomerForm({ handleSubmit, form }: LocationFormProps) {
             <InputField name="zip" form={form} label="Zip" />
           </div>
         </div>
-      </form>
+      </form> */}
     </Form>
   );
 }

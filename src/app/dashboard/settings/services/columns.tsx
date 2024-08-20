@@ -20,7 +20,7 @@ export const useServiceColumns = (
   setIsOpen: Dispatch<SetStateAction<boolean>>
 ) => {
   const [, deleteService] = useAtom(deleteServiceAtom);
-  const [service, setService] = useAtom(fetchServiceAtom);
+  const [, setService] = useAtom(fetchServiceAtom);
 
   return [
     {

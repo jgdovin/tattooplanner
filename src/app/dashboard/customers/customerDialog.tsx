@@ -1,26 +1,35 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+
+import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
+
 import { formSchema, CustomerForm } from "@/forms/customerForm";
 import * as z from "zod";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { Customer } from "./columns";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useCallback, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { useAtom } from "jotai";
+import {
+  addCustomerAtom,
+  updateCustomerAtom,
+  fetchCustomerAtom,
+} from "@/store/customer";
 
 interface CustomerDialogProps {
   isOpen: boolean;
   setIsOpen: (value: boolean) => void;
-  formData?: any;
+  isEditing: boolean;
+  setIsEditing: (value: boolean) => void;
 }
 
 const defaultValues = {
@@ -35,30 +44,27 @@ const defaultValues = {
   zip: "",
 };
 
-export function CustomerDialog({ isOpen, setIsOpen }: CustomerDialogProps) {
+export function CustomerDialog({
+  isOpen,
+  setIsOpen,
+  isEditing,
+  setIsEditing,
+}: CustomerDialogProps) {
+  const [, addCustomer] = useAtom(addCustomerAtom);
+  const [, updateCustomer] = useAtom(updateCustomerAtom);
+  const [customer, setCustomer] = useAtom(fetchCustomerAtom);
+
   const handleSubmit = (submittedData: z.infer<typeof formSchema>) => {
-    // submit to api
-    const url = `/api/customer`;
-    const response = fetch(url, {
-      method: "POST",
-      body: JSON.stringify(submittedData),
-    });
-    response
-      .then((res) => {
-        if (res.ok) {
-          setIsOpen(false);
-          window.location.reload();
-          return;
-        }
-        throw new Error("Failed to update location");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (isEditing) {
+      updateCustomer(submittedData!);
+    } else {
+      addCustomer(submittedData!);
+    }
+    setIsOpen(false);
   };
 
   const form = useForm<z.infer<typeof formSchema>>({
-    defaultValues,
+    defaultValues: customer || defaultValues,
     resolver: zodResolver(formSchema),
   });
   const { isDirty } = form.formState;
@@ -70,8 +76,10 @@ export function CustomerDialog({ isOpen, setIsOpen }: CustomerDialogProps) {
         return;
       }
     }
-    form.reset(defaultValues);
     setIsOpen(open);
+    setIsEditing(false);
+    setCustomer("");
+    form.reset(defaultValues);
   };
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
@@ -80,23 +88,22 @@ export function CustomerDialog({ isOpen, setIsOpen }: CustomerDialogProps) {
           Add <FontAwesomeIcon className="pl-1" icon={faPlus} />
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-h-screen max-w-[580px] overflow-y-auto m-10">
-        <DialogHeader>
-          <DialogTitle>Add Customer</DialogTitle>
-          <DialogDescription>
-            Create a new customer by filling out the form below.
-          </DialogDescription>
-        </DialogHeader>
-        <CustomerForm handleSubmit={handleSubmit} form={form} />
-        <DialogFooter>
-          <Button
-            form="customerForm"
-            type="submit"
-            disabled={form.formState.isSubmitting}
-          >
-            Save Customer
-          </Button>
-        </DialogFooter>
+      <DialogContent className="max-h-screen max-w-[780px] overflow-y-auto m-10">
+        <VisuallyHidden.Root>
+          <DialogHeader>
+            <DialogTitle>
+              {isEditing ? "Edit Customer" : "Create Customer"}
+            </DialogTitle>
+            <DialogDescription>
+              Create and modify customers records.
+            </DialogDescription>
+          </DialogHeader>
+        </VisuallyHidden.Root>
+        <CustomerForm
+          submitAction={handleSubmit}
+          form={form}
+          isEditing={isEditing}
+        />
       </DialogContent>
     </Dialog>
   );
