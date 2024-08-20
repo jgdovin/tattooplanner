@@ -5,17 +5,16 @@ import { revalidatePath } from "next/cache";
 import { NextRequest } from "next/server";
 
 export async function POST(request: NextRequest) {
-  console.log("test");
   const session = await getServerSession(authOptions);
   if (!session) {
     return Response.json("You shouldnt be here", { status: 401 });
   }
-  console.log("test2");
+
   const body = await request.json();
   const locations = body.locations;
   delete body.locations;
+  delete body.id;
 
-  console.log(session.user.id);
   const res = await prisma.service.create({
     data: {
       ...body,

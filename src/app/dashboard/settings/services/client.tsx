@@ -4,30 +4,36 @@ import { useServiceColumns } from "./columns";
 import { ServiceDialog } from "./serviceDialog";
 import { useEffect, useState } from "react";
 import { useAtom } from "jotai";
-import { fetchServices, servicesAtom } from "@/store/service";
+import { servicesAtom } from "@/store/service";
 
 export default function Client() {
   const [services, setServices] = useAtom(servicesAtom);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchServices()
-      .then((data) => {
-        setServices(data);
+    fetch("/api/service")
+      .then(async (data) => {
+        setServices(await data.json());
         setLoading(false);
       })
       .catch((err) => {
         console.error(err);
       });
-  }, []);
+  }, [setServices]);
 
   const [isOpen, setIsOpen] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
-  const columns = useServiceColumns();
+  const columns = useServiceColumns(() => {
+    setIsOpen(true);
+    setIsEditing(true);
+  });
 
   return (
     <DataTable
-      CreateButton={() => ServiceDialog({ isOpen, setIsOpen })}
+      CreateButton={() =>
+        ServiceDialog({ isOpen, setIsOpen, isEditing, setIsEditing })
+      }
       title="Services"
       columns={columns}
       loading={loading}

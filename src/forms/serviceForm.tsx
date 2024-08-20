@@ -30,6 +30,8 @@ import {
 import * as z from "zod";
 import { Form } from "@/components/ui/form";
 import { useEffect, useState } from "react";
+import { useAtom } from "jotai";
+import { fetchServiceAtom } from "@/store/service";
 
 export const formSchema = z.object({
   id: z.string().optional(),
@@ -56,7 +58,7 @@ const locations = [
   "San Jose",
 ];
 
-export function ServiceForm({ submitAction, form, create }: any) {
+export function ServiceForm({ submitAction, form, isEditing }: any) {
   const [durationHours, setDurationHours] = useState("0");
   const [durationMinutes, setDurationMinutes] = useState("30");
   const [loading, setLoading] = useState(true);
@@ -71,7 +73,8 @@ export function ServiceForm({ submitAction, form, create }: any) {
     form.setValue("duration", `${durationHours}:${durationMinutes}`);
   }, [durationHours, durationMinutes, form]);
 
-  const formText = create ? "Create" : "Update";
+  const formText = isEditing ? "Update" : "Create";
+
   return (
     <Card className="w-full max-w-2xl mx-auto">
       <CardHeader>

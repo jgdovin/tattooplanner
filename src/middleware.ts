@@ -9,16 +9,19 @@ export default async function middleware(req: NextRequest) {
     if (key === "content-length") continue;
     filteredHeaders.append(key, value);
   }
-  const res = await fetch("https://tattooplanner.vercel.app/api/authSSR", {
-    headers: filteredHeaders,
-  })
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_HOSTNAME}/api/authSSR`,
+    {
+      headers: filteredHeaders,
+    }
+  )
     .then((res) => {
       const data = res.json();
 
       return data;
     })
     .catch(console.error);
-
   if (!res) return;
 
   const {

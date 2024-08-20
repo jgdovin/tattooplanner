@@ -1,9 +1,10 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { deleteServiceAtom } from "@/store/service";
-import { ColumnDef } from "@tanstack/react-table";
+import { deleteServiceAtom, fetchServiceAtom } from "@/store/service";
+
 import { useAtom } from "jotai";
+import { Dispatch, SetStateAction } from "react";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -15,8 +16,11 @@ export type Service = {
   address1: string;
 };
 
-export const useServiceColumns = () => {
+export const useServiceColumns = (
+  setIsOpen: Dispatch<SetStateAction<boolean>>
+) => {
   const [, deleteService] = useAtom(deleteServiceAtom);
+  const [service, setService] = useAtom(fetchServiceAtom);
 
   return [
     {
@@ -45,7 +49,9 @@ export const useServiceColumns = () => {
           </Button>
           <Button
             onClick={() => {
-              window.location.href = `/dashboard/settings/services/${row.original.id}/edit`;
+              setService(row.original.id).then(() => {
+                setIsOpen(true);
+              });
             }}
           >
             Edit

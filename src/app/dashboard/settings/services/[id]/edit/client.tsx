@@ -4,7 +4,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-export default function Client({ defaultValues }: any) {
+interface ClientProps {
+  defaultValues?: z.infer<typeof formSchema>;
+}
+
+export default function Client({ defaultValues }: ClientProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     defaultValues,
     resolver: zodResolver(formSchema),

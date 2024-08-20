@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { CustomerType } from "@/store/customer";
 import { ColumnDef } from "@tanstack/react-table";
 
 // This type is used to define the shape of our data.
@@ -11,7 +12,7 @@ export type Customer = {
   email: string;
 };
 
-export const columns: ColumnDef<Customer>[] = [
+export const columns: ColumnDef<CustomerType>[] = [
   {
     accessorKey: "name",
     header: "Customer Name",

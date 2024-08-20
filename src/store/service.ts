@@ -28,17 +28,27 @@ interface ServiceDictionary {
   [key: string]: ServiceType;
 }
 
+export const serviceAtom = atom<ServiceType>(EMPTY_SERVICE_DATA);
+
 export const servicesAtom = atom<ServiceType[]>([]);
 
 export const newServiceAtom = atom<ServiceType>(EMPTY_SERVICE_DATA);
 
+export const fetchServiceAtom = atom(
+  (get) => get(serviceAtom),
+  async (_, set, serviceId: string) => {
+    if (!serviceId) {
+      set(serviceAtom, EMPTY_SERVICE_DATA);
+      return;
+    }
+    const res = await fetch(`/api/service/${serviceId}`);
+    const data = await res.json();
+    set(serviceAtom, data);
+  }
+);
+
 const addService = async (services: ServiceType[], service: ServiceType) => {
   return [...services, service];
-};
-
-export const fetchServices = async () => {
-  const services = await fetch("/api/service").then((res) => res.json());
-  return services;
 };
 
 export const addServiceAtom = atom(
@@ -54,6 +64,34 @@ export const addServiceAtom = atom(
 
     if (!res.ok) {
       set(servicesAtom, oldService);
+      return;
+    }
+    const newService = await res.json();
+
+    set(servicesAtom, (services) =>
+      services.map((s) => (s.id === "" ? newService : s))
+    );
+  }
+);
+
+export const updateServiceAtom = atom(
+  null,
+  async (get, set, service: ServiceType) => {
+    const oldService = get(servicesAtom);
+
+    set(servicesAtom, (services) =>
+      services.map((s) => (s.id === service.id ? service : s))
+    );
+
+    const res = await fetch(`/api/service/${service.id}`, {
+      method: "PATCH",
+      body: JSON.stringify(service),
+    });
+
+    if (!res.ok) {
+      set(servicesAtom, oldService);
+      // TODO: add toast notification
+      return;
     }
   }
 );

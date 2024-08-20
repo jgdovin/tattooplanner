@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -10,8 +12,6 @@ import {
 
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 
-import axios from "axios";
-
 import { formSchema, ServiceForm } from "@/forms/serviceForm";
 import * as z from "zod";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -19,13 +19,17 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useAtom } from "jotai";
-import { addServiceAtom } from "@/store/service";
+import {
+  addServiceAtom,
+  fetchServiceAtom,
+  updateServiceAtom,
+} from "@/store/service";
 
 interface ServiceDialogProps {
   isOpen: boolean;
   setIsOpen: (value: boolean) => void;
-  locationId?: string;
-  formData?: any;
+  isEditing?: boolean;
+  setIsEditing: (value: boolean) => void;
 }
 
 const defaultValues = {
@@ -41,16 +45,27 @@ const defaultValues = {
   durationHours: "0",
 };
 
-export function ServiceDialog({ isOpen, setIsOpen }: ServiceDialogProps) {
+export function ServiceDialog({
+  isOpen,
+  setIsOpen,
+  isEditing,
+  setIsEditing,
+}: ServiceDialogProps) {
   const [, addService] = useAtom(addServiceAtom);
+  const [, updateService] = useAtom(updateServiceAtom);
+  const [service, setService] = useAtom(fetchServiceAtom);
 
   const handleSubmit = (submittedData: z.infer<typeof formSchema>) => {
-    addService(submittedData!);
+    if (isEditing) {
+      updateService(submittedData!);
+    } else {
+      addService(submittedData!);
+    }
     setIsOpen(false);
   };
 
   const form = useForm<z.infer<typeof formSchema>>({
-    defaultValues,
+    defaultValues: service || defaultValues,
     resolver: zodResolver(formSchema),
   });
   const { isDirty } = form.formState;
@@ -62,27 +77,37 @@ export function ServiceDialog({ isOpen, setIsOpen }: ServiceDialogProps) {
         return;
       }
     }
-    form.reset(defaultValues);
     setIsOpen(open);
+    setIsEditing(false);
+    setService("");
+    form.reset(defaultValues);
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <Button variant="outline">
-          Add <FontAwesomeIcon className="pl-1" icon={faPlus} />
+          Create Service
+          <FontAwesomeIcon className="pl-1" icon={faPlus} />
         </Button>
       </DialogTrigger>
       <DialogContent className="max-h-screen max-w-[780px] overflow-y-auto m-10">
         <VisuallyHidden.Root>
           <DialogHeader>
-            <DialogTitle>Create Service</DialogTitle>
+            <DialogTitle>
+              {isEditing ? "Edit Service" : "Create Service"}
+            </DialogTitle>
             <DialogDescription>
-              Create a new service by filling out the form below.
+              Create and modify services that you offer to your customers.
             </DialogDescription>
           </DialogHeader>
         </VisuallyHidden.Root>
-        <ServiceForm create="true" submitAction={handleSubmit} form={form} />
+        <ServiceForm
+          create="true"
+          submitAction={handleSubmit}
+          form={form}
+          isEditing={isEditing}
+        />
       </DialogContent>
     </Dialog>
   );
