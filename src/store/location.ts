@@ -16,6 +16,11 @@ export const EMPTY_LOCATION_DATA = {
   nickname: EMPTY_STRING,
   description: EMPTY_STRING,
   phone: EMPTY_STRING,
+  email: EMPTY_STRING,
+  website: EMPTY_STRING,
+  x: EMPTY_STRING,
+  instagram: EMPTY_STRING,
+  facebook: EMPTY_STRING,
   type: LOCATION_TYPES_TYPE["PHYSICAL"], // Default value; change if necessary
   address1: EMPTY_STRING,
   address2: EMPTY_STRING,

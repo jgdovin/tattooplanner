@@ -38,13 +38,13 @@ export const useLocationColumns = (
       id: "actions",
       cell: ({ row }: any) => (
         <div className="flex flex-row gap-4">
-          {/* <Button
+          <Button
             onClick={() => {
               window.location.href = `/book/${row.original.id}`;
             }}
           >
             Book
-          </Button> */}
+          </Button>
           <Button
             onClick={() => {
               setLocation(row.original.id).then(() => {

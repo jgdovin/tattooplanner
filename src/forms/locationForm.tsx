@@ -17,11 +17,13 @@ import { useEffect, useState } from "react";
 import {
   InputField,
   LocationInputField,
+  TextareaField,
   TimeField,
 } from "./components/inputField";
 
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 
 interface LocationFormProps {
   submitAction: any;
@@ -34,6 +36,11 @@ export const formSchema = z.object({
   nickname: z.string(),
   description: z.string(),
   phone: z.string(),
+  email: z.string(),
+  website: z.string(),
+  x: z.string(),
+  instagram: z.string(),
+  facebook: z.string(),
   type: z.enum(["PHYSICAL", "MOBILE"]),
   address1: z.string(),
   address2: z.string(),
@@ -100,17 +107,15 @@ export function LocationForm({
   return (
     <Card className="w-full max-w-4xl mx-auto">
       <CardHeader>
-        <CardTitle>{formText} Service</CardTitle>
-        <CardDescription>
-          Define the details of your new service offering.
-        </CardDescription>
+        <CardTitle>{formText} Location</CardTitle>
+        <CardDescription></CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
           <form
             id="locationForm"
             onSubmit={handleSubmit(submitAction)}
-            className="grid grid-cols-4 gap-4"
+            className="grid grid-cols-4 gap-2"
           >
             <div className="grid col-span-2 gap-2">
               <div className="grid gap-2">
@@ -120,14 +125,17 @@ export function LocationForm({
                 <InputField name="nickname" form={form} label="Nickname" />
               </div>
               <div className="grid gap-2">
-                <InputField
+                <TextareaField
                   name="description"
                   form={form}
                   label="Description"
                 />
               </div>
-              <div className="grid gap-2">
+              <Label className="font-bold mt-3">Contact Details</Label>
+              <Separator />
+              <div className="flex flex-row gap-2">
                 <InputField name="phone" form={form} label="Phone" />
+                <InputField name="email" form={form} label="Email" />
               </div>
               <div className="grid gap-2">
                 <InputField name="address1" form={form} label="Address 1" />
@@ -162,6 +170,20 @@ export function LocationForm({
                   label={day[1]}
                 />
               ))}
+              <Label className="font-bold mt-3">Social Contacts</Label>
+              <Separator />
+              <div className="grid gap-2">
+                <InputField name="website" form={form} label="Website" />
+              </div>
+              <div className="grid gap-2">
+                <InputField name="x" form={form} label="X" />
+              </div>
+              <div className="grid gap-2">
+                <InputField name="instagram" form={form} label="Instagram" />
+              </div>
+              <div className="grid gap-2">
+                <InputField name="facebook" form={form} label="Facebook" />
+              </div>
             </div>
           </form>
         </Form>

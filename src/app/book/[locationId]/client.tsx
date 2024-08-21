@@ -1,80 +1,97 @@
 "use client";
-import { Calendar } from "@/components/ui/calendar";
-import { useCallback, useEffect, useState } from "react";
-import dayjs from "dayjs";
+
+import { LocationType } from "@/store/location";
+import Step1 from "./step1";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
-export default function Client({ locationId }: { locationId: string }) {
-  const [month, setMonth] = useState<number | undefined>(
-    new Date().getMonth() + 1
+import { useAtom } from "jotai";
+import { fetchServiceAtom } from "@/store/service";
+import Step2 from "./step2";
+
+interface ClientProps {
+  services: any;
+  location: LocationType;
+}
+
+const steps = [
+  "Select a service",
+  "Select a date/time",
+  "Enter your information",
+  "Review & confirm",
+  "Success",
+];
+
+export default function Client({ services, location }: ClientProps) {
+  const [currentStep, setCurrentStep] = useState(1);
+  const [service] = useAtom(fetchServiceAtom);
+
+  const increaseStep = () => {
+    if (currentStep >= steps.length) return;
+    setCurrentStep(currentStep + 1);
+  };
+
+  const decreaseStep = () => {
+    if (currentStep <= 1) return;
+    setCurrentStep(currentStep - 1);
+  };
+  const disableIncreaseButton = () => {
+    if (currentStep >= steps.length) return true;
+    if (currentStep === 1 && !service.name) return true;
+    return false;
+  };
+  const IncreaseStepButton = () => (
+    <Button
+      disabled={disableIncreaseButton()}
+      onClick={increaseStep}
+      className="text-2xl py-6 px-8"
+    >
+      Next
+    </Button>
   );
-  const [date, setDate] = useState<Date | undefined>(new Date());
-  const [availability, setAvailability] = useState<any>({});
 
-  const [loading, setLoading] = useState(true);
+  const DecreaseStepButton = () => (
+    <Button
+      disabled={currentStep <= 1}
+      onClick={decreaseStep}
+      className="text-2xl py-6 px-8"
+    >
+      Back
+    </Button>
+  );
 
-  useEffect(() => {
-    if (!date) return;
-    const currMonth = date.getMonth() + 1;
-    if (currMonth !== month) {
-      setMonth(currMonth);
-    }
-  }, [date, month]);
-
-  const locationAvailability = useCallback(() => {
-    return fetch(`/api/location/${locationId}/availability`, {
-      method: "POST",
-      body: JSON.stringify({
-        year: 2024,
-        month,
-      }),
-    });
-  }, [month, locationId]);
-
-  useEffect(() => {
-    if (!month || !locationId) return;
-    setLoading(true);
-    // request bookings for the month that could conflict
-    locationAvailability().then(async (res) => {
-      const data = await res.json();
-      setAvailability(data.availableSlots);
-      setLoading(false);
-    });
-  }, [month, locationId, locationAvailability]);
-
-  const currAvailability = availability[dayjs(date).format("YYYY-MM-DD")];
-  return (
-    <div>
-      <div className="max-w-min mx-auto">
-        <Calendar
-          mode="single"
-          selected={date}
-          onSelect={setDate}
-          className="rounded-md border"
-        />
-        <h1 className="text-lg font-bold">
-          {dayjs(date).format("ddd MMM DD")}
-
-          {loading ? (
-            <div className="w-full flex flex-col h-32 justify-center">
-              <div className="loader w-10 self-center"></div>
-            </div>
-          ) : currAvailability ? (
-            <div className="flex flex-col">
-              {currAvailability.map((slot: any, index: number) => (
-                <Button variant="outline" key={index} className="block">
-                  {dayjs(slot.from).format("h:mm A")}
-                </Button>
-              ))}
-            </div>
-          ) : (
-            <div className="flex flex-col justify-center">
-              <span className="block w-max-min self-center">
-                No Availability
-              </span>
-            </div>
-          )}
-        </h1>
-      </div>
+  const StepButtons = () => (
+    <div className="flex justify-center w-full gap-10">
+      <DecreaseStepButton />
+      <IncreaseStepButton />
     </div>
   );
+
+  const stepWrapper = (step: React.ReactElement) => {
+    return (
+      <div className="flex flex-col justify-center items-center w-full gap-5">
+        <div className="flex justify-center w-full bg-black p-5 rounded-md">
+          <h1 className="text-white text-3xl font-bold">
+            Booking at {location.name}
+          </h1>
+        </div>
+        {service && service.name}
+        {step}
+        <StepButtons />
+      </div>
+    );
+  };
+
+  if (currentStep === 1)
+    return stepWrapper(
+      <Step1
+        services={services}
+        location={location}
+        increaseStep={increaseStep}
+      />
+    );
+
+  if (currentStep === 2)
+    return stepWrapper(<Step2 locationId={location.id || ""} />);
+
+  return stepWrapper(<div>Step {currentStep}</div>);
 }

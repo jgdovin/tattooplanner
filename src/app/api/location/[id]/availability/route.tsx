@@ -5,7 +5,7 @@ import duration from "dayjs/plugin/duration";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import { getSlots } from "slot-calculator";
 import { DateTime, Settings } from "luxon";
-
+import utc from "dayjs/plugin/utc";
 Settings.defaultZone = "America/Denver";
 
 dayjs.extend(isSameOrBefore);
@@ -28,7 +28,7 @@ export async function POST(
 ) {
   const { id } = params;
   const { year, month, service } = await req.json();
-
+  dayjs.extend(utc);
   const location = (await prisma.location.findUnique({
     where: {
       id: id,
@@ -39,12 +39,18 @@ export async function POST(
 
   const takenSlots: any = [];
   const availability: any = [];
-
+  6;
   const date = DateTime.local(parseInt(year), parseInt(month), 1);
   const bookings = await prisma.booking.findMany({
     where: {
-      locationId: id,
-      date: {
+      service: {
+        locations: {
+          some: {
+            id: id,
+          },
+        },
+      },
+      start: {
         gte: date
           .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
           .toJSDate(),
@@ -57,25 +63,10 @@ export async function POST(
 
   if (bookings.length) {
     bookings.forEach((booking) => {
-      const [hours, minutes] = booking.start.split(":");
-      const [bookingHours, bookingMinutes] = booking.duration?.split(":");
-      const bookingDate = DateTime.fromJSDate(booking.date).setZone(
-        "America/Denver"
-      );
-
-      const bookingStart = bookingDate.set({
-        hour: parseInt(hours),
-        minute: parseInt(minutes),
-      });
-
-      const bookingEnd = bookingStart.plus({
-        hours: parseInt(bookingHours),
-        minutes: parseInt(bookingMinutes),
-      });
-
+      console.log("date", dayjs(booking.start).utc().local().format());
       takenSlots.push({
-        from: bookingStart.toFormat("yyyy-MM-dd'T'HH:mm:ss"),
-        to: bookingEnd.toFormat("yyyy-MM-dd'T'HH:mm:ss"),
+        from: dayjs(booking.start).utc().local().format(),
+        to: dayjs(booking.end).utc().local().format(),
       });
     });
   }

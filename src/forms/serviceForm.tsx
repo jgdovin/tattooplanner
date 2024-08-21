@@ -40,7 +40,7 @@ export const formSchema = z.object({
   cancellationFee: z.number().default(0),
   hidePriceFromCustomers: z.boolean().default(false),
   bookableByCustomers: z.boolean().default(true),
-  locations: z.array(z.string()).default([]),
+  locations: z.array(z.any()).default([]),
 });
 
 const locations = [

@@ -42,13 +42,6 @@ export const useServiceColumns = (
         <div className="flex flex-row gap-4">
           <Button
             onClick={() => {
-              window.location.href = `/book/${row.original.id}`;
-            }}
-          >
-            Book
-          </Button>
-          <Button
-            onClick={() => {
               setService(row.original.id).then(() => {
                 setIsOpen(true);
               });

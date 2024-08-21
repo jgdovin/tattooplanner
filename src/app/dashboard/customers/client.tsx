@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { useAtom } from "jotai";
 import { customersAtom } from "@/store/customer";
 
-export default function Client({ data }: any) {
+export default function Client() {
   const [customers, setCustomers] = useAtom(customersAtom);
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);

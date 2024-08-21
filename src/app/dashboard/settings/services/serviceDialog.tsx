@@ -44,6 +44,7 @@ export function ServiceDialog({
   const [service, setService] = useAtom(fetchServiceAtom);
 
   const handleSubmit = (submittedData: z.infer<typeof formSchema>) => {
+    console.log("test");
     if (isEditing) {
       updateService(submittedData!);
     } else {
@@ -56,7 +57,7 @@ export function ServiceDialog({
     defaultValues: service || EMPTY_SERVICE_DATA,
     resolver: zodResolver(formSchema),
   });
-  const { isDirty } = form.formState;
+  const { isDirty, errors } = form.formState;
 
   const handleOpenChange = (open: boolean) => {
     if (isDirty) {
@@ -70,7 +71,6 @@ export function ServiceDialog({
     setService("");
     form.reset(EMPTY_SERVICE_DATA);
   };
-
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
@@ -90,6 +90,7 @@ export function ServiceDialog({
             </DialogDescription>
           </DialogHeader>
         </VisuallyHidden.Root>
+
         <ServiceForm
           submitAction={handleSubmit}
           form={form}
