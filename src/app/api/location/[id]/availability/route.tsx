@@ -62,8 +62,7 @@ export async function POST(
   });
 
   if (bookings.length) {
-    bookings.forEach((booking) => {
-      console.log("date", dayjs(booking.start).utc().local().format());
+    bookings.forEach((booking: any) => {
       takenSlots.push({
         from: dayjs(booking.start).utc().local().format(),
         to: dayjs(booking.end).utc().local().format(),

@@ -44,7 +44,6 @@ export function ServiceDialog({
   const [service, setService] = useAtom(fetchServiceAtom);
 
   const handleSubmit = (submittedData: z.infer<typeof formSchema>) => {
-    console.log("test");
     if (isEditing) {
       updateService(submittedData!);
     } else {

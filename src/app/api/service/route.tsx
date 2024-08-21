@@ -10,16 +10,23 @@ export async function POST(request: NextRequest) {
     return Response.json("You shouldnt be here", { status: 401 });
   }
 
-  const body = await request.json();
-  const locations = body.locations;
-  delete body.locations;
-  delete body.id;
+  const data = await request.json();
+  delete data.id; // remove id as this is auto-generated
+
+  const conntectLocations = data.locations?.map((location: any) => ({
+    id: location.id,
+  }));
+
+  data.locations = {
+    connect: conntectLocations,
+  };
+
+  data.user = {
+    connect: { id: session.user.id },
+  };
 
   const res = await prisma.service.create({
-    data: {
-      ...body,
-      user: { connect: { id: session.user.id } },
-    },
+    data,
   });
 
   revalidatePath("/dashboard/settings/services");

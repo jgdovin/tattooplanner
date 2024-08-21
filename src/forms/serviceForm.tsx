@@ -28,8 +28,16 @@ import {
 } from "./components/inputField";
 
 import * as z from "zod";
-import { Form } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from "@/components/ui/form";
 import { useEffect, useState } from "react";
+import { LocationType } from "@/store/location";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export const formSchema = z.object({
   id: z.string().optional(),
@@ -43,28 +51,21 @@ export const formSchema = z.object({
   locations: z.array(z.any()).default([]),
 });
 
-const locations = [
-  "New York",
-  "Los Angeles",
-  "Chicago",
-  "Houston",
-  "Phoenix",
-  "Philadelphia",
-  "San Antonio",
-  "San Diego",
-  "Dallas",
-  "San Jose",
-];
-
 export function ServiceForm({ submitAction, form, isEditing }: any) {
   const [durationHours, setDurationHours] = useState("0");
   const [durationMinutes, setDurationMinutes] = useState("30");
+  const [locations, setLocations] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const { handleSubmit } = form;
 
   useEffect(() => {
-    setLoading(false);
+    const res = fetch("/api/location")
+      .then((res) => res.json())
+      .then((data) => {
+        setLocations(data);
+        setLoading(false);
+      });
   }, []);
 
   useEffect(() => {
@@ -188,18 +189,45 @@ export function ServiceForm({ submitAction, form, isEditing }: any) {
             </div>
             <div className="grid gap-2">
               <Label htmlFor="locations">Locations</Label>
-              <Select>
-                <SelectTrigger id="locations">
-                  <SelectValue placeholder="Select locations" />
-                </SelectTrigger>
-                <SelectContent>
-                  {locations.map((location) => (
-                    <SelectItem key={location} value={location}>
-                      {location}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+
+              {locations.map((location: LocationType) => (
+                <FormField
+                  key={location.id}
+                  control={form.control}
+                  name="locations"
+                  render={({ field }) => {
+                    return (
+                      <FormItem
+                        key={location.id}
+                        className="flex flex-row items-start space-x-3 space-y-0 border hover:bg-slate-100"
+                      >
+                        <FormControl>
+                          <Checkbox
+                            className="m-3"
+                            checked={
+                              field.value?.filter((value: any) => {
+                                return value.id === location.id;
+                              }).length > 0
+                            }
+                            onCheckedChange={(checked) => {
+                              return checked
+                                ? field.onChange([...field.value, location])
+                                : field.onChange(
+                                    field.value?.filter(
+                                      (value: any) => value.id !== location.id
+                                    )
+                                  );
+                            }}
+                          />
+                        </FormControl>
+                        <FormLabel className="font-normal w-full p-3">
+                          {location.name}
+                        </FormLabel>
+                      </FormItem>
+                    );
+                  }}
+                />
+              ))}
             </div>
           </form>
         </Form>

@@ -50,7 +50,15 @@ export async function PATCH(req: Request, { params }: { params: any }) {
   }
   const data = await req.json();
   // Handle locations
-  delete data.locations;
+
+  const conntectLocations = data.locations?.map((location: any) => ({
+    id: location.id,
+  }));
+
+  data.locations = {
+    set: conntectLocations,
+  };
+
   try {
     const update = await prisma.service.update({
       where: { id },

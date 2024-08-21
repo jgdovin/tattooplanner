@@ -1,4 +1,5 @@
 import { atom } from "jotai";
+import { LocationType } from "./location";
 
 export const EMPTY_SERVICE_DATA = {
   id: "",
@@ -21,7 +22,7 @@ export interface ServiceType {
   duration: string;
   hidePriceFromCustomers: boolean;
   bookableByCustomers: boolean;
-  locations: string[];
+  locations?: LocationType[];
 }
 
 interface ServiceDictionary {
