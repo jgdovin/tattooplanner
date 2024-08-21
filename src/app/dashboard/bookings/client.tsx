@@ -1,7 +1,7 @@
 "use client";
 
-import FullCalendar from "@fullCalendar/react";
-import timeGridPlugin from "@fullCalendar/timegrid";
+import FullCalendar from "@fullcalendar/react";
+import timeGridPlugin from "@fullcalendar/timegrid";
 import { useEffect, useState } from "react";
 
 export default function Client() {
