@@ -1,38 +1,49 @@
 "use client";
+
 import { Calendar } from "@/components/ui/calendar";
 import { useCallback, useEffect, useState } from "react";
 import dayjs from "dayjs";
 import { Button } from "@/components/ui/button";
+import { fetchBookServiceAtom } from "@/store/service";
+import { useAtom } from "jotai";
 export default function Step2({ locationId }: { locationId: string }) {
   const [month, setMonth] = useState<number | undefined>(
     new Date().getMonth() + 1
+  );
+  const [year, setYear] = useState<number | undefined>(
+    new Date().getFullYear()
   );
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [availability, setAvailability] = useState<any>({});
 
   const [loading, setLoading] = useState(true);
+  const [service] = useAtom(fetchBookServiceAtom);
 
   useEffect(() => {
     if (!date) return;
+
     const currMonth = date.getMonth() + 1;
     if (currMonth !== month) {
       setMonth(currMonth);
     }
-  }, [date, month]);
 
-  const locationAvailability = useCallback(() => {
-    console.log(locationId);
-    return fetch(`/api/location/${locationId}/availability`, {
-      method: "POST",
-      body: JSON.stringify({
-        year: 2024,
-        month,
-      }),
-    });
-  }, [month, locationId]);
+    if (date.getFullYear() !== year) {
+      setYear(date.getFullYear());
+    }
+  }, [date, month]);
 
   useEffect(() => {
     if (!month || !locationId) return;
+    const locationAvailability = () => {
+      return fetch(`/api/book/${locationId}/availability`, {
+        method: "POST",
+        body: JSON.stringify({
+          year,
+          month,
+          serviceId: service.id,
+        }),
+      });
+    };
     setLoading(true);
     // request bookings for the month that could conflict
     locationAvailability().then(async (res) => {
@@ -40,7 +51,7 @@ export default function Step2({ locationId }: { locationId: string }) {
       setAvailability(data.availableSlots);
       setLoading(false);
     });
-  }, [month, locationId, locationAvailability]);
+  }, [month, locationId, service, service.id, year]);
 
   const currAvailability = availability[dayjs(date).format("YYYY-MM-DD")];
   return (

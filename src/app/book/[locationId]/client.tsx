@@ -2,10 +2,10 @@
 
 import { LocationType } from "@/store/location";
 import Step1 from "./step1";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useAtom } from "jotai";
-import { fetchServiceAtom } from "@/store/service";
+import { fetchBookServiceAtom } from "@/store/service";
 import Step2 from "./step2";
 
 interface ClientProps {
@@ -23,8 +23,11 @@ const steps = [
 
 export default function Client({ services, location }: ClientProps) {
   const [currentStep, setCurrentStep] = useState(1);
-  const [service] = useAtom(fetchServiceAtom);
+  const [service, _] = useAtom(fetchBookServiceAtom);
 
+  useEffect(() => {
+    console.log("changed");
+  }, [service]);
   const increaseStep = () => {
     if (currentStep >= steps.length) return;
     setCurrentStep(currentStep + 1);

@@ -6,10 +6,10 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { formatTime } from "@/lib/utils";
 import { useAtom } from "jotai";
-import { fetchServiceAtom } from "@/store/service";
+import { fetchBookServiceAtom } from "@/store/service";
 
 export default function Step1({ services, location, increaseStep }: any) {
-  const [service, setService] = useAtom(fetchServiceAtom);
+  const [service, setService] = useAtom(fetchBookServiceAtom);
   return (
     <>
       <h1 className="text-2xl font-bold">Services</h1>
@@ -18,6 +18,7 @@ export default function Step1({ services, location, increaseStep }: any) {
         defaultValue={service.id}
         className="grid grid-cols-2 w-full justify-center"
         onValueChange={(value) => {
+          console.log(value);
           setService(value).then(() => increaseStep());
         }}
       >

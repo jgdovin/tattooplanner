@@ -6,6 +6,7 @@ import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import { getSlots } from "slot-calculator";
 import { DateTime, Settings } from "luxon";
 import utc from "dayjs/plugin/utc";
+import { convertStringDurationToMinutes } from "@/lib/utils";
 Settings.defaultZone = "America/Denver";
 
 dayjs.extend(isSameOrBefore);
@@ -24,14 +25,22 @@ const longFormDays: any = {
 
 export async function POST(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: { locationId: string } }
 ) {
-  const { id } = params;
-  const { year, month, service } = await req.json();
+  const { locationId } = params;
+  const { year, month, serviceId } = await req.json();
+
+  const service = await prisma.service.findUnique({
+    where: {
+      id: serviceId,
+    },
+  });
+  console.log(service);
   dayjs.extend(utc);
+
   const location = (await prisma.location.findUnique({
     where: {
-      id: id,
+      id: locationId,
     },
   })) as Location;
 
@@ -46,7 +55,7 @@ export async function POST(
       service: {
         locations: {
           some: {
-            id: id,
+            id: locationId,
           },
         },
       },
@@ -103,7 +112,7 @@ export async function POST(
       })
       .toISO()!,
     outputTimezone: "America/Denver",
-    duration: 120,
+    duration: convertStringDurationToMinutes(service!.duration),
     availability,
     unavailability: takenSlots,
   });

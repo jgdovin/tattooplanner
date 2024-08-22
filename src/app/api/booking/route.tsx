@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma";
 
 export async function GET(req: Request) {
   const session = await getServerSession(authOptions);
-  console.log(session);
+
   const res = await prisma.booking.findMany({
     where: {
       service: {

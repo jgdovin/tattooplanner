@@ -44,6 +44,6 @@ export const config = {
      * - static (static files)
      * - favicon.ico (favicon file)
      */
-    "/((?!api/authSSR|api/auth|static|favicon.ico|welcome|_next).*)",
+    "/((?!api/authSSR|api/auth|book/|api/book|static|favicon.ico|welcome|_next).*)",
   ],
 };

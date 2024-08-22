@@ -11,7 +11,7 @@ export default function Client() {
     fetch("/api/booking")
       .then(async (data) => {
         const bookings = await data.json();
-        console.log(bookings);
+
         const events = bookings.map((booking: any) => ({
           title: booking.customer.name,
           start: booking.start,

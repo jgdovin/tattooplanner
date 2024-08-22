@@ -48,6 +48,20 @@ export const fetchServiceAtom = atom(
   }
 );
 
+export const fetchBookServiceAtom = atom(
+  (get) => get(serviceAtom),
+  async (_, set, serviceId: string) => {
+    if (!serviceId) {
+      set(serviceAtom, EMPTY_SERVICE_DATA);
+      return;
+    }
+    const res = await fetch(`/api/book/service/${serviceId}`);
+    const data = await res.json();
+
+    set(serviceAtom, data);
+  }
+);
+
 const addService = async (services: ServiceType[], service: ServiceType) => {
   return [...services, service];
 };
