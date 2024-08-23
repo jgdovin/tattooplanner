@@ -8,18 +8,25 @@ import { formatTime } from "@/lib/utils";
 import { useAtom } from "jotai";
 import { fetchBookServiceAtom } from "@/store/service";
 
-export default function Step1({ services, location, increaseStep }: any) {
+export default function SelectAService({
+  services,
+  location,
+  increaseStep,
+  setBookingDate,
+}: any) {
   const [service, setService] = useAtom(fetchBookServiceAtom);
   return (
-    <>
+    <div className="max-w-7xl">
       <h1 className="text-2xl font-bold">Services</h1>
 
       <RadioGroup
         defaultValue={service.id}
         className="grid grid-cols-2 w-full justify-center"
         onValueChange={(value) => {
-          console.log(value);
-          setService(value).then(() => increaseStep());
+          setService(value).then(() => {
+            // setBookingDate(undefined);
+            increaseStep();
+          });
         }}
       >
         {services.map((service: any) => (
@@ -156,6 +163,6 @@ export default function Step1({ services, location, increaseStep }: any) {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }

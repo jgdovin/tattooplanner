@@ -38,6 +38,7 @@ import {
 import { useEffect, useState } from "react";
 import { LocationType } from "@/store/location";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Separator } from "@/components/ui/separator";
 
 export const formSchema = z.object({
   id: z.string().optional(),
@@ -52,12 +53,15 @@ export const formSchema = z.object({
 });
 
 export function ServiceForm({ submitAction, form, isEditing }: any) {
-  const [durationHours, setDurationHours] = useState("0");
-  const [durationMinutes, setDurationMinutes] = useState("30");
+  const { handleSubmit, getValues } = form;
+  const durations = getValues("duration").split(":");
+
+  const [durationHours, setDurationHours] = useState(
+    durations[0] === "00" ? "0" : durations[0]
+  );
+  const [durationMinutes, setDurationMinutes] = useState(durations[1]);
   const [locations, setLocations] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  const { handleSubmit } = form;
 
   useEffect(() => {
     const res = fetch("/api/location")
@@ -70,7 +74,7 @@ export function ServiceForm({ submitAction, form, isEditing }: any) {
 
   useEffect(() => {
     form.setValue("duration", `${durationHours}:${durationMinutes}`);
-  }, [durationHours, durationMinutes, form]);
+  }, [durationHours, durationMinutes]);
 
   const formText = isEditing ? "Update" : "Create";
 
@@ -171,7 +175,7 @@ export function ServiceForm({ submitAction, form, isEditing }: any) {
                 </div>
               </div>
             </div>
-            <div className="flex gap-4">
+            {/* <div className="flex gap-4">
               <div className="flex items-center gap-2">
                 <SwitchField
                   name="hidePriceFromCustomers"
@@ -186,7 +190,8 @@ export function ServiceForm({ submitAction, form, isEditing }: any) {
                   label="Bookable by Customers"
                 />
               </div>
-            </div>
+            </div> */}
+            <Separator />
             <div className="grid gap-2">
               <Label htmlFor="locations">Locations</Label>
 

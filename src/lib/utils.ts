@@ -11,9 +11,7 @@ export function daysInMonth({ year, month }: { year: string; month: string }) {
 }
 
 export function convertStringDurationToMinutes(duration: string) {
-  console.log(duration);
   const [hours, minutes] = duration.split(":").map(Number);
-  console.log(hours * 60 + minutes);
   return hours * 60 + minutes;
 }
 

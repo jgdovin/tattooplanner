@@ -35,7 +35,7 @@ export async function POST(
       id: serviceId,
     },
   });
-  console.log(service);
+
   dayjs.extend(utc);
 
   const location = (await prisma.location.findUnique({

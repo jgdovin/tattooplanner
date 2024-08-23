@@ -1,19 +1,29 @@
 "use client";
 
 import { Calendar } from "@/components/ui/calendar";
-import { useCallback, useEffect, useState } from "react";
+import { MouseEventHandler, useCallback, useEffect, useState } from "react";
 import dayjs from "dayjs";
 import { Button } from "@/components/ui/button";
 import { fetchBookServiceAtom } from "@/store/service";
 import { useAtom } from "jotai";
-export default function Step2({ locationId }: { locationId: string }) {
+export default function Step2({
+  locationId,
+  bookingDate,
+  setBookingDate,
+  increaseStep,
+}: {
+  locationId: string;
+  bookingDate: Date | undefined;
+  setBookingDate: ({ date, time }: { date: Date; time: string }) => void;
+  increaseStep: any;
+}) {
   const [month, setMonth] = useState<number | undefined>(
     new Date().getMonth() + 1
   );
   const [year, setYear] = useState<number | undefined>(
     new Date().getFullYear()
   );
-  const [date, setDate] = useState<Date | undefined>(new Date());
+  const [date, setDate] = useState<Date | undefined>(bookingDate || new Date());
   const [availability, setAvailability] = useState<any>({});
 
   const [loading, setLoading] = useState(true);
@@ -54,6 +64,7 @@ export default function Step2({ locationId }: { locationId: string }) {
   }, [month, locationId, service, service.id, year]);
 
   const currAvailability = availability[dayjs(date).format("YYYY-MM-DD")];
+
   return (
     <div>
       <div className="max-w-min mx-auto">
@@ -72,11 +83,27 @@ export default function Step2({ locationId }: { locationId: string }) {
             </div>
           ) : currAvailability ? (
             <div className="flex flex-col">
-              {currAvailability.map((slot: any, index: number) => (
-                <Button variant="outline" key={index} className="block">
-                  {dayjs(slot.from).format("h:mm A")}
-                </Button>
-              ))}
+              {currAvailability.map((slot: any, index: number) => {
+                const day = dayjs(slot.from);
+                const time = day.format("h:mm A");
+                const militaryTime = day.format("HH:mm");
+                const bookingTime = dayjs(bookingDate).format("h:mm A");
+                const active = bookingTime === time;
+
+                return (
+                  <Button
+                    variant="outline"
+                    key={index}
+                    className={`${active && "bg-accent"} block`}
+                    onClick={() => {
+                      setBookingDate({ date: date!, time: militaryTime });
+                      increaseStep();
+                    }}
+                  >
+                    {time}
+                  </Button>
+                );
+              })}
             </div>
           ) : (
             <div className="flex flex-col justify-center">

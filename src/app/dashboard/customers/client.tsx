@@ -16,7 +16,6 @@ export default function Client() {
     fetch("/api/customer")
       .then(async (data) => {
         const customers = await data.json();
-        console.log(customers);
         setCustomers(customers);
         setLoading(false);
       })
