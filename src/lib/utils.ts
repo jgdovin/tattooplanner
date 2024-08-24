@@ -15,7 +15,12 @@ export function convertStringDurationToMinutes(duration: string) {
   return hours * 60 + minutes;
 }
 
+export function convertStringDurationToHoursAndMinutes(duration: string) {
+  const [hours, minutes] = duration.split(":").map(Number);
+  return `${hours ? `${hours} hours` : minutes ? `${minutes} minutes` : ""}`;
+}
+
 export const formatTime = (time?: string) => {
   if (!time) return "";
-  return dayjs(`2024-08-20T${time}:00`).format("hh:mm A");
+  return dayjs(`2024-01-01T${time}:00`).format("hh:mm A");
 };

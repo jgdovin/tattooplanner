@@ -1,20 +1,24 @@
 "use client";
 
+import { useAtom } from "jotai";
 import { faCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { formatTime } from "@/lib/utils";
-import { useAtom } from "jotai";
-import { fetchBookServiceAtom } from "@/store/service";
 
-export default function SelectAService({
-  services,
-  location,
-  increaseStep,
-  setBookingDate,
-}: any) {
+import {
+  convertStringDurationToHoursAndMinutes,
+  formatTime,
+} from "@/lib/utils";
+
+import { fetchBookServiceAtom } from "@/store/service";
+import { increaseStepAtom } from "@/store/checkout";
+
+export default function SelectAService({ services, location }: any) {
   const [service, setService] = useAtom(fetchBookServiceAtom);
+  const [, increaseStep] = useAtom(increaseStepAtom);
+
   return (
     <div className="max-w-7xl">
       <h1 className="text-2xl font-bold">Services</h1>
@@ -24,7 +28,6 @@ export default function SelectAService({
         className="grid grid-cols-2 w-full justify-center"
         onValueChange={(value) => {
           setService(value).then(() => {
-            // setBookingDate(undefined);
             increaseStep();
           });
         }}
@@ -47,7 +50,9 @@ export default function SelectAService({
                   ${service.price}
                 </span>
                 <FontAwesomeIcon icon={faCircle} className="w-1 mx-2" />
-                <span className="text-gray-500">{service.duration}</span>
+                <span className="text-gray-500">
+                  {convertStringDurationToHoursAndMinutes(service.duration)}
+                </span>
               </div>
             </Label>
           </div>

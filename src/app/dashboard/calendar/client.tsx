@@ -2,6 +2,7 @@
 
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
+import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 
 export default function Client() {
@@ -16,6 +17,11 @@ export default function Client() {
           title: booking.customer.name,
           start: booking.start,
           end: booking.end,
+          editable: true,
+          extendedProps: {
+            description: booking.service.name,
+          },
+          //TODO: add url to booking information (part of FC api)
         }));
         setEvents(events);
       })
@@ -30,6 +36,20 @@ export default function Client() {
         height="100%"
         plugins={[timeGridPlugin]}
         initialView="timeGridWeek"
+        eventContent={function (arg: any) {
+          const start = dayjs(arg.event.start).format("h:mm");
+          const end = dayjs(arg.event.end).format("h:mm");
+          console.log(arg);
+          return {
+            html: `
+              <div>
+                <div class="text-xs">${start} - ${end}</div>
+                <div class="text-xs">${arg.event.title}</div>
+                <div class="text-xs">${arg.event.extendedProps.description}</div>
+              </div>
+            `,
+          };
+        }}
         events={events}
       />
     </div>

@@ -1,22 +1,18 @@
 "use client";
 
-import { Calendar } from "@/components/ui/calendar";
-import { MouseEventHandler, useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import dayjs from "dayjs";
-import { Button } from "@/components/ui/button";
-import { fetchBookServiceAtom } from "@/store/service";
 import { useAtom } from "jotai";
-export default function Step2({
-  locationId,
-  bookingDate,
-  setBookingDate,
-  increaseStep,
-}: {
-  locationId: string;
-  bookingDate: Date | undefined;
-  setBookingDate: ({ date, time }: { date: Date; time: string }) => void;
-  increaseStep: any;
-}) {
+
+import { Calendar } from "@/components/ui/calendar";
+import { Button } from "@/components/ui/button";
+
+import { fetchBookServiceAtom } from "@/store/service";
+import { increaseStepAtom, setBookingDateAtom } from "@/store/checkout";
+
+export default function SelectADate({ locationId }: { locationId: string }) {
+  const [bookingDate, setBookingDate] = useAtom(setBookingDateAtom);
+
   const [month, setMonth] = useState<number | undefined>(
     new Date().getMonth() + 1
   );
@@ -29,6 +25,8 @@ export default function Step2({
   const [loading, setLoading] = useState(true);
   const [service] = useAtom(fetchBookServiceAtom);
 
+  const [, increaseStep] = useAtom(increaseStepAtom);
+
   useEffect(() => {
     if (!date) return;
 
@@ -40,7 +38,7 @@ export default function Step2({
     if (date.getFullYear() !== year) {
       setYear(date.getFullYear());
     }
-  }, [date, month]);
+  }, [date, month, year]);
 
   useEffect(() => {
     if (!month || !locationId) return;

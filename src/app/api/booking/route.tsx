@@ -16,6 +16,11 @@ export async function GET(req: Request) {
       },
     },
     include: {
+      service: {
+        select: {
+          name: true,
+        },
+      },
       customer: {
         select: {
           name: true,

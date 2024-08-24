@@ -79,6 +79,7 @@ model Customer {
   updatedAt         DateTime  @default(now()) @updatedAt
   Project           Project[]
   Booking           Booking[]
+  Payment           Payment[]
 }
 
 enum LocationType {
@@ -131,6 +132,7 @@ model Location {
   userId       String
   user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   Services     Service[]    @relation("LocationServices")
+  Booking      Booking[]
 }
 
 model VerificationToken {
@@ -162,6 +164,8 @@ model Booking {
   customer   Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
   serviceId  String
   service    Service  @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  locationId String
+  location   Location @relation(fields: [locationId], references: [id], onDelete: Cascade)
   start      DateTime @default(now())
   end        DateTime @default(now())
   notes      String?
@@ -184,4 +188,18 @@ model Service {
   createdAt              DateTime   @default(now())
   updatedAt              DateTime   @default(now()) @updatedAt
   Bookings               Booking[]
+}
+
+model Payment {
+  id                   String   @id @default(cuid())
+  customerId           String
+  customer             Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  squareAmount         BigInt
+  squareTotalAmount    BigInt
+  squareApprovedAmount BigInt
+  squareSourceType     String
+  squareOrderId        String
+  squareId             String
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @default(now()) @updatedAt
 }

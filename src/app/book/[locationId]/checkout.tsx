@@ -1,13 +1,25 @@
 "use client";
+import { createBooking } from "@/actions/book";
 import { submitPayment } from "@/actions/square";
+import { successAtom } from "@/store/checkout";
+import { fetchBookServiceAtom } from "@/store/service";
+import { useAtom } from "jotai";
 import { useState } from "react";
 // @ts-ignore: Unreachable code error
 import { CreditCard, PaymentForm } from "react-square-web-payments-sdk";
 
 const SUCCESS = "COMPLETED";
 
-export default function Checkout({ increaseStep }: { increaseStep: any }) {
+export default function Checkout({
+  bookingDate,
+  locationId,
+}: {
+  bookingDate: Date;
+  locationId: string;
+}) {
   const [processing, setProcessing] = useState(false);
+  const [success, setSuccess] = useAtom(successAtom);
+  const [service] = useAtom(fetchBookServiceAtom);
 
   return (
     <div className="w-1/4">
@@ -17,8 +29,8 @@ export default function Checkout({ increaseStep }: { increaseStep: any }) {
           applicationId="sandbox-sq0idb-4Xm1JdMbmVCNLMqexhb7rA"
           locationId="LK6H4ZEKC70XF"
           cardTokenizeResponseReceived={async (token: any) => {
-            setProcessing(true);
-            const result = await submitPayment(token.token, 100);
+            // setProcessing(true);
+            const result = await submitPayment(token.token, service.price);
             if (!result.payment) {
               setProcessing(false);
               // TODO: add toast error
@@ -26,13 +38,24 @@ export default function Checkout({ increaseStep }: { increaseStep: any }) {
             }
 
             if (result.payment.status === SUCCESS) {
-              increaseStep();
+              const res = await createBooking({
+                serviceId: service.id!,
+                date: bookingDate,
+                locationId,
+              });
+
+              if (res.id) {
+                setSuccess(true);
+                return;
+              }
             }
           }}
         >
           <CreditCard />
         </PaymentForm>
       </div>
+      {/* TODO: better success */}
+      {success && <div>Payment successful</div>}
     </div>
   );
 }

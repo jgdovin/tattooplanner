@@ -2,6 +2,7 @@
 
 import { randomUUID } from "crypto";
 import { Client } from "square";
+import { createPayment } from "./payment";
 
 const { paymentsApi } = new Client({
   accessToken: process.env.SQUARE_ACCESS_TOKEN,
@@ -10,15 +11,21 @@ const { paymentsApi } = new Client({
 
 export async function submitPayment(sourceId, amount) {
   try {
+    // Square requires amount to be in cents
+    const squareAmount = amount * 100;
     const { result } = await paymentsApi.createPayment({
       idempotencyKey: randomUUID(),
       sourceId,
       amountMoney: {
-        amount,
+        amount: squareAmount,
         currency: "USD",
       },
     });
-    console.log(result);
+
+    if (result.payment.status === "COMPLETED") {
+      createPayment(result);
+    }
+
     return result;
   } catch (error) {
     console.error(error);

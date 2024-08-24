@@ -37,11 +37,11 @@ export default function LayoutClient({
                   href="/dashboard/customers"
                   icon={faUser}
                 />
-                {/* <MenuLink
-                  text="Projects"
-                  href="/dashboard/projects"
+                <MenuLink
+                  text="Calendar"
+                  href="/dashboard/calendar"
                   icon={faPalette}
-                /> */}
+                />
                 <MenuLink
                   text="Locations"
                   href="/dashboard/settings/locations"
