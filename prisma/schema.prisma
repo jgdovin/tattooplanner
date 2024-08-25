@@ -99,6 +99,7 @@ model Location {
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @default(now()) @updatedAt
   userId       String
+  deleted      Boolean      @default(false)
   user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   Services     Service[]    @relation("LocationServices")
   Booking      Booking[]

@@ -1,3 +1,9 @@
+import {
+  createLocation,
+  deleteLocation,
+  getLocation,
+  updateLocation,
+} from "@/actions/location";
 import { atom } from "jotai";
 import { z } from "zod";
 
@@ -104,8 +110,9 @@ export const fetchLocationAtom = atom(
       set(locationAtom, EMPTY_LOCATION_DATA);
       return;
     }
-    const res = await fetch(`/api/location/${locationId}`);
-    const data = await res.json();
+    const res = await getLocation(locationId);
+    console.log("WHATDIDIDO", res);
+    const data = (await res) as LocationType;
     set(locationAtom, data);
   }
 );
@@ -121,18 +128,16 @@ export const addLocationAtom = atom(
   null,
   async (get, set, location: LocationType) => {
     const oldLocations = get(locationsAtom);
+    console.log(get(locationsAtom));
     set(locationsAtom, await addLocation(get(locationsAtom), location));
 
-    const res = await fetch("/api/location", {
-      method: "POST",
-      body: JSON.stringify(location),
-    });
+    const res = (await createLocation(location)) as LocationType;
 
-    if (!res.ok) {
+    if (!res.id) {
       set(locationsAtom, oldLocations);
       return;
     }
-    const newLocation = await res.json();
+    const newLocation = await res;
 
     set(locationsAtom, (locations) =>
       locations.map((l) => (l.id === "" ? newLocation : l))
@@ -149,12 +154,9 @@ export const updateLocationAtom = atom(
       locations.map((l) => (l.id === location.id ? location : l))
     );
 
-    const res = await fetch(`/api/location/${location.id}`, {
-      method: "PATCH",
-      body: JSON.stringify(location),
-    });
+    const res = (await updateLocation(location)) as LocationType;
 
-    if (!res.ok) {
+    if (!res.id) {
       set(locationsAtom, oldLocations);
       // TODO: add toast notification
       return;
@@ -174,14 +176,12 @@ export const deleteLocationAtom = atom(null, async (get, set, id: string) => {
   });
 
   set(locationsAtom, newLocations);
-  const res = await fetch(`/api/location/${id}`, { method: "DELETE" });
+  const res = await deleteLocation(id);
 
-  if (res.ok) return;
-
-  if (!res.ok && oldLocation) {
+  if (!res?.ok && oldLocation) {
     set(locationsAtom, await addLocation(get(locationsAtom), oldLocation));
     return;
   }
   // TODO: add toast notification
-  throw new Error("Location not deleted");
+  return;
 });
