@@ -1,7 +1,7 @@
 "use client";
 import { createBooking } from "@/actions/book";
 import { submitPayment } from "@/actions/square";
-import { successAtom } from "@/store/checkout";
+import { fetchBookingDateAtom, successAtom } from "@/store/checkout";
 import { fetchBookServiceAtom } from "@/store/service";
 import { useAtom } from "jotai";
 import { useState } from "react";
@@ -10,16 +10,13 @@ import { CreditCard, PaymentForm } from "react-square-web-payments-sdk";
 
 const SUCCESS = "COMPLETED";
 
-export default function Checkout({
-  bookingDate,
-  locationId,
-}: {
-  bookingDate: Date;
-  locationId: string;
-}) {
+export default function Checkout({ locationId }: { locationId: string }) {
   const [processing, setProcessing] = useState(false);
   const [success, setSuccess] = useAtom(successAtom);
   const [service] = useAtom(fetchBookServiceAtom);
+  const [bookingDate] = useAtom(fetchBookingDateAtom);
+
+  if (!bookingDate) return <div>No date set, something went wrong</div>;
 
   return (
     <div className="w-1/4">

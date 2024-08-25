@@ -1,41 +1,44 @@
 import { NextRequest, NextResponse } from "next/server";
+import { clerkMiddleware } from "@clerk/nextjs/server";
 
-export default async function middleware(req: NextRequest) {
-  const url = req.nextUrl.clone();
+export default clerkMiddleware();
+// export default async function middleware(req: NextRequest) {
+//   clerkMiddleware();
+//   // const url = req.nextUrl.clone();
 
-  // fetch here requires an absolute URL to the auth API route
-  const filteredHeaders = new Headers();
-  for (const [key, value] of req.headers.entries()) {
-    if (key === "content-length") continue;
-    filteredHeaders.append(key, value);
-  }
+//   // // fetch here requires an absolute URL to the auth API route
+//   // const filteredHeaders = new Headers();
+//   // for (const [key, value] of req.headers.entries()) {
+//   //   if (key === "content-length") continue;
+//   //   filteredHeaders.append(key, value);
+//   // }
 
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_HOSTNAME}/api/authSSR`,
-    {
-      headers: filteredHeaders,
-    }
-  )
-    .then((res) => {
-      const data = res.json();
+//   // const res = await fetch(
+//   //   `${process.env.NEXT_PUBLIC_API_HOSTNAME}/api/authSSR`,
+//   //   {
+//   //     headers: filteredHeaders,
+//   //   }
+//   // )
+//   //   .then((res) => {
+//   //     const data = res.json();
 
-      return data;
-    })
-    .catch(console.error);
-  if (!res) return;
+//   //     return data;
+//   //   })
+//   //   .catch(console.error);
+//   // if (!res) return;
 
-  const {
-    data: { auth },
-  } = res;
+//   // const {
+//   //   data: { auth },
+//   // } = res;
 
-  // we patch the callback to send the user back to where auth was required
-  if (!auth) {
-    url.search = new URLSearchParams(`callbackUrl=${url}`).toString();
-    url.pathname = `/welcome`;
-  }
+//   // // we patch the callback to send the user back to where auth was required
+//   // if (!auth) {
+//   //   url.search = new URLSearchParams(`callbackUrl=${url}`).toString();
+//   //   url.pathname = `/welcome`;
+//   // }
 
-  return !auth ? NextResponse.redirect(url) : NextResponse.next();
-}
+//   // return !auth ? NextResponse.redirect(url) : NextResponse.next();
+// }
 export const config = {
   matcher: [
     /*
@@ -44,6 +47,10 @@ export const config = {
      * - static (static files)
      * - favicon.ico (favicon file)
      */
-    "/((?!api/authSSR|api/auth|book/|api/book|static|favicon.ico|welcome|_next).*)",
+    // "/((?!api/authSSR|api/auth|book/|api/book|static|favicon.ico|welcome|_next).*)",
+    // Skip Next.js internals and all static files, unless found in search params
+    "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
+    // Always run for API routes
+    "/(api|trpc)(.*)",
   ],
 };

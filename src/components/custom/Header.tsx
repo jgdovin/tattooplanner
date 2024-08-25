@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useSession, signIn, signOut } from "next-auth/react";
 
 import { Logo } from "@/components/custom/Logo";
 import { Button } from "@/components/ui/button";
@@ -16,6 +15,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 
 const ThemeToggle = () => {
   const { setTheme } = useTheme();
@@ -66,20 +66,18 @@ export function LoggedInUser({
 }
 
 export function Header() {
-  const { data: session } = useSession();
   return (
     <div className="flex items-center justify-between px-4 py-3 bg-white shadow-md dark:bg-gray-800">
       <Logo />
 
       <div className="flex items-center gap-4">
         <ThemeToggle />
-        {session ? (
-          <LoggedInUser userData={{ email: session?.user?.email || "" }} />
-        ) : (
-          <Link href="/api/auth/signin">
-            <Button>Sign In</Button>
-          </Link>
-        )}
+        <SignedOut>
+          <SignInButton />
+        </SignedOut>
+        <SignedIn>
+          <UserButton />
+        </SignedIn>
       </div>
     </div>
   );

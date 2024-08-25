@@ -2,11 +2,12 @@ import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/authOptions";
 import { revalidatePath } from "next/cache";
+import { auth } from "@clerk/nextjs/server";
 
 export async function POST(request: Request) {
-  const session = await getServerSession(authOptions);
+  const { userId } = auth();
 
-  if (!session) {
+  if (!userId) {
     throw new Error("You shouldnt be here");
   }
 
@@ -15,7 +16,7 @@ export async function POST(request: Request) {
   const res = await prisma.location.create({
     data: {
       ...body,
-      user: { connect: { id: session.user.id } },
+      user: { connect: { id: userId } },
     },
   });
 
@@ -24,14 +25,14 @@ export async function POST(request: Request) {
 }
 
 export async function GET(request: Request) {
-  const session = await getServerSession(authOptions);
+  const { userId } = auth();
 
-  if (!session) {
+  if (!userId) {
     throw new Error("You shouldnt be here");
   }
 
   const res = await prisma.location.findMany({
-    where: { userId: session.user.id },
+    where: { userId },
   });
 
   return Response.json(res);

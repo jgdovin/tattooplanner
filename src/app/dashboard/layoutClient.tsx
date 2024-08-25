@@ -11,7 +11,7 @@ import {
   faPaintBrush,
 } from "@fortawesome/free-solid-svg-icons";
 
-import { SessionProvider } from "next-auth/react";
+import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "react-hot-toast";
 
 export default function LayoutClient({
@@ -20,7 +20,7 @@ export default function LayoutClient({
   children: React.ReactNode;
 }) {
   return (
-    <SessionProvider>
+    <ClerkProvider>
       <Toaster />
       <Header />
       <div className="grid grid-cols-[240px_1fr] h-full">
@@ -59,6 +59,6 @@ export default function LayoutClient({
         <main className="flex flex-col overflow-auto">{children}</main>
       </div>
       <Footer />
-    </SessionProvider>
+    </ClerkProvider>
   );
 }

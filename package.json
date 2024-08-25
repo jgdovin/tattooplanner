@@ -11,6 +11,7 @@
     "vercel-build": "npx prisma generate && prisma migrate deploy && next build"
   },
   "dependencies": {
+    "@clerk/nextjs": "^5.3.3",
     "@fortawesome/fontawesome-svg-core": "^6.6.0",
     "@fortawesome/free-regular-svg-icons": "^6.6.0",
     "@fortawesome/free-solid-svg-icons": "^6.6.0",
@@ -58,6 +59,7 @@
     "react-square-web-payments-sdk": "^3.2.1",
     "slot-calculator": "^2.2.1",
     "square": "^38.0.0",
+    "svix": "^1.30.0",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
     "uploadthing": "^6.13.2",

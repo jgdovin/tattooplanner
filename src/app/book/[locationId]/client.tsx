@@ -7,7 +7,7 @@ import dayjs from "dayjs";
 
 import { LocationType } from "@/store/location";
 import { fetchBookServiceAtom } from "@/store/service";
-import { currentStepAtom, setBookingDateAtom } from "@/store/checkout";
+import { currentStepAtom, fetchBookingDateAtom } from "@/store/checkout";
 
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
@@ -35,8 +35,8 @@ export default function Client({ services, location }: ClientProps) {
   }, [setTheme]);
 
   const [currentStep] = useAtom(currentStepAtom);
-  const [bookingDate, _setBookingDate] = useState<Date | undefined>(undefined);
   const [service, _] = useAtom(fetchBookServiceAtom);
+  const [bookingDate] = useAtom(fetchBookingDateAtom);
 
   const StepButtons = () => (
     <div className="flex justify-center w-full gap-10">
@@ -112,9 +112,7 @@ export default function Client({ services, location }: ClientProps) {
     return stepWrapper(<SelectADate locationId={location.id || ""} />);
 
   if (currentStep === 3)
-    return stepWrapper(
-      <Checkout bookingDate={bookingDate!} locationId={location.id!} />
-    );
+    return stepWrapper(<Checkout locationId={location.id!} />);
 
   if (currentStep === 4) return <div>Thank you for booking!</div>;
 

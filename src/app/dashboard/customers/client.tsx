@@ -6,6 +6,7 @@ import { CustomerDialog } from "./customerDialog";
 import { useEffect, useState } from "react";
 import { useAtom } from "jotai";
 import { customersAtom } from "@/store/customer";
+import { getCustomers } from "@/actions/customer";
 
 export default function Client() {
   const [customers, setCustomers] = useAtom(customersAtom);
@@ -13,10 +14,11 @@ export default function Client() {
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
-    fetch("/api/customer")
+    // fetch("/api/customer")
+    getCustomers()
       .then(async (data) => {
-        const customers = await data.json();
-        setCustomers(customers);
+        if (!data) return;
+        setCustomers(data);
         setLoading(false);
       })
       .catch((err) => {

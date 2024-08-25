@@ -1,3 +1,9 @@
+import {
+  createCustomer,
+  deleteCustomer,
+  getCustomer,
+  updateCustomer,
+} from "@/actions/customer";
 import { formSchema } from "@/forms/customerForm";
 import { atom } from "jotai";
 import { z } from "zod";
@@ -40,9 +46,9 @@ export const fetchCustomerAtom = atom(
       set(customerAtom, EMPTY_CUSTOMER_DATA);
       return;
     }
-    const res = await fetch(`/api/customer/${customerId}`);
-    const data = await res.json();
-    set(customerAtom, data);
+    const res = (await getCustomer(customerId)) as CustomerType;
+
+    set(customerAtom, res);
   }
 );
 
@@ -58,17 +64,13 @@ export const addCustomerAtom = atom(
   async (get, set, customer: CustomerType) => {
     const oldCustomers = get(customersAtom);
     set(customersAtom, await addCustomer(get(customersAtom), customer));
-
-    const res = await fetch("/api/customer", {
-      method: "POST",
-      body: JSON.stringify(customer),
-    });
-
-    if (!res.ok) {
+    const res = await createCustomer(customer);
+    console.log("HELLO", res);
+    if (!res?.id) {
       set(customersAtom, oldCustomers);
       return;
     }
-    const newCustomer = await res.json();
+    const newCustomer = (await res) as CustomerType;
 
     set(customersAtom, (customers) =>
       customers.map((c) =>
@@ -82,17 +84,14 @@ export const updateCustomerAtom = atom(
   null,
   async (get, set, customer: CustomerType) => {
     const oldCustomers = get(customersAtom);
+    if (!customer.id) return;
 
     set(customersAtom, (customers) =>
       customers.map((c) => (c.id === customer.id ? customer : c))
     );
 
-    const res = await fetch(`/api/customer/${customer.id}`, {
-      method: "PATCH",
-      body: JSON.stringify(customer),
-    });
-
-    if (!res.ok) {
+    const res = (await updateCustomer(customer)) as CustomerType;
+    if (!res.id) {
       set(customersAtom, oldCustomers);
       // TODO: add toast notification
       return;
@@ -112,11 +111,12 @@ export const deleteCustomerAtom = atom(null, async (get, set, id: string) => {
   });
 
   set(customersAtom, newCustomers);
-  const res = await fetch(`/api/customer/${id}`, { method: "DELETE" });
+  // const res = await fetch(`/api/customer/${id}`, { method: "DELETE" });
+  const res = (await deleteCustomer(id)) as CustomerType;
 
-  if (res.ok) return;
+  if (res.id) return;
 
-  if (!res.ok && oldCustomer) {
+  if (!res.id && oldCustomer) {
     set(customersAtom, await addCustomer(get(customersAtom), oldCustomer));
     return;
   }

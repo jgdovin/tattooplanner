@@ -8,10 +8,10 @@ import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
 
 import { fetchBookServiceAtom } from "@/store/service";
-import { increaseStepAtom, setBookingDateAtom } from "@/store/checkout";
+import { increaseStepAtom, fetchBookingDateAtom } from "@/store/checkout";
 
 export default function SelectADate({ locationId }: { locationId: string }) {
-  const [bookingDate, setBookingDate] = useAtom(setBookingDateAtom);
+  const [bookingDate, setBookingDate] = useAtom(fetchBookingDateAtom);
 
   const [month, setMonth] = useState<number | undefined>(
     new Date().getMonth() + 1

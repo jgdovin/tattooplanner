@@ -18,7 +18,7 @@ export const decreaseStepAtom = atom(null, (get, set) => {
   set(currentStepAtom, get(currentStepAtom) - 1);
 });
 
-export const setBookingDateAtom = atom(
+export const fetchBookingDateAtom = atom(
   (get) => get(bookingDateAtom),
   (_, set, { date, time }: { date: Date; time: string }) => {
     if (!date) {
