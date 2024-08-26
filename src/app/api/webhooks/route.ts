@@ -68,21 +68,41 @@ export async function POST(req: Request) {
       },
     } = evt;
 
-    await prisma.user.upsert({
-      where: {
-        squareId,
-      },
-      update: {
-        email: email_address,
-        name: `${first_name} ${last_name}`,
-        squareId,
-      },
-      create: {
-        email: email_address,
-        name: `${first_name} ${last_name}`,
-        squareId,
-      },
-    });
+    if (evt.data.private_metadata?.customer) {
+      await prisma.customer.upsert({
+        where: {
+          squareId,
+        },
+        update: {
+          email: email_address,
+          name: `${first_name} ${last_name}`,
+          squareId,
+        },
+        create: {
+          email: email_address,
+          name: `${first_name} ${last_name}`,
+          squareId,
+          phone: "",
+        },
+      });
+    } else {
+      await prisma.user.upsert({
+        where: {
+          squareId,
+        },
+        update: {
+          email: email_address,
+          name: `${first_name} ${last_name}`,
+          squareId,
+        },
+        create: {
+          email: email_address,
+          name: `${first_name} ${last_name}`,
+          squareId,
+        },
+      });
+    }
   }
+
   return new Response("", { status: 200 });
 }

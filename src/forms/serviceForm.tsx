@@ -23,7 +23,6 @@ import {
   CurrencyField,
   InputField,
   SelectField,
-  SwitchField,
   TextareaField,
 } from "./components/inputField";
 
@@ -34,11 +33,14 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { useEffect, useState } from "react";
-import { LocationType } from "@/store/location";
+import { locationsAtom, LocationType } from "@/store/location";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
+import { getArtistLocations } from "@/actions/location";
+import { useAtom } from "jotai";
 
 export const formSchema = z.object({
   id: z.string().optional(),
@@ -60,21 +62,19 @@ export function ServiceForm({ submitAction, form, isEditing }: any) {
     durations[0] === "00" ? "0" : durations[0]
   );
   const [durationMinutes, setDurationMinutes] = useState(durations[1]);
-  const [locations, setLocations] = useState([]);
+  const [locations, setLocations] = useAtom(locationsAtom);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const res = fetch("/api/location")
-      .then((res) => res.json())
-      .then((data) => {
-        setLocations(data);
-        setLoading(false);
-      });
-  }, []);
+    const res = getArtistLocations().then(async (data) => {
+      setLocations(data as LocationType[]);
+      setLoading(false);
+    });
+  }, [setLocations]);
 
   useEffect(() => {
     form.setValue("duration", `${durationHours}:${durationMinutes}`);
-  }, [durationHours, durationMinutes]);
+  }, [durationHours, durationMinutes, form]);
 
   const formText = isEditing ? "Update" : "Create";
 
@@ -175,22 +175,6 @@ export function ServiceForm({ submitAction, form, isEditing }: any) {
                 </div>
               </div>
             </div>
-            {/* <div className="flex gap-4">
-              <div className="flex items-center gap-2">
-                <SwitchField
-                  name="hidePriceFromCustomers"
-                  form={form}
-                  label="Hide Price from Customer"
-                />
-              </div>
-              <div className="flex items-center gap-2">
-                <SwitchField
-                  name="bookableByCustomers"
-                  form={form}
-                  label="Bookable by Customers"
-                />
-              </div>
-            </div> */}
             <Separator />
             <div className="grid gap-2">
               <Label htmlFor="locations">Locations</Label>
@@ -225,6 +209,7 @@ export function ServiceForm({ submitAction, form, isEditing }: any) {
                             }}
                           />
                         </FormControl>
+                        <FormMessage />
                         <FormLabel className="font-normal w-full p-3">
                           {location.name}
                         </FormLabel>

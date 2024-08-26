@@ -17,7 +17,8 @@ export function convertStringDurationToMinutes(duration: string) {
 
 export function convertStringDurationToHoursAndMinutes(duration: string) {
   const [hours, minutes] = duration.split(":").map(Number);
-  return `${hours ? `${hours} hours` : minutes ? `${minutes} minutes` : ""}`;
+  return `${hours ? `${hours} hours ` : ""}
+  ${minutes ? `${minutes} minutes` : ""}`;
 }
 
 export const formatTime = (time?: string) => {

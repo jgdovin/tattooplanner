@@ -65,7 +65,7 @@ export const addCustomerAtom = atom(
     const oldCustomers = get(customersAtom);
     set(customersAtom, await addCustomer(get(customersAtom), customer));
     const res = await createCustomer(customer);
-    console.log("HELLO", res);
+
     if (!res?.id) {
       set(customersAtom, oldCustomers);
       return;

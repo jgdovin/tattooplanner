@@ -8,10 +8,12 @@ export async function createBooking({
   date,
   serviceId,
   locationId,
+  customerId,
 }: {
   date: Date;
   serviceId: string;
   locationId: string;
+  customerId: string;
 }) {
   dayjs.extend(utc);
   const service = await prisma.service.findUnique({
@@ -26,7 +28,7 @@ export async function createBooking({
   const bookingDateStart = dayjs(date).set("second", 0).utc();
   const duration = convertStringDurationToMinutes(service.duration);
   const bookingDateEnd = bookingDateStart.add(duration, "minute");
-
+  console.log(customerId);
   const booking = {
     start: bookingDateStart.toISOString(),
     end: bookingDateEnd.toISOString(),
@@ -42,7 +44,7 @@ export async function createBooking({
     },
     customer: {
       connect: {
-        id: "cm02ip3i4000lev3qc4666h71",
+        id: customerId,
       },
     },
   };

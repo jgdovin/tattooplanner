@@ -1,5 +1,6 @@
 "use client";
 
+import { getArtistBookings } from "@/actions/booking";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import dayjs from "dayjs";
@@ -9,10 +10,14 @@ export default function Client() {
   const [events, setEvents] = useState<any[]>([]);
 
   useEffect(() => {
-    fetch("/api/booking")
+    getArtistBookings()
       .then(async (data) => {
-        const bookings = await data.json();
-
+        const bookings = await data;
+        console.log(bookings);
+        if (!bookings) {
+          setEvents([]);
+          return;
+        }
         const events = bookings.map((booking: any) => ({
           title: booking.customer.name,
           start: booking.start,
@@ -39,7 +44,7 @@ export default function Client() {
         eventContent={function (arg: any) {
           const start = dayjs(arg.event.start).format("h:mm");
           const end = dayjs(arg.event.end).format("h:mm");
-          console.log(arg);
+
           return {
             html: `
               <div>

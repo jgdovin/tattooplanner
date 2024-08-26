@@ -5,7 +5,7 @@ import { LocationDialog } from "./locationDialog";
 import { useEffect, useState } from "react";
 import { useAtom } from "jotai";
 import { locationsAtom, LocationType } from "@/store/location";
-import { getArtistLocations, getLocation } from "@/actions/location";
+import { getArtistLocations } from "@/actions/location";
 
 export default function Client() {
   const [locations, setLocations] = useAtom(locationsAtom);
@@ -14,9 +14,13 @@ export default function Client() {
   useEffect(() => {
     getArtistLocations()
       .then(async (data) => {
-        if (!data?.ok) return;
-        const { res } = data;
-        setLocations(res as LocationType[]);
+        if (!data) {
+          setLocations([] as LocationType[]);
+          setLoading(false);
+          return;
+        }
+
+        setLocations(data as LocationType[]);
         setLoading(false);
       })
       .catch((err) => {

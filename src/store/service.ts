@@ -1,5 +1,11 @@
 import { atom } from "jotai";
 import { LocationType } from "./location";
+import {
+  createService,
+  deleteService,
+  getService,
+  updateService,
+} from "@/actions/service";
 
 export const EMPTY_SERVICE_DATA = {
   id: "",
@@ -42,21 +48,8 @@ export const fetchServiceAtom = atom(
       set(serviceAtom, EMPTY_SERVICE_DATA);
       return;
     }
-    const res = await fetch(`/api/service/${serviceId}`);
-    const data = await res.json();
-    set(serviceAtom, data);
-  }
-);
-
-export const fetchBookServiceAtom = atom(
-  (get) => get(serviceAtom),
-  async (_, set, serviceId: string) => {
-    if (!serviceId) {
-      set(serviceAtom, EMPTY_SERVICE_DATA);
-      return;
-    }
-    const res = await fetch(`/api/book/service/${serviceId}`);
-    const data = await res.json();
+    const res = await getService(serviceId);
+    const data = (await res) as ServiceType;
 
     set(serviceAtom, data);
   }
@@ -72,16 +65,13 @@ export const addServiceAtom = atom(
     const oldService = get(servicesAtom);
     set(servicesAtom, await addService(get(servicesAtom), service));
 
-    const res = await fetch("/api/service", {
-      method: "POST",
-      body: JSON.stringify(service),
-    });
+    const res = (await createService(service)) as ServiceType;
 
-    if (!res.ok) {
+    if (!res.id) {
       set(servicesAtom, oldService);
       return;
     }
-    const newService = await res.json();
+    const newService = await res;
 
     set(servicesAtom, (services) =>
       services.map((s) => (s.id === "" ? newService : s))
@@ -98,16 +88,14 @@ export const updateServiceAtom = atom(
       services.map((s) => (s.id === service.id ? service : s))
     );
 
-    const res = await fetch(`/api/service/${service.id}`, {
-      method: "PATCH",
-      body: JSON.stringify(service),
-    });
+    const res = (await updateService(service)) as ServiceType;
 
-    if (!res.ok) {
+    if (!res.id) {
       set(servicesAtom, oldService);
       // TODO: add toast notification
       return;
     }
+    // TODO: add toast notification failure
   }
 );
 
@@ -123,7 +111,7 @@ export const deleteServiceAtom = atom(null, async (get, set, id: string) => {
   });
 
   set(servicesAtom, newServices);
-  const res = await fetch(`/api/service/${id}`, { method: "DELETE" });
+  const res = (await deleteService(id)) as Response;
 
   if (res.ok) return;
 
@@ -132,5 +120,4 @@ export const deleteServiceAtom = atom(null, async (get, set, id: string) => {
     return;
   }
   // TODO: add toast notification
-  throw new Error("Service not deleted");
 });

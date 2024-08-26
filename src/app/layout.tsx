@@ -9,6 +9,7 @@ import "@uploadthing/react/styles.css";
 import { cn } from "@/lib/utils";
 
 import { Provider } from "jotai";
+import { ClerkProvider } from "@clerk/nextjs";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -35,7 +36,9 @@ export default function RootLayout({
       >
         <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
         <ThemeProvider attribute="class">
-          <Provider>{children}</Provider>
+          <ClerkProvider>
+            <Provider>{children}</Provider>
+          </ClerkProvider>
         </ThemeProvider>
       </body>
     </html>

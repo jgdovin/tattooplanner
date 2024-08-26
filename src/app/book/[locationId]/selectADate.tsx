@@ -7,8 +7,11 @@ import { useAtom } from "jotai";
 import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
 
-import { fetchBookServiceAtom } from "@/store/service";
-import { increaseStepAtom, fetchBookingDateAtom } from "@/store/checkout";
+import {
+  increaseStepAtom,
+  fetchBookingDateAtom,
+  fetchBookServiceAtom,
+} from "@/store/checkout";
 
 export default function SelectADate({ locationId }: { locationId: string }) {
   const [bookingDate, setBookingDate] = useAtom(fetchBookingDateAtom);
@@ -30,13 +33,15 @@ export default function SelectADate({ locationId }: { locationId: string }) {
   useEffect(() => {
     if (!date) return;
 
-    const currMonth = date.getMonth() + 1;
+    const selectedDate = typeof date === "string" ? new Date(date) : date;
+
+    const currMonth = selectedDate.getMonth() + 1;
     if (currMonth !== month) {
       setMonth(currMonth);
     }
 
-    if (date.getFullYear() !== year) {
-      setYear(date.getFullYear());
+    if (selectedDate.getFullYear() !== year) {
+      setYear(selectedDate.getFullYear());
     }
   }, [date, month, year]);
 
@@ -56,6 +61,7 @@ export default function SelectADate({ locationId }: { locationId: string }) {
     // request bookings for the month that could conflict
     locationAvailability().then(async (res) => {
       const data = await res.json();
+
       setAvailability(data.availableSlots);
       setLoading(false);
     });

@@ -1,6 +1,9 @@
 import prisma from "@/lib/prisma";
 import Client from "./client";
 import { LocationType } from "@/store/location";
+import { auth } from "@clerk/nextjs/server";
+import { getLoggedInCustomer, getLoggedInUser } from "@/auth/util";
+import { CustomerType } from "@/store/customer";
 
 interface bookingProps {
   params: {
@@ -9,6 +12,11 @@ interface bookingProps {
 }
 
 export default async function Page({ params }: bookingProps) {
+  const { userId } = auth();
+
+  const user = await getLoggedInUser();
+  const customer = (await getLoggedInCustomer()) as CustomerType;
+
   const { locationId } = params;
 
   const location = (await prisma.location.findUnique({
@@ -30,10 +38,15 @@ export default async function Page({ params }: bookingProps) {
       },
     },
   });
-
+  const previewOnly = user ? true : false;
   return (
     <div className="p-10 h-full">
-      <Client services={services} location={location} />
+      <Client
+        services={services}
+        location={location}
+        preview={previewOnly}
+        customer={customer}
+      />
     </div>
   );
 }

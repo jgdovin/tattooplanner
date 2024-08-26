@@ -1,6 +1,5 @@
 "use server";
 
-import { getLoggedInUser } from "@/auth/util";
 import prisma from "@/lib/prisma";
 import { LocationType } from "@/store/location";
 import { auth } from "@clerk/nextjs/server";
@@ -17,30 +16,29 @@ export async function getLocation(id: string) {
     return res;
   } catch (error) {
     console.error(error);
-    return { ...location, ok: false };
+    return { error, ok: false };
   }
 }
 
 export async function getArtistLocations() {
-  const user = await getLoggedInUser();
-  if (!user) return;
+  const { userId } = auth();
 
-  const { squareId } = user;
+  if (!userId) return;
 
   try {
     const res = await prisma.location.findMany({
       where: {
         user: {
-          squareId,
+          squareId: userId,
         },
         deleted: false,
       },
     });
 
-    return { res, ok: true };
+    return res;
   } catch (error) {
     console.error(error);
-    return { ...location, ok: false };
+    return { error, ok: false };
   }
 }
 
@@ -48,6 +46,7 @@ export async function createLocation(location: LocationType) {
   const { userId } = auth();
   if (!userId) return;
   delete location.id;
+
   try {
     const res = await prisma.location.create({
       data: {
@@ -60,10 +59,10 @@ export async function createLocation(location: LocationType) {
       },
     });
 
-    return { ...res, ok: true };
+    return res;
   } catch (error) {
     console.error(error);
-    return { ...location, ok: false };
+    return { error, ok: false };
   }
 }
 
@@ -82,10 +81,10 @@ export async function updateLocation(location: any) {
       data: location,
     });
 
-    return { ...res, ok: true };
+    return res;
   } catch (error) {
     console.error(error);
-    return { ...location, ok: false };
+    return { error, ok: false };
   }
 }
 

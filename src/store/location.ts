@@ -111,7 +111,6 @@ export const fetchLocationAtom = atom(
       return;
     }
     const res = await getLocation(locationId);
-    console.log("WHATDIDIDO", res);
     const data = (await res) as LocationType;
     set(locationAtom, data);
   }
@@ -128,7 +127,7 @@ export const addLocationAtom = atom(
   null,
   async (get, set, location: LocationType) => {
     const oldLocations = get(locationsAtom);
-    console.log(get(locationsAtom));
+
     set(locationsAtom, await addLocation(get(locationsAtom), location));
 
     const res = (await createLocation(location)) as LocationType;

@@ -45,7 +45,9 @@ export async function createCustomer(body: CustomerType) {
   const clerkClient = createClerkClient({
     secretKey: process.env.CLERK_SECRET_KEY,
   });
-  const [firstName, lastName] = body.name.split(" ");
+
+  const [firstName, lastName = ""] = body.name.split(" ");
+
   try {
     const user = await clerkClient.users.createUser({
       firstName,
@@ -53,9 +55,10 @@ export async function createCustomer(body: CustomerType) {
       emailAddress: [body.email],
       // @ts-ignore: phoneNumbers is correct, not sure whats wrong with type here
       phoneNumbers: [body.phone],
+      privateMetadata: {
+        customer: true,
+      },
     });
-
-    console.log(user);
 
     const res = await prisma.customer.create({
       data: {

@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { convertStringDurationToHoursAndMinutes } from "@/lib/utils";
 import { deleteServiceAtom, fetchServiceAtom } from "@/store/service";
 
 import { useAtom } from "jotai";
@@ -30,6 +31,9 @@ export const useServiceColumns = (
     {
       accessorKey: "duration",
       header: "Duration",
+      cell: ({ row }: any) => {
+        return convertStringDurationToHoursAndMinutes(row.original.duration);
+      },
     },
     {
       accessorKey: "price",

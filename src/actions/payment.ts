@@ -28,10 +28,11 @@ export async function createPayment(
     squareOrderId: orderId || "",
     customer: {
       connect: {
-        id: "cm02ip3i4000lev3qc4666h71",
+        id: customerId,
       },
     },
   };
+  console.log(payment);
   try {
     const res = await prisma.payment.create({
       data: payment,

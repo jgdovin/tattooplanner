@@ -9,7 +9,7 @@ const { paymentsApi } = new Client({
   environment: process.env.SQUARE_ENVIRONMENT,
 });
 
-export async function submitPayment(sourceId, amount) {
+export async function submitPayment(sourceId, amount, customerId) {
   try {
     // Square requires amount to be in cents
     const squareAmount = amount * 100;
@@ -23,7 +23,7 @@ export async function submitPayment(sourceId, amount) {
     });
 
     if (result.payment.status === "COMPLETED") {
-      createPayment(result);
+      createPayment(result, customerId);
     }
 
     return result;

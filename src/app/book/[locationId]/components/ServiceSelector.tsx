@@ -1,7 +1,7 @@
 import { Service } from "@/app/dashboard/settings/services/columns";
 import { convertStringDurationToHoursAndMinutes } from "@/lib/utils";
 import { increaseStepAtom } from "@/store/checkout";
-import { fetchBookServiceAtom } from "@/store/service";
+import { fetchBookServiceAtom } from "@/store/checkout";
 import { faCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Label } from "@radix-ui/react-label";

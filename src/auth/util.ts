@@ -15,3 +15,16 @@ export async function getLoggedInUser() {
 
   return user;
 }
+
+export async function getLoggedInCustomer() {
+  const { userId } = auth();
+  if (!userId) return;
+
+  const customer = await prisma.customer.findUnique({
+    where: {
+      squareId: userId,
+    },
+  });
+
+  return customer;
+}

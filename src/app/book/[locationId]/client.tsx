@@ -1,13 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useTheme } from "next-themes";
 import { useAtom } from "jotai";
 import dayjs from "dayjs";
 
 import { LocationType } from "@/store/location";
-import { fetchBookServiceAtom } from "@/store/service";
-import { currentStepAtom, fetchBookingDateAtom } from "@/store/checkout";
+
+import {
+  fetchBookServiceAtom,
+  currentStepAtom,
+  fetchBookingDateAtom,
+  successAtom,
+} from "@/store/checkout";
 
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
@@ -20,16 +25,35 @@ import {
 import SelectAService from "./selectAService";
 import SelectADate from "./selectADate";
 import Checkout from "./checkout";
-import { DecreaseStepButton, IncreaseStepButton } from "./components/Buttons";
+import {
+  ClearSelectionsButton,
+  DecreaseStepButton,
+  IncreaseStepButton,
+} from "./components/Buttons";
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  SignOutButton,
+  UserButton,
+} from "@clerk/nextjs";
+import { CustomerType } from "@/store/customer";
 
 interface ClientProps {
   services: any;
   location: LocationType;
+  preview: boolean;
+  customer: CustomerType;
 }
 
-export default function Client({ services, location }: ClientProps) {
+export default function Client({
+  services,
+  location,
+  preview,
+  customer,
+}: ClientProps) {
   const { setTheme } = useTheme();
-
+  console.log("customer", customer);
   useEffect(() => {
     setTheme("light");
   }, [setTheme]);
@@ -37,10 +61,11 @@ export default function Client({ services, location }: ClientProps) {
   const [currentStep] = useAtom(currentStepAtom);
   const [service, _] = useAtom(fetchBookServiceAtom);
   const [bookingDate] = useAtom(fetchBookingDateAtom);
-
+  const [success] = useAtom(successAtom);
   const StepButtons = () => (
     <div className="flex justify-center w-full gap-10">
       <DecreaseStepButton />
+      <ClearSelectionsButton />
       <IncreaseStepButton />
     </div>
   );
@@ -50,55 +75,70 @@ export default function Client({ services, location }: ClientProps) {
       <div className="flex flex-col justify-center items-center w-full gap-5">
         <div className="flex justify-center w-full bg-black p-5 rounded-md">
           <h1 className="text-white text-3xl font-bold">
-            Booking at {location.name}
+            Booking at {location.name} {preview && "- (Preview Only)"}
           </h1>
+          <div className="md:absolute right-20 text-white">
+            <SignedIn>
+              <SignOutButton redirectUrl={`/book/${location.id}`} />
+            </SignedIn>
+            <SignedOut>
+              <div className="text-white">
+                <SignInButton
+                  forceRedirectUrl={`/book/${location.id}`}
+                  mode="modal"
+                />
+              </div>
+            </SignedOut>
+          </div>
         </div>
-        {service.name && (
-          <Card className="p-6 flex flex-col gap-5">
-            <h1 className="text-lg font-bold text-center">Summary</h1>
-            <div className="flex gap-2 items-center">
-              <Label className="font-bold w-32 text-right">
-                Booking Service:
-              </Label>
-              <span className="text-sm">{service.name}</span>
-            </div>
-            <div className="flex gap-2 items-center">
-              <Label className="font-bold w-32 text-right pr-2">
-                Duration:
-              </Label>
-              <span className="text-sm">
-                {convertStringDurationToHoursAndMinutes(service.duration)}
-              </span>
-            </div>
-            <div className="flex gap-2 items-center">
-              <Label className="font-bold w-32 text-right pr-2">Price:</Label>
-              <span className="text-sm">${service.price}</span>
-            </div>
-            {bookingDate && (
+        <div className="flex gap-5">
+          <Card className="p-6 flex flex-col">{step}</Card>
+          {service.name && (
+            <Card className="p-6 flex flex-col gap-5 h-1/4">
+              <h1 className="text-lg font-bold text-center">Summary</h1>
+              <div className="flex gap-2 items-center">
+                <Label className="font-bold w-32 text-right">
+                  Booking Service:
+                </Label>
+                <span className="text-sm">{service.name}</span>
+              </div>
               <div className="flex gap-2 items-center">
                 <Label className="font-bold w-32 text-right pr-2">
-                  Booking Date:
+                  Duration:
                 </Label>
-                <div className="flex flex-col">
-                  <span className="text-sm">
-                    {dayjs(bookingDate).format("MMM DD, YYYY")}
-                  </span>
-                  <span className="text-sm">
-                    {dayjs(bookingDate).format("h:mm A")} -
-                    {dayjs(bookingDate)
-                      .add(
-                        convertStringDurationToMinutes(service.duration),
-                        "minute"
-                      )
-                      .format("h:mm A")}
-                  </span>
-                </div>
+                <span className="text-sm">
+                  {convertStringDurationToHoursAndMinutes(service.duration)}
+                </span>
               </div>
-            )}
-          </Card>
-        )}
-        {step}
-        <StepButtons />
+              <div className="flex gap-2 items-center">
+                <Label className="font-bold w-32 text-right pr-2">Price:</Label>
+                <span className="text-sm">${service.price}</span>
+              </div>
+              {bookingDate && (
+                <div className="flex gap-2 items-center">
+                  <Label className="font-bold w-32 text-right pr-2">
+                    Booking Date:
+                  </Label>
+                  <div className="flex flex-col">
+                    <span className="text-sm">
+                      {dayjs(bookingDate).format("MMM DD, YYYY")}
+                    </span>
+                    <span className="text-sm">
+                      {dayjs(bookingDate).format("h:mm A")} -
+                      {dayjs(bookingDate)
+                        .add(
+                          convertStringDurationToMinutes(service.duration),
+                          "minute"
+                        )
+                        .format("h:mm A")}
+                    </span>
+                  </div>
+                </div>
+              )}
+            </Card>
+          )}
+        </div>
+        {!success && <StepButtons />}
       </div>
     );
   };
@@ -112,7 +152,9 @@ export default function Client({ services, location }: ClientProps) {
     return stepWrapper(<SelectADate locationId={location.id || ""} />);
 
   if (currentStep === 3)
-    return stepWrapper(<Checkout locationId={location.id!} />);
+    return stepWrapper(
+      <Checkout locationId={location.id!} customerId={customer?.id} />
+    );
 
   if (currentStep === 4) return <div>Thank you for booking!</div>;
 
