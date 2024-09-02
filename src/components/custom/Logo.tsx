@@ -56,7 +56,7 @@ interface LogoProps {
 }
 
 export function Logo({
-  text = "Tattoo Booker",
+  text = "Tattoo Plan",
   dark = false,
 }: Readonly<LogoProps>) {
   return (
