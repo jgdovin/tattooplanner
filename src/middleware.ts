@@ -4,11 +4,12 @@ const isProtectedRoute = createRouteMatcher(["/dashboard(.*)", "/"]);
 
 export default clerkMiddleware(
   async (auth, req) => {
+    // @ts-ignore: awaiting fix for role not existing in auth
     const { protect, role } = auth();
 
     if (isProtectedRoute(req)) {
       protect();
-      console.log(role);
+      // handle role based access here
     }
   },
   {
