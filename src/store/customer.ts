@@ -13,7 +13,7 @@ type E164Number = string & { __tag: "E164Number" };
 type PhoneNumber = E164Number | "";
 
 export type CustomerType = Omit<z.infer<typeof formSchema>, "phone"> & {
-  phone: PhoneNumber;
+  phone: PhoneNumber | string;
 };
 
 const EMPTY_CUSTOMER_DATA: CustomerType = {
