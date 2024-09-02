@@ -20,7 +20,7 @@ import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { faDollarSign } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export const InputField = ({
   type = "text",
@@ -154,7 +154,9 @@ export const SwitchField = ({ name, form, label, ...props }: any) => (
 );
 
 export const TimeField = ({ name, form, label }: any) => {
-  const [closed, setClosed] = useState(form.getValues(`${name}Closed`));
+  const [closed, setClosed] = useState<boolean>(
+    form.getValues(`${name}Closed`)
+  );
 
   return (
     <div className="grid grid-cols-4 gap-2">
@@ -186,7 +188,7 @@ export const TimeField = ({ name, form, label }: any) => {
                 <input
                   type="checkbox"
                   {...field}
-                  checked={field.value}
+                  checked={closed}
                   id={`${name}Closed`}
                   onChange={(e) => {
                     onChange(e);
