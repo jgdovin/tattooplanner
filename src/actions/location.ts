@@ -16,7 +16,6 @@ export async function getLocation(id: string) {
     return res;
   } catch (error) {
     console.error(error);
-    return { error, ok: false };
   }
 }
 

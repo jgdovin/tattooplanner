@@ -16,7 +16,7 @@ const DEFAULT_OPEN_TIME = "09:00";
 const DEFAULT_CLOSE_TIME = "17:00";
 const EMPTY_STRING = "";
 
-export const EMPTY_LOCATION_DATA = {
+export const EMPTY_LOCATION_DATA: LocationType = {
   id: EMPTY_STRING,
   name: EMPTY_STRING,
   nickname: EMPTY_STRING,
@@ -35,25 +35,25 @@ export const EMPTY_LOCATION_DATA = {
   zip: EMPTY_STRING,
   monStart: DEFAULT_OPEN_TIME,
   monEnd: DEFAULT_CLOSE_TIME,
-  monClosed: false,
+  monClosed: "false",
   tueStart: DEFAULT_OPEN_TIME,
   tueEnd: DEFAULT_CLOSE_TIME,
-  tueClosed: false,
+  tueClosed: "false",
   wedStart: DEFAULT_OPEN_TIME,
   wedEnd: DEFAULT_CLOSE_TIME,
-  wedClosed: false,
+  wedClosed: "false",
   thuStart: DEFAULT_OPEN_TIME,
   thuEnd: DEFAULT_CLOSE_TIME,
-  thuClosed: false,
+  thuClosed: "false",
   friStart: DEFAULT_OPEN_TIME,
   friEnd: DEFAULT_CLOSE_TIME,
-  friClosed: false,
+  friClosed: "false",
   satStart: DEFAULT_OPEN_TIME,
   satEnd: DEFAULT_CLOSE_TIME,
-  satClosed: true,
+  satClosed: "true",
   sunStart: DEFAULT_OPEN_TIME,
   sunEnd: DEFAULT_CLOSE_TIME,
-  sunClosed: true,
+  sunClosed: "true",
   timezone: "",
 };
 
@@ -63,33 +63,38 @@ export interface LocationType {
   nickname: string;
   description: string;
   phone: string;
+  email: string;
   type: (typeof LOCATION_TYPES_TYPE)[keyof typeof LOCATION_TYPES_TYPE];
   address1: string;
   address2: string;
   city: string;
   state: string;
   zip: string;
+  website: string;
+  x: string;
+  instagram: string;
+  facebook: string;
   monStart?: string;
   monEnd?: string;
-  monClosed?: boolean;
+  monClosed: "true" | "false";
   tueStart?: string;
   tueEnd?: string;
-  tueClosed?: boolean;
+  tueClosed: "true" | "false";
   wedStart?: string;
   wedEnd?: string;
-  wedClosed?: boolean;
+  wedClosed: "true" | "false";
   thuStart?: string;
   thuEnd?: string;
-  thuClosed?: boolean;
+  thuClosed: "true" | "false";
   friStart?: string;
   friEnd?: string;
-  friClosed?: boolean;
+  friClosed: "true" | "false";
   satStart?: string;
   satEnd?: string;
-  satClosed?: boolean;
+  satClosed: "true" | "false";
   sunStart?: string;
   sunEnd?: string;
-  sunClosed?: boolean;
+  sunClosed: "true" | "false";
   timezone?: string;
 }
 

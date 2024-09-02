@@ -6,6 +6,16 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import { getSlots } from "slot-calculator";
 
+type DaysOfWeek = "sun" | "mon" | "tue" | "wed" | "thu" | "fri" | "sat";
+
+type LocationType = {
+  [K in
+    | `${DaysOfWeek}Closed`
+    | `${DaysOfWeek}Start`
+    | `${DaysOfWeek}End`]?: string;
+  // other properties...
+};
+
 export async function getLocationsArtistId(locationId: string) {
   const location = await prisma.location.findUnique({
     where: {
@@ -140,7 +150,8 @@ export async function getLocationAvailability(locationId: string, body: any) {
     });
   }
 
-  const daysOfWeek = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
+  const daysOfWeek = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"] as const;
+
   const longFormDays: any = {
     sun: "Sunday",
     mon: "Monday",
