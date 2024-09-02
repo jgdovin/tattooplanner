@@ -6,6 +6,7 @@ import {
 } from "@/actions/customer";
 import { formSchema } from "@/forms/customerForm";
 import { atom } from "jotai";
+import { toast } from "sonner";
 import { z } from "zod";
 
 // typescript shenanigans to allow an emtpy phone number
@@ -70,6 +71,7 @@ export const addCustomerAtom = atom(
       set(customersAtom, oldCustomers);
       return;
     }
+    toast.success("Customer created");
     const newCustomer = (await res) as CustomerType;
 
     set(customersAtom, (customers) =>
@@ -93,7 +95,7 @@ export const updateCustomerAtom = atom(
     const res = (await updateCustomer(customer)) as CustomerType;
     if (!res.id) {
       set(customersAtom, oldCustomers);
-      // TODO: add toast notification
+      toast.error("Customer failed to create");
       return;
     }
   }
@@ -120,6 +122,6 @@ export const deleteCustomerAtom = atom(null, async (get, set, id: string) => {
     set(customersAtom, await addCustomer(get(customersAtom), oldCustomer));
     return;
   }
-  // TODO: add toast notification
+  toast.error("Customer not deleted");
   throw new Error("Customer not deleted");
 });

@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 
 import { Provider } from "jotai";
 import { ClerkProvider } from "@clerk/nextjs";
+import { Toaster } from "@/components/ui/sonner";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -37,7 +38,10 @@ export default function RootLayout({
         <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
         <ThemeProvider attribute="class">
           <ClerkProvider>
-            <Provider>{children}</Provider>
+            <Provider>
+              <Toaster position="top-center" />
+              {children}
+            </Provider>
           </ClerkProvider>
         </ThemeProvider>
       </body>

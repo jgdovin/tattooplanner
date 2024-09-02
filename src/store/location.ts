@@ -6,6 +6,7 @@ import {
 } from "@/actions/location";
 import { formSchema } from "@/forms/locationForm";
 import { atom } from "jotai";
+import { toast } from "sonner";
 import { z } from "zod";
 
 export const LOCATION_TYPES_TYPE = {
@@ -139,9 +140,11 @@ export const addLocationAtom = atom(
     const res = (await createLocation(location)) as LocationType;
 
     if (!res.id) {
+      toast.error("Location creation failed");
       set(locationsAtom, oldLocations);
       return;
     }
+    toast.success("Location created");
     const newLocation = await res;
 
     set(locationsAtom, (locations) =>
@@ -163,9 +166,10 @@ export const updateLocationAtom = atom(
 
     if (!res.id) {
       set(locationsAtom, oldLocations);
-      // TODO: add toast notification
+      toast.error("Location update failed");
       return;
     }
+    toast.success("Location updated");
   }
 );
 
@@ -184,9 +188,10 @@ export const deleteLocationAtom = atom(null, async (get, set, id: string) => {
   const res = await deleteLocation(id);
 
   if (!res?.ok && oldLocation) {
+    toast.error("Location failed to delete");
     set(locationsAtom, await addLocation(get(locationsAtom), oldLocation));
     return;
   }
-  // TODO: add toast notification
+  toast.success("Location deleted");
   return;
 });

@@ -6,6 +6,7 @@ import {
   getService,
   updateService,
 } from "@/actions/service";
+import { toast } from "sonner";
 
 export const EMPTY_SERVICE_DATA = {
   id: "",
@@ -68,14 +69,17 @@ export const addServiceAtom = atom(
     const res = (await createService(service)) as ServiceType;
 
     if (!res.id) {
+      toast.error("Service creation failed");
       set(servicesAtom, oldService);
       return;
     }
+
     const newService = await res;
 
     set(servicesAtom, (services) =>
       services.map((s) => (s.id === "" ? newService : s))
     );
+    toast.success("Service created");
   }
 );
 
@@ -92,10 +96,10 @@ export const updateServiceAtom = atom(
 
     if (!res.id) {
       set(servicesAtom, oldService);
-      // TODO: add toast notification
+      toast.error("Service update failed");
       return;
     }
-    // TODO: add toast notification failure
+    toast.success("Service updated");
   }
 );
 
@@ -113,11 +117,10 @@ export const deleteServiceAtom = atom(null, async (get, set, id: string) => {
   set(servicesAtom, newServices);
   const res = (await deleteService(id)) as Response;
 
-  if (res.ok) return;
-
   if (!res.ok && oldService) {
+    toast.error("Service deletion failed");
     set(servicesAtom, await addService(get(servicesAtom), oldService));
     return;
   }
-  // TODO: add toast notification
+  toast.success("Service deleted");
 });

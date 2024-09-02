@@ -11,8 +11,6 @@ import {
   faPaintBrush,
 } from "@fortawesome/free-solid-svg-icons";
 
-import { Toaster } from "react-hot-toast";
-
 export default function LayoutClient({
   children,
 }: {
@@ -20,7 +18,6 @@ export default function LayoutClient({
 }) {
   return (
     <>
-      <Toaster />
       <Header />
       <div className="grid grid-cols-[240px_1fr] h-full">
         <nav className="border-r bg-gray-100/40 dark:bg-gray-800/40">

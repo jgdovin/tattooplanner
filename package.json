@@ -61,6 +61,7 @@
     "router": "link:@clerk/shared/router",
     "sign-up": "link:@clerk/elements/sign-up",
     "slot-calculator": "^2.2.1",
+    "sonner": "^1.5.0",
     "square": "^38.0.0",
     "svix": "^1.30.0",
     "tailwind-merge": "^2.4.0",

@@ -1,7 +1,7 @@
 "use client";
 import { createBooking } from "@/actions/book";
 import { submitPayment } from "@/actions/square";
-import { CustomerForm } from "@/forms/customerForm";
+
 import {
   fetchBookingDateAtom,
   successAtom,
@@ -18,6 +18,7 @@ import { useAtom } from "jotai";
 import { useState } from "react";
 // @ts-ignore: Unreachable code error
 import { CreditCard, PaymentForm } from "react-square-web-payments-sdk";
+import { toast } from "sonner";
 
 const SUCCESS = "COMPLETED";
 
@@ -64,7 +65,7 @@ export default function Checkout({
                 );
                 if (!result.payment) {
                   setProcessing(false);
-                  // TODO: add toast error
+                  toast.error("Payment failed, please try again");
                   return;
                 }
 
@@ -77,6 +78,7 @@ export default function Checkout({
                   });
 
                   if (res.id) {
+                    toast.success("Booking successful");
                     setSuccess(true);
                     return;
                   }
