@@ -1,16 +1,20 @@
-import { getServerSession } from "next-auth";
-import { authOptions } from "../auth/[...nextauth]/authOptions";
 import prisma from "@/lib/prisma";
+import { auth } from "@clerk/nextjs/server";
 
 export async function GET(req: Request) {
-  const session = await getServerSession(authOptions);
+  const { userId } = auth();
+
+  if (!userId)
+    return Response.json({ error: "User not authorized" }, { status: 401 });
 
   const res = await prisma.booking.findMany({
     where: {
       service: {
         locations: {
           some: {
-            userId: session!.user.id,
+            user: {
+              squareId: userId,
+            },
           },
         },
       },

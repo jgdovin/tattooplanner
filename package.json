@@ -11,7 +11,7 @@
     "vercel-build": "npx prisma generate && prisma migrate deploy && next build"
   },
   "dependencies": {
-    "@clerk/nextjs": "^5.3.3",
+    "@clerk/nextjs": "^5.3.7",
     "@fortawesome/fontawesome-svg-core": "^6.6.0",
     "@fortawesome/free-regular-svg-icons": "^6.6.0",
     "@fortawesome/free-solid-svg-icons": "^6.6.0",
@@ -40,6 +40,7 @@
     "axios": "^1.7.4",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "common": "link:@clerk/elements/common",
     "date-fns": "^3.6.0",
     "dayjs": "^1.11.12",
     "jotai": "^2.9.3",
@@ -57,6 +58,8 @@
     "react-hook-form": "^7.52.1",
     "react-hot-toast": "^2.4.1",
     "react-square-web-payments-sdk": "^3.2.1",
+    "router": "link:@clerk/shared/router",
+    "sign-up": "link:@clerk/elements/sign-up",
     "slot-calculator": "^2.2.1",
     "square": "^38.0.0",
     "svix": "^1.30.0",

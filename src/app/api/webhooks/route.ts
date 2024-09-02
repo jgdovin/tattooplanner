@@ -1,6 +1,6 @@
 import { Webhook } from "svix";
 import { headers } from "next/headers";
-import { WebhookEvent } from "@clerk/nextjs/server";
+import { createClerkClient, WebhookEvent } from "@clerk/nextjs/server";
 import prisma from "@/lib/prisma";
 
 export async function POST(req: Request) {
@@ -68,24 +68,11 @@ export async function POST(req: Request) {
       },
     } = evt;
 
-    if (evt.data.private_metadata?.customer) {
-      await prisma.customer.upsert({
-        where: {
-          squareId,
-        },
-        update: {
-          email: email_address,
-          name: `${first_name} ${last_name}`,
-          squareId,
-        },
-        create: {
-          email: email_address,
-          name: `${first_name} ${last_name}`,
-          squareId,
-          phone: "",
-        },
-      });
-    } else {
+    const clerkClient = createClerkClient({
+      secretKey: process.env.CLERK_SECRET_KEY,
+    });
+
+    if (evt.data.unsafe_metadata?.role === "user") {
       await prisma.user.upsert({
         where: {
           squareId,
@@ -99,6 +86,45 @@ export async function POST(req: Request) {
           email: email_address,
           name: `${first_name} ${last_name}`,
           squareId,
+        },
+      });
+      clerkClient.users.updateUser(squareId, {
+        publicMetadata: {
+          role: "user",
+        },
+      });
+    } else {
+      const artistId = evt.data.unsafe_metadata?.artistId as string;
+
+      await prisma.customer.upsert({
+        where: {
+          squareId,
+        },
+        update: {
+          email: email_address,
+          name: `${first_name} ${last_name}`,
+          squareId,
+          artists: {
+            connect: {
+              id: artistId,
+            },
+          },
+        },
+        create: {
+          email: email_address,
+          name: `${first_name} ${last_name}`,
+          squareId,
+          phone: "",
+          artists: {
+            connect: {
+              id: artistId,
+            },
+          },
+        },
+      });
+      clerkClient.users.updateUser(squareId, {
+        publicMetadata: {
+          role: "customer",
         },
       });
     }

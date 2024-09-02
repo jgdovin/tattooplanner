@@ -1,44 +1,20 @@
-import { NextRequest, NextResponse } from "next/server";
-import { clerkMiddleware } from "@clerk/nextjs/server";
+import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
-export default clerkMiddleware();
-// export default async function middleware(req: NextRequest) {
-//   clerkMiddleware();
-//   // const url = req.nextUrl.clone();
+const isProtectedRoute = createRouteMatcher(["/dashboard(.*)", "/"]);
 
-//   // // fetch here requires an absolute URL to the auth API route
-//   // const filteredHeaders = new Headers();
-//   // for (const [key, value] of req.headers.entries()) {
-//   //   if (key === "content-length") continue;
-//   //   filteredHeaders.append(key, value);
-//   // }
+export default clerkMiddleware(
+  async (auth, req) => {
+    const { protect } = auth();
 
-//   // const res = await fetch(
-//   //   `${process.env.NEXT_PUBLIC_API_HOSTNAME}/api/authSSR`,
-//   //   {
-//   //     headers: filteredHeaders,
-//   //   }
-//   // )
-//   //   .then((res) => {
-//   //     const data = res.json();
+    if (isProtectedRoute(req)) {
+      protect();
+    }
+  },
+  {
+    signInUrl: "/user/sign-in",
+  }
+);
 
-//   //     return data;
-//   //   })
-//   //   .catch(console.error);
-//   // if (!res) return;
-
-//   // const {
-//   //   data: { auth },
-//   // } = res;
-
-//   // // we patch the callback to send the user back to where auth was required
-//   // if (!auth) {
-//   //   url.search = new URLSearchParams(`callbackUrl=${url}`).toString();
-//   //   url.pathname = `/welcome`;
-//   // }
-
-//   // return !auth ? NextResponse.redirect(url) : NextResponse.next();
-// }
 export const config = {
   matcher: [
     /*

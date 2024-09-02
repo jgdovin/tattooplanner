@@ -25,3 +25,21 @@ export const formatTime = (time?: string) => {
   if (!time) return "";
   return dayjs(`2024-01-01T${time}:00`).format("hh:mm A");
 };
+
+export function getMissingDates({
+  allDates,
+  availableDates,
+}: {
+  allDates: string[];
+  availableDates: string[];
+}) {
+  const missingDates: Date[] = [];
+  // Find missing dates
+  allDates.forEach((date) => {
+    if (!availableDates.includes(date)) {
+      missingDates.push(dayjs(date).toDate());
+    }
+  });
+
+  return missingDates;
+}

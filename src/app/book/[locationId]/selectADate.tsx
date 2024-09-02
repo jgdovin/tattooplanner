@@ -12,6 +12,7 @@ import {
   fetchBookingDateAtom,
   fetchBookServiceAtom,
 } from "@/store/checkout";
+import { getLocationAvailability } from "@/actions/book";
 
 export default function SelectADate({ locationId }: { locationId: string }) {
   const [bookingDate, setBookingDate] = useAtom(fetchBookingDateAtom);
@@ -24,7 +25,8 @@ export default function SelectADate({ locationId }: { locationId: string }) {
   );
   const [date, setDate] = useState<Date | undefined>(bookingDate || new Date());
   const [availability, setAvailability] = useState<any>({});
-
+  const [disabledDays, setDisabledDays] = useState<number[]>([]);
+  const [filledDays, setFilledDays] = useState<Date[]>([]);
   const [loading, setLoading] = useState(true);
   const [service] = useAtom(fetchBookServiceAtom);
 
@@ -47,20 +49,18 @@ export default function SelectADate({ locationId }: { locationId: string }) {
 
   useEffect(() => {
     if (!month || !locationId) return;
-    const locationAvailability = () => {
-      return fetch(`/api/book/${locationId}/availability`, {
-        method: "POST",
-        body: JSON.stringify({
-          year,
-          month,
-          serviceId: service.id,
-        }),
-      });
-    };
+
     setLoading(true);
     // request bookings for the month that could conflict
-    locationAvailability().then(async (res) => {
-      const data = await res.json();
+    getLocationAvailability(locationId, {
+      year,
+      month,
+      serviceId: service.id,
+    }).then(async (res) => {
+      const data = await res;
+
+      if (data.filledDays) setFilledDays(data.filledDays);
+      if (data.disabledDays.length) setDisabledDays(data.disabledDays);
 
       setAvailability(data.availableSlots);
       setLoading(false);
@@ -76,7 +76,12 @@ export default function SelectADate({ locationId }: { locationId: string }) {
           mode="single"
           selected={date}
           onSelect={setDate}
+          modifiers={{
+            unavailable: [{ dayOfWeek: disabledDays }, ...filledDays],
+          }}
+          modifiersClassNames={{ unavailable: "text-gray-400" }}
           className="rounded-md border"
+          disabled={[{ before: new Date() }]}
         />
         <h1 className="text-lg font-bold">
           {dayjs(date).format("ddd MMM DD")}

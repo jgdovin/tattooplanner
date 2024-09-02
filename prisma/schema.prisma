@@ -161,6 +161,26 @@ model Service {
   Bookings               Booking[]
 }
 
+// model AuditLog {
+//   id         String   @id @default(cuid())
+//   userId     String
+//   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+//   actionType String
+//   message    String
+//   entity     String
+//   entityId   String
+//   createdAt  DateTime @default(now())
+// }
+
+// model Notifications {
+//   id        String   @id @default(cuid())
+//   userId    String
+//   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+//   message   String
+//   read      Boolean  @default(false)
+//   createdAt DateTime @default(now())
+// }
+
 model Payment {
   id                   String   @id @default(cuid())
   customerId           String

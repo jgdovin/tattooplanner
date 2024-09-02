@@ -119,7 +119,12 @@ export function LocationForm({
           >
             <div className="grid col-span-2 gap-2">
               <div className="grid gap-2">
-                <InputField name="name" form={form} label="Name" />
+                <InputField
+                  name="name"
+                  form={form}
+                  label="Name"
+                  required={true}
+                />
               </div>
               <div className="grid gap-2">
                 <InputField name="nickname" form={form} label="Nickname" />

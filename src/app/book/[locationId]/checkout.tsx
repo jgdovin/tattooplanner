@@ -35,7 +35,7 @@ export default function Checkout({
   const [bookingDate] = useAtom(fetchBookingDateAtom);
 
   if (!bookingDate) return <div>No date set, something went wrong</div>;
-  console.log(customerId);
+
   return (
     <div>
       {/* TODO: better success */}

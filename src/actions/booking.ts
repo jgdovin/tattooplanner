@@ -23,3 +23,39 @@ export async function getArtistBookings() {
 
   return res;
 }
+
+export async function getArtistRecentBookings(num: number = 5) {
+  const { userId } = auth();
+  if (!userId) return;
+
+  const res = await prisma.booking.findMany({
+    where: {
+      location: {
+        user: {
+          squareId: userId,
+        },
+      },
+    },
+    select: {
+      id: true,
+      start: true,
+      service: {
+        select: {
+          name: true,
+        },
+      },
+      customer: {
+        select: {
+          name: true,
+        },
+      },
+    },
+
+    orderBy: {
+      createdAt: "desc",
+    },
+    take: num,
+  });
+
+  return res;
+}

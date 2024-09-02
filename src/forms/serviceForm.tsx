@@ -99,6 +99,7 @@ export function ServiceForm({ submitAction, form, isEditing }: any) {
                 name="name"
                 form={form}
                 label="Name"
+                required={true}
               />
             </div>
             <div className="grid gap-2">

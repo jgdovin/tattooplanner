@@ -38,6 +38,8 @@ import {
   UserButton,
 } from "@clerk/nextjs";
 import { CustomerType } from "@/store/customer";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 interface ClientProps {
   services: any;
@@ -53,7 +55,7 @@ export default function Client({
   customer,
 }: ClientProps) {
   const { setTheme } = useTheme();
-  console.log("customer", customer);
+
   useEffect(() => {
     setTheme("light");
   }, [setTheme]);
@@ -83,10 +85,11 @@ export default function Client({
             </SignedIn>
             <SignedOut>
               <div className="text-white">
-                <SignInButton
-                  forceRedirectUrl={`/book/${location.id}`}
-                  mode="modal"
-                />
+                <Link
+                  href={`/customer/sign-in/?redirect_url=/book/${location.id}&location_id=${location.id}`}
+                >
+                  Sign In
+                </Link>
               </div>
             </SignedOut>
           </div>
@@ -156,7 +159,7 @@ export default function Client({
       <Checkout locationId={location.id!} customerId={customer?.id} />
     );
 
-  if (currentStep === 4) return <div>Thank you for booking!</div>;
+  // if (currentStep === 4) return <div>Thank you for booking!</div>;
 
   return stepWrapper(<div>Step {currentStep}</div>);
 }

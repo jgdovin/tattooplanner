@@ -1,12 +1,13 @@
 import { DataTable } from "@/components/custom/data-table";
 import { columns, Project } from "./columns";
 import prisma from "@/lib/prisma";
-import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
 import { getServerSession } from "next-auth";
+import { auth } from "@clerk/nextjs/server";
 
 export default async function Page() {
-  const session = await getServerSession(authOptions);
-  if (!session) {
+  const { userId } = await auth();
+
+  if (!userId) {
     return (
       <main className="p-10">
         <h1 className="text-2xl font-bold">Projects</h1>

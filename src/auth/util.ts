@@ -28,3 +28,21 @@ export async function getLoggedInCustomer() {
 
   return customer;
 }
+
+export async function addCustomerToArtist(artistId: string) {
+  const { userId } = auth();
+  if (!userId) return;
+
+  await prisma.customer.update({
+    where: {
+      squareId: userId,
+    },
+    data: {
+      artists: {
+        connect: {
+          id: artistId,
+        },
+      },
+    },
+  });
+}

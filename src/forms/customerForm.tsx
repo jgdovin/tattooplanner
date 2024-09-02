@@ -1,18 +1,8 @@
 "use client";
 
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormMessage,
-} from "@/components/ui/form";
-
-import { Input } from "@/components/ui/input";
+import { Form } from "@/components/ui/form";
 
 import * as z from "zod";
-import { Textarea } from "@/components/ui/textarea";
 
 import { zPhone } from "./customValidation/zodPhoneValidate";
 import {
@@ -23,7 +13,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
 import { InputField, TextareaField } from "./components/inputField";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
@@ -75,13 +64,28 @@ export function CustomerForm({
               className="grid gap-4"
             >
               <div className="grid gap-2">
-                <InputField name="name" form={form} label="Name" />
+                <InputField
+                  name="name"
+                  form={form}
+                  label="Name"
+                  required={true}
+                />
               </div>
               <div className="grid gap-2">
-                <InputField name="email" form={form} label="Email" />
+                <InputField
+                  name="email"
+                  form={form}
+                  label="Email"
+                  required={true}
+                />
               </div>
               <div className="grid gap-2">
-                <InputField name="phone" form={form} label="Phone" />
+                <InputField
+                  name="phone"
+                  form={form}
+                  label="Phone"
+                  required={true}
+                />
               </div>
               <div className="grid gap-2">
                 <TextareaField name="notes" form={form} label="Notes" />
@@ -114,30 +118,6 @@ export function CustomerForm({
           </Button>
         </CardFooter>
       </Card>
-      {/*       
-      <form id="customerForm" onSubmit={form.handleSubmit(handleSubmit)}>
-        <div className="grid grid-cols-4 gap-4">
-          <div className="col-span-4">
-            <h1 className="w-full text-center font-bold text-xl mb-2">
-              Details
-            </h1>
-            <InputField name="name" form={form} label="Name" />
-            <InputField
-              name="notes"
-              form={form}
-              label="Notes"
-              textArea={true}
-            />
-            <InputField name="email" form={form} label="Email" />
-            <InputField name="phone" form={form} label="Phone" />
-            <InputField name="address1" form={form} label="Address 1" />
-            <InputField name="address2" form={form} label="Address 2" />
-            <InputField name="city" form={form} label="City" />
-            <InputField name="state" form={form} label="State" />
-            <InputField name="zip" form={form} label="Zip" />
-          </div>
-        </div>
-      </form> */}
     </Form>
   );
 }

@@ -32,7 +32,7 @@ export async function createPayment(
       },
     },
   };
-  console.log(payment);
+
   try {
     const res = await prisma.payment.create({
       data: payment,

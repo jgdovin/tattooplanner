@@ -13,7 +13,7 @@ export default function Client() {
     getArtistBookings()
       .then(async (data) => {
         const bookings = await data;
-        console.log(bookings);
+
         if (!bookings) {
           setEvents([]);
           return;

@@ -28,6 +28,7 @@ export const InputField = ({
   form,
   label,
   className,
+  required,
   ...props
 }: any) => (
   <FormField
@@ -36,7 +37,10 @@ export const InputField = ({
     render={({ field }) => {
       return (
         <FormItem className={`grid gap-1`}>
-          <FormLabel>{label}</FormLabel>
+          <FormLabel>
+            {required && <span className="text-red-600">* </span>}
+            {label}
+          </FormLabel>
           <FormControl>
             <div className="flex flex-col gap-2">
               <Input type={type} {...props} {...field} />

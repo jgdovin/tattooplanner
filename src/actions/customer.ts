@@ -55,8 +55,8 @@ export async function createCustomer(body: CustomerType) {
       emailAddress: [body.email],
       // @ts-ignore: phoneNumbers is correct, not sure whats wrong with type here
       phoneNumbers: [body.phone],
-      privateMetadata: {
-        customer: true,
+      publicMetadata: {
+        role: "customer",
       },
     });
 
@@ -75,7 +75,6 @@ export async function createCustomer(body: CustomerType) {
     return res;
   } catch (error: any) {
     console.error(error.errors[0]);
-    return { error: error.errors[0].longMessage };
   }
 }
 

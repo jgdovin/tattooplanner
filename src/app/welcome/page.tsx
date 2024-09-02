@@ -1,11 +1,11 @@
+import { auth } from "@clerk/nextjs/server";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/authOptions";
 
 export default async function Page() {
-  const session = await getServerSession(authOptions);
+  const { userId } = await auth();
   return (
     <div className="self-center">
-      {!!session ? <div>Welcome!</div> : <div>You must login first!</div>}
+      {!!userId ? <div>Welcome!</div> : <div>You must login first!</div>}
     </div>
   );
 }
