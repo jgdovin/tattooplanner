@@ -5,7 +5,6 @@ import {
   updateLocation,
 } from "@/actions/location";
 import { atom } from "jotai";
-import { z } from "zod";
 
 export const LOCATION_TYPES_TYPE = {
   PHYSICAL: "PHYSICAL",
