@@ -4,7 +4,9 @@ import {
   getLocation,
   updateLocation,
 } from "@/actions/location";
+import { formSchema } from "@/forms/locationForm";
 import { atom } from "jotai";
+import { z } from "zod";
 
 export const LOCATION_TYPES_TYPE = {
   PHYSICAL: "PHYSICAL",
@@ -14,6 +16,8 @@ export const LOCATION_TYPES_TYPE = {
 const DEFAULT_OPEN_TIME = "09:00";
 const DEFAULT_CLOSE_TIME = "17:00";
 const EMPTY_STRING = "";
+
+export type LocationType = z.infer<typeof formSchema>;
 
 export const EMPTY_LOCATION_DATA: LocationType = {
   id: EMPTY_STRING,
@@ -53,49 +57,48 @@ export const EMPTY_LOCATION_DATA: LocationType = {
   sunStart: DEFAULT_OPEN_TIME,
   sunEnd: DEFAULT_CLOSE_TIME,
   sunClosed: "true",
-  timezone: "",
 };
 
-export interface LocationType {
-  id?: string;
-  name: string;
-  nickname: string;
-  description: string;
-  phone: string;
-  email: string;
-  type: (typeof LOCATION_TYPES_TYPE)[keyof typeof LOCATION_TYPES_TYPE];
-  address1: string;
-  address2: string;
-  city: string;
-  state: string;
-  zip: string;
-  website: string;
-  x: string;
-  instagram: string;
-  facebook: string;
-  monStart?: string;
-  monEnd?: string;
-  monClosed: "true" | "false";
-  tueStart?: string;
-  tueEnd?: string;
-  tueClosed: "true" | "false";
-  wedStart?: string;
-  wedEnd?: string;
-  wedClosed: "true" | "false";
-  thuStart?: string;
-  thuEnd?: string;
-  thuClosed: "true" | "false";
-  friStart?: string;
-  friEnd?: string;
-  friClosed: "true" | "false";
-  satStart?: string;
-  satEnd?: string;
-  satClosed: "true" | "false";
-  sunStart?: string;
-  sunEnd?: string;
-  sunClosed: "true" | "false";
-  timezone?: string;
-}
+// export type LocationType {
+//   id?: string;
+//   name: string;
+//   nickname: string;
+//   description: string;
+//   phone: string;
+//   email: string;
+//   type: (typeof LOCATION_TYPES_TYPE)[keyof typeof LOCATION_TYPES_TYPE];
+//   address1: string;
+//   address2: string;
+//   city: string;
+//   state: string;
+//   zip: string;
+//   website: string;
+//   x: string;
+//   instagram: string;
+//   facebook: string;
+//   monStart?: string;
+//   monEnd?: string;
+//   monClosed: "true" | "false";
+//   tueStart?: string;
+//   tueEnd?: string;
+//   tueClosed: "true" | "false";
+//   wedStart?: string;
+//   wedEnd?: string;
+//   wedClosed: "true" | "false";
+//   thuStart?: string;
+//   thuEnd?: string;
+//   thuClosed: "true" | "false";
+//   friStart?: string;
+//   friEnd?: string;
+//   friClosed: "true" | "false";
+//   satStart?: string;
+//   satEnd?: string;
+//   satClosed: "true" | "false";
+//   sunStart?: string;
+//   sunEnd?: string;
+//   sunClosed: "true" | "false";
+//   timezone?: string;
+// }
 
 interface LocationDictionary {
   [key: string]: LocationType;
