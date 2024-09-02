@@ -129,9 +129,9 @@ export const addLocationAtom = atom(
     const oldLocations = get(locationsAtom);
 
     set(locationsAtom, await addLocation(get(locationsAtom), location));
-
+    console.log("test");
     const res = (await createLocation(location)) as LocationType;
-
+    console.log("test2");
     if (!res.id) {
       set(locationsAtom, oldLocations);
       return;

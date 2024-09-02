@@ -96,6 +96,10 @@ export async function POST(req: Request) {
     } else {
       const artistId = evt.data.unsafe_metadata?.artistId as string;
 
+      const artistConnect = artistId
+        ? { connect: { id: artistId } }
+        : undefined;
+
       await prisma.customer.upsert({
         where: {
           squareId,
@@ -104,22 +108,14 @@ export async function POST(req: Request) {
           email: email_address,
           name: `${first_name} ${last_name}`,
           squareId,
-          artists: {
-            connect: {
-              id: artistId,
-            },
-          },
+          artists: artistConnect,
         },
         create: {
           email: email_address,
           name: `${first_name} ${last_name}`,
           squareId,
           phone: "",
-          artists: {
-            connect: {
-              id: artistId,
-            },
-          },
+          artists: artistConnect,
         },
       });
       clerkClient.users.updateUser(squareId, {

@@ -47,6 +47,12 @@ export async function createLocation(location: LocationType) {
   if (!userId) return;
   delete location.id;
 
+  const user = await prisma.user.findUnique({
+    where: {
+      squareId: userId,
+    },
+  });
+
   try {
     const res = await prisma.location.create({
       data: {
