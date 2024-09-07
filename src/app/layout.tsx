@@ -39,7 +39,7 @@ export default function RootLayout({
         <ThemeProvider attribute="class">
           <ClerkProvider>
             <Provider>
-              <Toaster position="top-center" />
+              <Toaster position="top-center" richColors={true} />
               {children}
             </Provider>
           </ClerkProvider>

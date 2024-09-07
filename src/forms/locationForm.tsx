@@ -36,7 +36,7 @@ export const formSchema = z.object({
   nickname: z.string(),
   description: z.string(),
   phone: z.string(),
-  email: z.string(),
+  email: z.string().email(),
   website: z.string(),
   x: z.string(),
   instagram: z.string(),
@@ -140,7 +140,12 @@ export function LocationForm({
               <Separator />
               <div className="flex flex-row gap-2">
                 <InputField name="phone" form={form} label="Phone" />
-                <InputField name="email" form={form} label="Email" />
+                <InputField
+                  name="email"
+                  form={form}
+                  label="Email"
+                  required={true}
+                />
               </div>
               <div className="grid gap-2">
                 <InputField name="address1" form={form} label="Address 1" />

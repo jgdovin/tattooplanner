@@ -7,7 +7,7 @@ import {
   increaseStepAtom,
   maxSteps,
   fetchBookServiceAtom,
-  clearSelectionsAtom,
+  clearCheckoutAtom,
 } from "@/store/checkout";
 import { useAtom } from "jotai";
 
@@ -49,7 +49,7 @@ export const DecreaseStepButton = () => {
 };
 
 export const ClearSelectionsButton = () => {
-  const [, clearSelections] = useAtom(clearSelectionsAtom);
+  const [, clearSelections] = useAtom(clearCheckoutAtom);
   return (
     <Button
       className="text-2xl py-6 px-8"

@@ -59,3 +59,17 @@ export async function getArtistRecentBookings(num: number = 5) {
 
   return res;
 }
+
+export async function getBooking(id: string) {
+  const res = await prisma.booking.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      customer: true,
+      service: true,
+    },
+  });
+
+  return res;
+}

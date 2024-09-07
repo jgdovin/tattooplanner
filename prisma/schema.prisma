@@ -14,17 +14,18 @@ datasource db {
 }
 
 model User {
-  id         String     @id @default(cuid())
-  squareId   String     @unique
-  name       String?
-  email      String?    @unique
-  projects   Project[]
-  locations  Location[]
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @default(now()) @updatedAt
-  services   Service[]
-  customers  Customer[] @relation("UserCustomers")
-  customerId String?
+  id            String          @id @default(cuid())
+  squareId      String          @unique
+  name          String?
+  email         String?         @unique
+  projects      Project[]
+  locations     Location[]
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @default(now()) @updatedAt
+  services      Service[]
+  customers     Customer[]      @relation("UserCustomers")
+  customerId    String?
+  EmailTemplate EmailTemplate[]
 }
 
 model Customer {
@@ -193,4 +194,16 @@ model Payment {
   squareId             String
   createdAt            DateTime @default(now())
   updatedAt            DateTime @default(now()) @updatedAt
+}
+
+model EmailTemplate {
+  id        String   @id @default(cuid())
+  name      String
+  subject   String
+  body      String
+  global    Boolean  @default(false)
+  userId    String
+  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }

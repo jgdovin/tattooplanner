@@ -7,15 +7,10 @@ import {
   successAtom,
   fetchBookServiceAtom,
 } from "@/store/checkout";
-import {
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  UserProfile,
-  useUser,
-} from "@clerk/nextjs";
+import { SignedIn, SignedOut, SignInButton, useUser } from "@clerk/nextjs";
 import { useAtom } from "jotai";
-import { useState } from "react";
+import { redirect } from "next/navigation";
+import { useEffect, useState } from "react";
 // @ts-ignore: Unreachable code error
 import { CreditCard, PaymentForm } from "react-square-web-payments-sdk";
 import { toast } from "sonner";
@@ -34,6 +29,10 @@ export default function Checkout({
   const [success, setSuccess] = useAtom(successAtom);
   const [service] = useAtom(fetchBookServiceAtom);
   const [bookingDate] = useAtom(fetchBookingDateAtom);
+
+  useEffect(() => {
+    if (success) redirect("/book/success");
+  }, [success]);
 
   if (!bookingDate) return <div>No date set, something went wrong</div>;
 

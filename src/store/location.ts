@@ -60,47 +60,6 @@ export const EMPTY_LOCATION_DATA: LocationType = {
   sunClosed: true,
 };
 
-// export type LocationType {
-//   id?: string;
-//   name: string;
-//   nickname: string;
-//   description: string;
-//   phone: string;
-//   email: string;
-//   type: (typeof LOCATION_TYPES_TYPE)[keyof typeof LOCATION_TYPES_TYPE];
-//   address1: string;
-//   address2: string;
-//   city: string;
-//   state: string;
-//   zip: string;
-//   website: string;
-//   x: string;
-//   instagram: string;
-//   facebook: string;
-//   monStart?: string;
-//   monEnd?: string;
-//   monClosed: "true" | "false";
-//   tueStart?: string;
-//   tueEnd?: string;
-//   tueClosed: "true" | "false";
-//   wedStart?: string;
-//   wedEnd?: string;
-//   wedClosed: "true" | "false";
-//   thuStart?: string;
-//   thuEnd?: string;
-//   thuClosed: "true" | "false";
-//   friStart?: string;
-//   friEnd?: string;
-//   friClosed: "true" | "false";
-//   satStart?: string;
-//   satEnd?: string;
-//   satClosed: "true" | "false";
-//   sunStart?: string;
-//   sunEnd?: string;
-//   sunClosed: "true" | "false";
-//   timezone?: string;
-// }
-
 interface LocationDictionary {
   [key: string]: LocationType;
 }

@@ -4,13 +4,13 @@ import { atomWithStorage } from "jotai/utils";
 import { EMPTY_SERVICE_DATA } from "./service";
 
 const steps = ["Select a service", "Select a date/time", "Checkout"];
+export const maxSteps = 5;
 
 export const currentStepAtom = atomWithStorage("currentStep", 1);
 export const currentServiceAtom = atomWithStorage(
   "currentService",
   EMPTY_SERVICE_DATA
 );
-export const maxSteps = 5;
 export const bookingDateAtom = atomWithStorage<Date | undefined>(
   "bookingDate",
   undefined
@@ -56,8 +56,9 @@ export const fetchBookServiceAtom = atom(
   }
 );
 
-export const clearSelectionsAtom = atom(null, async (get, set) => {
+export const clearCheckoutAtom = atom(null, async (get, set) => {
   set(currentServiceAtom, EMPTY_SERVICE_DATA);
   set(bookingDateAtom, undefined);
   set(currentStepAtom, 1);
+  set(successAtom, false);
 });

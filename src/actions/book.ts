@@ -5,6 +5,11 @@ import { LocationType } from "@/store/location";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import { getSlots } from "slot-calculator";
+import { sendEmail } from "./mailer";
+import { getCustomer } from "./customer";
+import { getLocation } from "./location";
+import { getBooking } from "./booking";
+import { readFileSync } from "fs";
 
 export async function getLocationsArtistId(locationId: string) {
   const location = await prisma.location.findUnique({
@@ -44,6 +49,30 @@ export async function createBooking({
   if (!service) {
     throw new Error("Service not found");
   }
+
+  const customer = await prisma.customer.findUnique({
+    where: {
+      id: customerId,
+    },
+  });
+
+  if (!customer) {
+    throw new Error("Customer not found");
+  }
+
+  const location = await prisma.location.findUnique({
+    where: {
+      id: locationId,
+    },
+    select: {
+      email: true,
+    },
+  });
+
+  if (!location) {
+    throw new Error("Location not found");
+  }
+
   const bookingDateStart = dayjs(date).set("second", 0).utc();
   const duration = convertStringDurationToMinutes(service.duration);
   const bookingDateEnd = bookingDateStart.add(duration, "minute");
@@ -70,6 +99,12 @@ export async function createBooking({
 
   const res = await prisma.booking.create({
     data: booking,
+  });
+
+  sendConfirmationEmail({
+    customerId: customer.id,
+    bookingId: res.id,
+    locationId,
   });
 
   return res;
@@ -196,4 +231,42 @@ export async function getLocationAvailability(locationId: string, body: any) {
     availableSlots: slots.availableSlotsByDay,
     disabledDays: getDisabledDaysOfWeek(location),
   };
+}
+
+export async function sendConfirmationEmail(params: {
+  customerId: string;
+  bookingId: string;
+  locationId: string;
+}) {
+  const emailTemplate = readFileSync(
+    "/src/templates/email/booking-confirmation.html"
+  );
+  console.log(emailTemplate);
+
+  // const { customerId, bookingId, locationId } = params;
+  // const customer = await getCustomer(customerId);
+  // if (!customer) {
+  //   throw new Error("Customer not found");
+  // }
+
+  // const location = await getLocation(locationId);
+  // if (!location) {
+  //   throw new Error("Location not found");
+  // }
+
+  // const booking = await getBooking(bookingId);
+  // if (!booking) {
+  //   throw new Error("Booking not found");
+  // }
+
+  // sendEmail({
+  //   to: customer.email,
+  //   subject: `Booking Confirmation for ${location.name}`,
+  //   text: `Thank you for booking with ${
+  //     location.name
+  //   }. Your booking is confirmed for ${dayjs(booking.start).format(
+  //     "MMMM DD, YYYY"
+  //   )} at ${dayjs(booking.start).format("hh:mm A")}.`,
+  //   html: "",
+  // });
 }

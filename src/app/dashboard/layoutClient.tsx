@@ -9,6 +9,7 @@ import {
   faPalette,
   faBuilding,
   faPaintBrush,
+  faEnvelope,
 } from "@fortawesome/free-solid-svg-icons";
 
 export default function LayoutClient({
@@ -47,6 +48,11 @@ export default function LayoutClient({
                   text="Services"
                   href="/dashboard/settings/services"
                   icon={faPaintBrush}
+                />
+                <MenuLink
+                  text="Email Templates"
+                  href="/dashboard/settings/email/templates"
+                  icon={faEnvelope}
                 />
               </nav>
             </div>
