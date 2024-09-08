@@ -11,20 +11,21 @@ import {
 
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 
-import { formSchema, LocationForm } from "@/forms/locationForm";
 import * as z from "zod";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useAtom } from "jotai";
-import {
-  addLocationAtom,
-  EMPTY_LOCATION_DATA,
-  fetchLocationAtom,
-  updateLocationAtom,
-} from "@/store/location";
+
 import { DialogDescription } from "@radix-ui/react-dialog";
+import { formSchema, EmailTemplateForm } from "@/forms/emailTemplateForm";
+import {
+  addTemplateAtom,
+  EMPTY_TEMPLATE_DATA,
+  fetchTemplateAtom,
+  updateTemplateAtom,
+} from "@/store/emailTemplate";
 
 interface TemplateDialogProps {
   isOpen: boolean;
@@ -39,21 +40,21 @@ export function TemplateDialog({
   isEditing,
   setIsEditing,
 }: TemplateDialogProps) {
-  const [, addLocation] = useAtom(addLocationAtom);
-  const [, updateService] = useAtom(updateLocationAtom);
-  const [location, setLocation] = useAtom(fetchLocationAtom);
+  const [, addTemplate] = useAtom(addTemplateAtom);
+  const [, updateTemplate] = useAtom(updateTemplateAtom);
+  const [template, setTemplate] = useAtom(fetchTemplateAtom);
 
   const handleSubmit = (submittedData: z.infer<typeof formSchema>) => {
     if (isEditing) {
-      updateService(submittedData!);
+      updateTemplate(submittedData!);
     } else {
-      addLocation(submittedData!);
+      addTemplate(submittedData!);
     }
     setIsOpen(false);
   };
 
   const form = useForm<z.infer<typeof formSchema>>({
-    defaultValues: location || EMPTY_LOCATION_DATA,
+    defaultValues: template || EMPTY_TEMPLATE_DATA,
     resolver: zodResolver(formSchema),
   });
   const { isDirty } = form.formState;
@@ -67,8 +68,8 @@ export function TemplateDialog({
     }
     setIsOpen(open);
     setIsEditing(false);
-    setLocation("");
-    form.reset(EMPTY_LOCATION_DATA);
+    setTemplate("");
+    form.reset(EMPTY_TEMPLATE_DATA);
   };
 
   return (
@@ -81,13 +82,13 @@ export function TemplateDialog({
       <DialogContent className="max-h-screen max-w-[880px] overflow-y-auto m-10">
         <VisuallyHidden.Root>
           <DialogHeader>
-            <DialogTitle>Add Location</DialogTitle>
+            <DialogTitle>Add Template</DialogTitle>
           </DialogHeader>
           <DialogDescription>
-            {isEditing ? "Edit" : "Create"} a location
+            {isEditing ? "Edit" : "Create"} a Template
           </DialogDescription>
         </VisuallyHidden.Root>
-        <LocationForm
+        <EmailTemplateForm
           submitAction={handleSubmit}
           form={form}
           isEditing={isEditing}

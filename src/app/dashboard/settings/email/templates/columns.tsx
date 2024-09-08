@@ -1,13 +1,14 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { deleteLocationAtom, fetchLocationAtom } from "@/store/location";
+import { deleteTemplateAtom, fetchTemplateAtom } from "@/store/emailTemplate";
+
 import { SetStateAction, useAtom } from "jotai";
 import { Dispatch } from "react";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
-export type Location = {
+export type Template = {
   [key: string]: any;
   id: string;
   name: string;
@@ -15,11 +16,10 @@ export type Location = {
   address1: string;
 };
 
-export const useLocationColumns = (
+export const useTemplateColumns = (
   setIsOpen: Dispatch<SetStateAction<boolean>>
 ) => {
-  const [, deleteLocation] = useAtom(deleteLocationAtom);
-  const [, setLocation] = useAtom(fetchLocationAtom);
+  const [, deleteTemplate] = useAtom(deleteTemplateAtom);
 
   return [
     {
@@ -40,16 +40,7 @@ export const useLocationColumns = (
         <div className="flex flex-row gap-4">
           <Button
             onClick={() => {
-              window.location.href = `/book/${row.original.id}`;
-            }}
-          >
-            Book
-          </Button>
-          <Button
-            onClick={() => {
-              setLocation(row.original.id).then(() => {
-                setIsOpen(true);
-              });
+              window.location.href = `/dashboard/settings/email/templates/edit/${row.original.id}`;
             }}
           >
             Edit
@@ -60,7 +51,7 @@ export const useLocationColumns = (
                 "Are you sure you want to delete this service?"
               );
               if (del) {
-                deleteLocation(row.original.id);
+                deleteTemplate(row.original.id);
               }
             }}
           >

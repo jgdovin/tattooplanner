@@ -36,14 +36,14 @@ export default function RootLayout({
         )}
       >
         <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
-        <ThemeProvider attribute="class">
-          <ClerkProvider>
+        <ClerkProvider>
+          <ThemeProvider attribute="class">
             <Provider>
               <Toaster position="top-center" richColors={true} />
               {children}
             </Provider>
-          </ClerkProvider>
-        </ThemeProvider>
+          </ThemeProvider>
+        </ClerkProvider>
       </body>
     </html>
   );
