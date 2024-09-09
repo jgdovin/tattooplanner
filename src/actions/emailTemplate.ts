@@ -6,16 +6,18 @@ import { auth } from "@clerk/nextjs/server";
 export async function createTemplate(data: any) {
   const { userId } = auth();
   if (!userId) return;
-
+  delete data.id;
   const res = await prisma.emailTemplate.create({
-    ...data,
-    user: {
-      connect: {
-        squareId: userId,
+    data: {
+      ...data,
+      user: {
+        connect: {
+          squareId: userId,
+        },
       },
-    },
+    }
   });
-
+  console.log(res)
   return res;
 }
 

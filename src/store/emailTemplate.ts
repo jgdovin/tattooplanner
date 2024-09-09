@@ -54,7 +54,7 @@ export const addTemplateAtom = atom(
 
     set(templatesAtom, await addTemplate(get(templatesAtom), template));
     const res = (await createTemplate(template)) as EmailTemplateType;
-
+    
     if (!res.id) {
       toast.error("Template creation failed");
       set(templatesAtom, oldTemplates);
