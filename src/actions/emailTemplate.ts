@@ -28,17 +28,7 @@ export async function getTemplate(id: string) {
   try {
     const res = await prisma.emailTemplate.findUnique({
       where: {
-        id,
-        OR: [
-          {
-            user: {
-              squareId: userId,
-            },
-          },
-          {
-            global: true,
-          },
-        ],
+        id
       },
     });
 

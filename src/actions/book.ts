@@ -6,10 +6,9 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import { getSlots } from "slot-calculator";
 import { sendEmail } from "./mailer";
-import { getCustomer } from "./customer";
 import { getLocation } from "./location";
 import { getBooking } from "./booking";
-import { readFileSync } from "fs";
+import { getTemplate } from "./emailTemplate";
 
 export async function getLocationsArtistId(locationId: string) {
   const location = await prisma.location.findUnique({
@@ -26,6 +25,20 @@ export async function getLocationsArtistId(locationId: string) {
   }
 
   return location.user.id;
+}
+
+export async function getCustomerForBooking(customerId: string) {
+  const customer = await prisma.customer.findUnique({
+    where: {
+      id: customerId,
+    },
+  });
+
+  if (!customer) {
+    throw new Error("Customer not found");
+  }
+
+  return customer;
 }
 
 export async function createBooking({
@@ -238,35 +251,34 @@ export async function sendConfirmationEmail(params: {
   bookingId: string;
   locationId: string;
 }) {
-  const emailTemplate = readFileSync(
-    "/src/templates/email/booking-confirmation.html"
-  );
-  console.log(emailTemplate);
+  // TODO: make this dynamic.
+  const emailTemplate = await getTemplate("cm0yemd7h000f6kcn7uyzby9d");
+  if (!emailTemplate) throw new Error("Failed to load email template");
 
-  // const { customerId, bookingId, locationId } = params;
-  // const customer = await getCustomer(customerId);
-  // if (!customer) {
-  //   throw new Error("Customer not found");
-  // }
+  const { customerId, bookingId, locationId } = params;
+  const customer = await getCustomerForBooking(customerId);
+  if (!customer) {
+    throw new Error("Customer not found");
+  }
 
-  // const location = await getLocation(locationId);
-  // if (!location) {
-  //   throw new Error("Location not found");
-  // }
+  const location = await getLocation(locationId);
+  if (!location) {
+    throw new Error("Location not found");
+  }
 
-  // const booking = await getBooking(bookingId);
-  // if (!booking) {
-  //   throw new Error("Booking not found");
-  // }
+  const booking = await getBooking(bookingId);
+  if (!booking) {
+    throw new Error("Booking not found");
+  }
 
-  // sendEmail({
-  //   to: customer.email,
-  //   subject: `Booking Confirmation for ${location.name}`,
-  //   text: `Thank you for booking with ${
-  //     location.name
-  //   }. Your booking is confirmed for ${dayjs(booking.start).format(
-  //     "MMMM DD, YYYY"
-  //   )} at ${dayjs(booking.start).format("hh:mm A")}.`,
-  //   html: "",
-  // });
+  sendEmail({
+    to: customer.email,
+    subject: `Booking Confirmation for ${location.name}`,
+    text: `Thank you for booking with ${
+      location.name
+    }. Your booking is confirmed for ${dayjs(booking.start).format(
+      "MMMM DD, YYYY"
+    )} at ${dayjs(booking.start).format("hh:mm A")}.`,
+    html: emailTemplate.body,
+  });
 }

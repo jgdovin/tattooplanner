@@ -84,7 +84,13 @@ export default function Checkout({
                 }
               }}
             >
-              <CreditCard />
+              <SignedIn>
+                <CreditCard />
+                
+                </SignedIn>
+                <SignedOut>
+                  You must sign in to complete checkout (for now)
+                </SignedOut>
             </PaymentForm>
           </div>
         </div>

@@ -76,6 +76,13 @@ export function ServiceForm({ submitAction, form, isEditing }: any) {
     form.setValue("duration", `${durationHours}:${durationMinutes}`);
   }, [durationHours, durationMinutes, form]);
 
+  useEffect(() => {
+    if (isEditing) {
+      return;
+    }
+    form.setValue("locations", locations);
+  }, [locations]);
+
   const formText = isEditing ? "Update" : "Create";
 
   return (
@@ -180,45 +187,47 @@ export function ServiceForm({ submitAction, form, isEditing }: any) {
             <div className="grid gap-2">
               <Label htmlFor="locations">Locations</Label>
 
-              {locations.map((location: LocationType) => (
-                <FormField
-                  key={location.id}
-                  control={form.control}
-                  name="locations"
-                  render={({ field }) => {
-                    return (
-                      <FormItem
-                        key={location.id}
-                        className="flex flex-row items-start space-x-3 space-y-0 border hover:bg-slate-100"
-                      >
-                        <FormControl>
-                          <Checkbox
-                            className="m-3"
-                            checked={
-                              field.value?.filter((value: any) => {
-                                return value.id === location.id;
-                              }).length > 0
-                            }
-                            onCheckedChange={(checked) => {
-                              return checked
-                                ? field.onChange([...field.value, location])
-                                : field.onChange(
-                                    field.value?.filter(
-                                      (value: any) => value.id !== location.id
-                                    )
-                                  );
-                            }}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                        <FormLabel className="font-normal w-full p-3">
-                          {location.name}
-                        </FormLabel>
-                      </FormItem>
-                    );
-                  }}
-                />
-              ))}
+              {locations.map((location: LocationType) => {
+                return (
+                  <FormField
+                    key={location.id}
+                    control={form.control}
+                    name="locations"
+                    render={({ field }) => {
+                      return (
+                        <FormItem
+                          key={location.id}
+                          className="flex flex-row items-start space-x-3 space-y-0 border hover:bg-slate-100"
+                        >
+                          <FormControl>
+                            <Checkbox
+                              className="m-3"
+                              checked={
+                                field.value?.filter((value: any) => {
+                                  return value.id === location.id;
+                                }).length > 0
+                              }
+                              onCheckedChange={(checked) => {
+                                return checked
+                                  ? field.onChange([...field.value, location])
+                                  : field.onChange(
+                                      field.value?.filter(
+                                        (value: any) => value.id !== location.id
+                                      )
+                                    );
+                              }}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                          <FormLabel className="font-normal w-full p-3">
+                            {location.name}
+                          </FormLabel>
+                        </FormItem>
+                      );
+                    }}
+                  />
+                );
+              })}
             </div>
           </form>
         </Form>
