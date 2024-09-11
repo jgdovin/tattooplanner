@@ -7,6 +7,7 @@ import {
   getLoggedInUser,
 } from "@/auth/util";
 import { CustomerType } from "@/store/customer";
+import { getLocationServices } from "@/actions/book";
 
 interface bookingProps {
   params: {
@@ -41,15 +42,8 @@ export default async function Page({ params }: bookingProps) {
     addCustomerToArtist(location.user.id);
   }
 
-  const services = await prisma.service.findMany({
-    where: {
-      locations: {
-        some: {
-          id: locationId,
-        },
-      },
-    },
-  });
+  const services = await getLocationServices(locationId);
+
   const previewOnly = user ? true : false;
   return (
     <div className="p-10 h-full">

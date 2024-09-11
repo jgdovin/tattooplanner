@@ -4,7 +4,7 @@ import { atomWithStorage } from "jotai/utils";
 import { EMPTY_SERVICE_DATA } from "./service";
 
 const steps = ["Select a service", "Select a date/time", "Checkout"];
-export const maxSteps = 5;
+export const maxSteps = 3;
 
 export const currentStepAtom = atomWithStorage("currentStep", 1);
 export const currentServiceAtom = atomWithStorage(

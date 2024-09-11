@@ -30,15 +30,9 @@ import {
   DecreaseStepButton,
   IncreaseStepButton,
 } from "./components/Buttons";
-import {
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  SignOutButton,
-  UserButton,
-} from "@clerk/nextjs";
+import { SignedIn, SignedOut, SignOutButton } from "@clerk/nextjs";
 import { CustomerType } from "@/store/customer";
-import { Button } from "@/components/ui/button";
+
 import Link from "next/link";
 
 interface ClientProps {
@@ -64,6 +58,7 @@ export default function Client({
   const [service, _] = useAtom(fetchBookServiceAtom);
   const [bookingDate] = useAtom(fetchBookingDateAtom);
   const [success] = useAtom(successAtom);
+
   const StepButtons = () => (
     <div className="flex justify-center w-full gap-10">
       <DecreaseStepButton />
@@ -158,8 +153,6 @@ export default function Client({
     return stepWrapper(
       <Checkout locationId={location.id!} customerId={customer?.id} />
     );
-
-  // if (currentStep === 4) return <div>Thank you for booking!</div>;
 
   return stepWrapper(<div>Step {currentStep}</div>);
 }

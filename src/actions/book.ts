@@ -123,6 +123,25 @@ export async function createBooking({
   return res;
 }
 
+export async function getLocationServices(locationId: string) {
+  const services = await prisma.service.findMany({
+    where: {
+      deleted: false,
+      locations: {
+        some: {
+          id: locationId,
+        },
+      },
+    },
+  });
+
+  if (!services) {
+    throw new Error("Location not found");
+  }
+
+  return services;
+}
+
 export async function getLocationAvailability(locationId: string, body: any) {
   const { year, month, serviceId } = body;
 
