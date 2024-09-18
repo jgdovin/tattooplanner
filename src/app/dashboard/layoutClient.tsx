@@ -50,6 +50,11 @@ export default function LayoutClient({
                   icon={faPaintBrush}
                 />
                 <MenuLink
+                  text="Surveys"
+                  href="/dashboard/settings/surveys"
+                  icon={faEnvelope}
+                />
+                <MenuLink
                   text="Email Templates"
                   href="/dashboard/settings/email/templates"
                   icon={faEnvelope}

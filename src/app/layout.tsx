@@ -1,16 +1,13 @@
-import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import { ThemeProvider } from "next-themes";
 import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
-import { extractRouterConfig } from "uploadthing/server";
-import { ourFileRouter } from "./api/uploadthing/core";
-import "@uploadthing/react/styles.css";
 import { cn } from "@/lib/utils";
 
-import { Provider } from "jotai";
+import { Provider as JotaiProvider } from "jotai";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "@/components/ui/sonner";
+import ClientLayout from "./ClientLayout";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -35,13 +32,12 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
-        <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
         <ClerkProvider>
           <ThemeProvider attribute="class">
-            <Provider>
+            <JotaiProvider>
               <Toaster position="top-center" richColors={true} />
-              {children}
-            </Provider>
+              <ClientLayout>{children}</ClientLayout>
+            </JotaiProvider>
           </ThemeProvider>
         </ClerkProvider>
       </body>

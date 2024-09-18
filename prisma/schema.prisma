@@ -26,30 +26,32 @@ model User {
   customers     Customer[]      @relation("UserCustomers")
   customerId    String?
   EmailTemplate EmailTemplate[]
+  Survey        Survey[]
 }
 
 model Customer {
-  id                String    @id @default(cuid())
+  id                String           @id @default(cuid())
   name              String
   email             String
   phone             String
-  validated         Boolean   @default(false)
+  validated         Boolean          @default(false)
   mostRecentPin     String?
-  mostRecentPinDate DateTime? @default(now())
-  notes             String    @default("")
-  address1          String    @default("")
-  address2          String    @default("")
-  city              String    @default("")
-  state             String    @default("")
-  zip               String    @default("")
-  country           String    @default("US")
-  squareId          String?   @unique
-  artists           User[]    @relation("UserCustomers")
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @default(now()) @updatedAt
+  mostRecentPinDate DateTime?        @default(now())
+  notes             String           @default("")
+  address1          String           @default("")
+  address2          String           @default("")
+  city              String           @default("")
+  state             String           @default("")
+  zip               String           @default("")
+  country           String           @default("US")
+  squareId          String?          @unique
+  artists           User[]           @relation("UserCustomers")
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @default(now()) @updatedAt
   projects          Project[]
   bookings          Booking[]
   payments          Payment[]
+  SurveyResponse    SurveyResponse[]
 }
 
 enum LocationType {
@@ -204,6 +206,31 @@ model EmailTemplate {
   global    Boolean  @default(false)
   userId    String
   user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  deleted   Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
+}
+
+model SurveyResponse {
+  id         String   @id @default(cuid())
+  surveyId   String
+  survey     Survey   @relation(fields: [surveyId], references: [id], onDelete: Cascade)
+  customerId String
+  customer   Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  response   Json
+  deleted    Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now()) @updatedAt
+}
+
+model Survey {
+  id        String           @id @default(cuid())
+  name      String
+  json      Json             @default("{}")
+  userId    String
+  user      User?            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  responses SurveyResponse[]
+  deleted   Boolean          @default(false)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @default(now()) @updatedAt
 }
