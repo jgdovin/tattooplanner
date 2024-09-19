@@ -2,10 +2,8 @@
 
 import { SurveyCreatorComponent, SurveyCreator } from "survey-creator-react";
 import { ICreatorOptions } from "survey-creator-core";
-import { setLicenseKey, Serializer } from "survey-core";
+import { useRouter } from "next/navigation";
 
-import "survey-core/defaultV2.min.css";
-import "survey-creator-core/survey-creator-core.min.css";
 import LoadingPage from "@/components/custom/LoadingPage";
 import {
   getSurveyQuery,
@@ -13,18 +11,33 @@ import {
 } from "@/app/queries/dashboard/survey";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
+import {
+  surveyCreatorDefaults,
+  surveyCreatorMethodSetup,
+} from "@/lib/surveyDefaults";
+
+import "survey-core/defaultV2.min.css";
+import "survey-creator-core/survey-creator-core.min.css";
 
 const creatorOptions: ICreatorOptions = {
   isAutoSave: true,
   showThemeTab: true,
+  questionTypes: [
+    "radiogroup",
+    "checkbox",
+    "dropdown",
+    "tagbox",
+    "boolean",
+    "file",
+    "comment",
+    "text",
+    "html",
+    "image",
+    "signaturepad",
+  ],
 };
 
-const licenseKey = process.env.NEXT_PUBLIC_SURVEYJS_PUBLIC_KEY;
-if (!licenseKey) throw new Error("SurveyJS license key not found");
-setLicenseKey(licenseKey);
-
-Serializer.findProperty("file", "storeDataAsText").defaultValue = false;
+surveyCreatorDefaults();
 
 export default function Page({ params }: { params: { id: string } }) {
   const router = useRouter();
@@ -33,13 +46,10 @@ export default function Page({ params }: { params: { id: string } }) {
   const [creatorInstance, setCreatorInstance] =
     useState<SurveyCreator | null>();
 
+  const updateSurvey = updateSurveyQuery({ id });
   useEffect(() => {
     const creator = new SurveyCreator(creatorOptions);
-
-    creator.onSurveyInstanceCreated.add((options) => {
-      const timerPanel = options.propertyGrid.getPanelByName("timer");
-      if (timerPanel) timerPanel.visible = false;
-    });
+    surveyCreatorMethodSetup(creator);
 
     creator.saveSurveyFunc = () => {
       updateSurvey.mutate({ json: creator.JSON });
@@ -47,8 +57,6 @@ export default function Page({ params }: { params: { id: string } }) {
 
     setCreatorInstance(creator);
   }, []);
-
-  const updateSurvey = updateSurveyQuery({ id });
 
   // Set the creator's JSON when data is loaded
   useEffect(() => {
@@ -58,7 +66,7 @@ export default function Page({ params }: { params: { id: string } }) {
       return;
 
     creatorInstance.JSON = data.json;
-  }, [data, creatorInstance]);
+  }, [data]);
 
   if (isLoading || !creatorInstance) return <LoadingPage />;
 
