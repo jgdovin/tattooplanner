@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   postgres:
     image: postgres:latest
@@ -10,3 +8,38 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
     ports:
       - "5432:5432"
+    networks:
+      - app-net
+  next-app:
+    container_name: next-app
+    depends_on:
+      - postgres
+    env_file:
+      - .env
+    rebuild: always
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+      args:
+        - DATABASE_URL=${DATABASE_URL}
+    develop:
+      watch:
+        - action: sync
+          path: .
+          target: /app
+          ignore:
+            - .git
+            - node_modules
+        - action: rebuild
+          path: package.json
+    # Set environment variables based on the .env file
+    volumes:
+      - ./public:/app/public:ro
+    ports:
+      - 3000:3000
+    networks:
+      - app-net
+
+networks:
+  app-net:
+    driver: bridge
