@@ -6,8 +6,7 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   const { userId } = await auth();
-  if (!userId)
-    return Response.json({ error: "Not signed in" }, { status: 401 });
+  if (!userId) return new Response("Unauthorized", { status: 401 });
 
   const { id } = params;
 
@@ -21,8 +20,7 @@ export async function GET(
     },
   });
 
-  if (!res)
-    return Response.json({ error: "Survey not found" }, { status: 404 });
+  if (!res) return new Response("Survey Not found", { status: 404 });
 
   return Response.json(res);
 }
@@ -32,8 +30,7 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   const { userId } = await auth();
-  if (!userId)
-    return Response.json({ error: "Not signed in" }, { status: 401 });
+  if (!userId) return new Response("Unauthorized", { status: 401 });
 
   const { id } = params;
 
@@ -62,8 +59,7 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   const { userId } = await auth();
-  if (!userId)
-    return Response.json({ error: "Not signed in" }, { status: 401 });
+  if (!userId) return new Response("Unauthorized", { status: 401 });
 
   const { id } = params;
 

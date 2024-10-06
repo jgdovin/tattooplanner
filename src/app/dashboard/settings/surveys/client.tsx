@@ -5,7 +5,7 @@ import { useSurveyColumns } from "./columns";
 import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import {
-  createSurveyQuery,
+  createSurveyMutation,
   deleteSurveyQuery,
   getSurveysQuery,
 } from "@/app/queries/dashboard/survey";
@@ -13,11 +13,11 @@ import {
 export default function Client() {
   const queryClient = useQueryClient();
 
-  const createSurvey = createSurveyQuery({ client: queryClient });
+  const createSurvey = createSurveyMutation({ client: queryClient });
 
   const deleteSurvey = deleteSurveyQuery({ client: queryClient });
 
-  const { isPending, error, data, isFetching, isSuccess } = getSurveysQuery();
+  const { isPending, error, data, isFetching } = getSurveysQuery();
 
   if (error) return <div>Error: {error.message}</div>;
 

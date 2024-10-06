@@ -1,10 +1,11 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { deleteLocationAtom, fetchLocationAtom } from "@/store/location";
-import { SetStateAction, useAtom } from "jotai";
-import { Dispatch } from "react";
+
 import LocationCopyButton from "./locationCopyButton";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { UseMutationResult } from "@tanstack/react-query";
+import { AxiosResponse } from "axios";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -17,11 +18,9 @@ export type Location = {
 };
 
 export const useLocationColumns = (
-  setIsOpen: Dispatch<SetStateAction<boolean>>
+  router: AppRouterInstance,
+  deleteLocation: UseMutationResult<AxiosResponse<any, any>, Error, string>
 ) => {
-  const [, deleteLocation] = useAtom(deleteLocationAtom);
-  const [, setLocation] = useAtom(fetchLocationAtom);
-
   return [
     {
       accessorKey: "name",
@@ -42,9 +41,9 @@ export const useLocationColumns = (
           <LocationCopyButton locationId={row.original.id} />
           <Button
             onClick={() => {
-              setLocation(row.original.id).then(() => {
-                setIsOpen(true);
-              });
+              router.push(
+                `/dashboard/settings/locations/edit/${row.original.id}`
+              );
             }}
           >
             Edit
@@ -55,7 +54,7 @@ export const useLocationColumns = (
                 "Are you sure you want to delete this service?"
               );
               if (del) {
-                deleteLocation(row.original.id);
+                deleteLocation.mutate(row.original.id);
               }
             }}
           >

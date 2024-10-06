@@ -219,6 +219,43 @@ export const TimeField = ({ name, form, label }: any) => {
   );
 };
 
+export const SurveyField = ({ name, form, label, ...props }: any) => {
+  return (
+    <FormField
+      control={form.control}
+      name={name}
+      render={({ field }) => {
+        return (
+          <>
+            <FormItem className="flex items-center gap-4">
+              <FormLabel className="text-right text-nowrap font-bold">
+                {label}
+              </FormLabel>
+              <FormControl>
+                <input
+                  type="checkbox"
+                  {...field}
+                  checked={field.value}
+                  onChange={(e) => {
+                    field.onChange(e.target.checked);
+                  }}
+                />
+              </FormControl>
+              <FormMessage className="text-center" />
+            </FormItem>
+            <FormItem className={field.value ? "" : "invisible"}>
+              <FormLabel></FormLabel>
+              <FormControl>
+                <InputField name="surveyId" form={form} />
+              </FormControl>
+            </FormItem>
+          </>
+        );
+      }}
+    />
+  );
+};
+
 export const LocationInputField = ({ name, form, label, ...props }: any) => (
   <FormField
     control={form.control}
@@ -243,6 +280,17 @@ export const LocationInputField = ({ name, form, label, ...props }: any) => (
           <FormMessage className="text-center" />
         </FormItem>
       );
+    }}
+  />
+);
+
+export const HiddenField = ({ name, form, value }: any) => (
+  <FormField
+    control={form.control}
+    name={name}
+    render={({ field }) => {
+      console.log(field.value);
+      return <input type="text" {...field} value={field.value || undefined} />;
     }}
   />
 );

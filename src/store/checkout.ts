@@ -3,7 +3,6 @@ import { atom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 import { EMPTY_SERVICE_DATA } from "./service";
 
-const steps = ["Select a service", "Select a date/time", "Checkout"];
 export const maxSteps = 3;
 
 export const currentStepAtom = atomWithStorage("currentStep", 1);

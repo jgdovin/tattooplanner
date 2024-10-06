@@ -15,6 +15,7 @@ import { Form } from "@/components/ui/form";
 import { useEffect, useState } from "react";
 
 import {
+  HiddenField,
   InputField,
   LocationInputField,
   TextareaField,
@@ -48,6 +49,11 @@ export const formSchema = z.object({
   state: z.string(),
   zip: z.string(),
   id: z.string().optional(),
+  requiresSurveyForBooking: z.boolean().optional(),
+  surveyId: z.preprocess(
+    (surveyId) => (surveyId === "" ? undefined : surveyId),
+    z.string().optional()
+  ),
   monStart: z.string().optional(),
   monEnd: z.string().optional(),
   monClosed: z.boolean(),
@@ -72,6 +78,59 @@ export const formSchema = z.object({
   // timezone: z.string().optional(),
 });
 
+export const LOCATION_TYPES_TYPE = {
+  PHYSICAL: "PHYSICAL",
+  MOBILE: "MOBILE",
+} as const;
+
+const DEFAULT_OPEN_TIME = "09:00";
+const DEFAULT_CLOSE_TIME = "17:00";
+const EMPTY_STRING = "";
+
+export const EMPTY_LOCATION_DATA: LocationType = {
+  id: EMPTY_STRING,
+  name: EMPTY_STRING,
+  nickname: EMPTY_STRING,
+  description: EMPTY_STRING,
+  phone: EMPTY_STRING,
+  email: EMPTY_STRING,
+  website: EMPTY_STRING,
+  x: EMPTY_STRING,
+  instagram: EMPTY_STRING,
+  facebook: EMPTY_STRING,
+  type: LOCATION_TYPES_TYPE["PHYSICAL"], // Default value; change if necessary
+  address1: EMPTY_STRING,
+  address2: EMPTY_STRING,
+  city: EMPTY_STRING,
+  state: EMPTY_STRING,
+  zip: EMPTY_STRING,
+  monStart: DEFAULT_OPEN_TIME,
+  monEnd: DEFAULT_CLOSE_TIME,
+  monClosed: false,
+  tueStart: DEFAULT_OPEN_TIME,
+  tueEnd: DEFAULT_CLOSE_TIME,
+  tueClosed: false,
+  wedStart: DEFAULT_OPEN_TIME,
+  wedEnd: DEFAULT_CLOSE_TIME,
+  wedClosed: false,
+  thuStart: DEFAULT_OPEN_TIME,
+  thuEnd: DEFAULT_CLOSE_TIME,
+  thuClosed: false,
+  friStart: DEFAULT_OPEN_TIME,
+  friEnd: DEFAULT_CLOSE_TIME,
+  friClosed: false,
+  satStart: DEFAULT_OPEN_TIME,
+  satEnd: DEFAULT_CLOSE_TIME,
+  satClosed: true,
+  sunStart: DEFAULT_OPEN_TIME,
+  sunEnd: DEFAULT_CLOSE_TIME,
+  sunClosed: true,
+  requiresSurveyForBooking: false,
+  // surveyId: EMPTY_STRING,
+};
+
+export type LocationType = z.infer<typeof formSchema>;
+
 const daysOfWeek = [
   ["sun", "Sunday"],
   ["mon", "Monday"],
@@ -92,17 +151,10 @@ export function LocationForm({
   const [loading, setLoading] = useState(true);
 
   const { handleSubmit } = form;
-
+  console.log(form);
   useEffect(() => {
     setLoading(false);
   }, []);
-
-  // useEffect(() => {
-  //   fetch("/api/timezone").then(async (res) => {
-  //     const json = await res.json();
-
-  //   });
-  // }, []);
 
   return (
     <Card className="w-full max-w-4xl mx-auto">
@@ -193,6 +245,10 @@ export function LocationForm({
               </div>
               <div className="grid gap-2">
                 <InputField name="facebook" form={form} label="Facebook" />
+                <HiddenField name="surveyId" form={form} />
+              </div>
+              <div className="grid gap-2">
+                {form.error && <div>{form.error.message}</div>}
               </div>
             </div>
           </form>

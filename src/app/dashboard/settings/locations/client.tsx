@@ -1,50 +1,49 @@
 "use client";
 import { DataTable } from "@/components/custom/data-table";
 import { useLocationColumns } from "./columns";
-import { LocationDialog } from "./locationDialog";
-import { useEffect, useState } from "react";
-import { useAtom } from "jotai";
-import { locationsAtom, LocationType } from "@/store/location";
-import { getArtistLocations } from "@/actions/location";
+import {
+  deleteLocationMutation,
+  getArtistLocationsQuery,
+} from "@/app/queries/dashboard/location";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function Client() {
-  const [locations, setLocations] = useAtom(locationsAtom);
-  const [loading, setLoading] = useState(true);
+  const router = useRouter();
+  const queryClient = useQueryClient();
 
-  useEffect(() => {
-    getArtistLocations()
-      .then(async (data) => {
-        if (!data) {
-          setLocations([] as LocationType[]);
-          setLoading(false);
-          return;
-        }
+  const { data, error, isPending } = getArtistLocationsQuery();
+  const deleteLocation = deleteLocationMutation({ client: queryClient });
 
-        setLocations(data as LocationType[]);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }, [setLocations]);
+  const columns = useLocationColumns(router, deleteLocation);
 
-  const [isOpen, setIsOpen] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
+  if (isPending) {
+    return <div>Loading...</div>;
+  }
 
-  const columns = useLocationColumns(() => {
-    setIsOpen(true);
-    setIsEditing(true);
-  });
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
+  const CreateButton = () => (
+    <Button
+      variant="outline"
+      onClick={() => router.push(`/dashboard/settings/locations/create`)}
+    >
+      Create Location <FontAwesomeIcon className="pl-1" icon={faPlus} />
+    </Button>
+  );
 
   return (
     <DataTable
-      CreateButton={() =>
-        LocationDialog({ isOpen, setIsOpen, isEditing, setIsEditing })
-      }
+      CreateButton={CreateButton}
       title="Locations"
       columns={columns}
-      loading={loading}
-      data={locations}
+      loading={false}
+      data={data}
     />
   );
 }

@@ -1,10 +1,10 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { toast } from "sonner";
 
-export const createSurveyQuery = ({ client }: { client: any }) => {
+export const createSurveyMutation = ({ client }: { client: QueryClient }) => {
   return useMutation({
-    mutationFn: (newSurvey: { name: string; json: any }) => {
+    mutationFn: (newSurvey: { name: string; json: Object }) => {
       return axios.post("/api/survey", newSurvey);
     },
     onSuccess: () => {
@@ -14,7 +14,7 @@ export const createSurveyQuery = ({ client }: { client: any }) => {
   });
 };
 
-export const updateSurveyQuery = ({ id }: { id: string }) => {
+export const updateSurveyMutation = ({ id }: { id: string }) => {
   return useMutation({
     mutationFn: (body: { json: any }) => {
       return axios.put(`/api/survey/${id}`, body);
@@ -28,7 +28,7 @@ export const updateSurveyQuery = ({ id }: { id: string }) => {
   });
 };
 
-export const deleteSurveyQuery = ({ client }: { client: any }) => {
+export const deleteSurveyQuery = ({ client }: { client: QueryClient }) => {
   return useMutation({
     mutationFn: (id: string) => {
       return axios.delete(`/api/survey/${id}`);

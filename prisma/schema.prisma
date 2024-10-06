@@ -25,8 +25,8 @@ model User {
   services      Service[]
   customers     Customer[]      @relation("UserCustomers")
   customerId    String?
-  EmailTemplate EmailTemplate[]
-  Survey        Survey[]
+  emailTemplate EmailTemplate[]
+  surveys       Survey[]
 }
 
 model Customer {
@@ -51,7 +51,7 @@ model Customer {
   projects          Project[]
   bookings          Booking[]
   payments          Payment[]
-  SurveyResponse    SurveyResponse[]
+  surveyResponses   SurveyResponse[]
 }
 
 enum LocationType {
@@ -60,52 +60,55 @@ enum LocationType {
 }
 
 model Location {
-  id           String       @id @default(cuid())
-  name         String
-  nickname     String?      @default("")
-  description  String?      @default("")
-  email        String?      @default("")
-  website      String?      @default("")
-  x            String?      @default("")
-  instagram    String?      @default("")
-  facebook     String?      @default("")
-  phone        String?      @default("")
-  availability Json?
-  type         LocationType @default(PHYSICAL)
-  address1     String       @default("")
-  address2     String       @default("")
-  city         String       @default("")
-  state        String       @default("")
-  zip          String       @default("")
-  country      String       @default("US")
-  monStart     String?      @default("")
-  monEnd       String?      @default("")
-  monClosed    Boolean      @default(false)
-  tueStart     String?      @default("")
-  tueEnd       String?      @default("")
-  tueClosed    Boolean      @default(false)
-  wedStart     String?      @default("")
-  wedEnd       String?      @default("")
-  wedClosed    Boolean      @default(false)
-  thuStart     String?      @default("")
-  thuEnd       String?      @default("")
-  thuClosed    Boolean      @default(false)
-  friStart     String?      @default("")
-  friEnd       String?      @default("")
-  friClosed    Boolean      @default(false)
-  satStart     String?      @default("")
-  satEnd       String?      @default("")
-  satClosed    Boolean      @default(false)
-  sunStart     String?      @default("")
-  sunEnd       String?      @default("")
-  sunClosed    Boolean      @default(false)
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @default(now()) @updatedAt
-  userId       String
-  deleted      Boolean      @default(false)
-  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  Services     Service[]    @relation("LocationServices")
-  Booking      Booking[]
+  id                       String       @id @default(cuid())
+  name                     String
+  nickname                 String?      @default("")
+  description              String?      @default("")
+  email                    String?      @default("")
+  website                  String?      @default("")
+  x                        String?      @default("")
+  instagram                String?      @default("")
+  facebook                 String?      @default("")
+  phone                    String?      @default("")
+  availability             Json?
+  type                     LocationType @default(PHYSICAL)
+  address1                 String       @default("")
+  address2                 String       @default("")
+  city                     String       @default("")
+  state                    String       @default("")
+  zip                      String       @default("")
+  country                  String       @default("US")
+  monStart                 String?      @default("")
+  monEnd                   String?      @default("")
+  monClosed                Boolean      @default(false)
+  tueStart                 String?      @default("")
+  tueEnd                   String?      @default("")
+  tueClosed                Boolean      @default(false)
+  wedStart                 String?      @default("")
+  wedEnd                   String?      @default("")
+  wedClosed                Boolean      @default(false)
+  thuStart                 String?      @default("")
+  thuEnd                   String?      @default("")
+  thuClosed                Boolean      @default(false)
+  friStart                 String?      @default("")
+  friEnd                   String?      @default("")
+  friClosed                Boolean      @default(false)
+  satStart                 String?      @default("")
+  satEnd                   String?      @default("")
+  satClosed                Boolean      @default(false)
+  sunStart                 String?      @default("")
+  sunEnd                   String?      @default("")
+  sunClosed                Boolean      @default(false)
+  createdAt                DateTime     @default(now())
+  updatedAt                DateTime     @default(now()) @updatedAt
+  userId                   String
+  deleted                  Boolean      @default(false)
+  requiresSurveyForBooking Boolean      @default(false)
+  surveyId                 String?
+  survey                   Survey?      @relation(fields: [surveyId], references: [id])
+  user                     User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  services                 Service[]    @relation("LocationServices")
+  bookings                 Booking[]
 }
 
 model VerificationToken {
@@ -126,7 +129,7 @@ model Project {
   customer   Customer  @relation(fields: [customerId], references: [id], onDelete: Cascade)
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @default(now()) @updatedAt
-  Booking    Booking[]
+  bookings   Booking[]
 }
 
 model Booking {
@@ -161,7 +164,7 @@ model Service {
   locations              Location[] @relation("LocationServices")
   createdAt              DateTime   @default(now())
   updatedAt              DateTime   @default(now()) @updatedAt
-  Bookings               Booking[]
+  bookings               Booking[]
 }
 
 // model AuditLog {
@@ -233,4 +236,5 @@ model Survey {
   deleted   Boolean          @default(false)
   createdAt DateTime         @default(now())
   updatedAt DateTime         @default(now()) @updatedAt
+  locations Location[]
 }

@@ -4,8 +4,7 @@ import { auth } from "@clerk/nextjs/server";
 export async function GET(req: Request) {
   const { userId } = auth();
 
-  if (!userId)
-    return Response.json({ error: "User not authorized" }, { status: 401 });
+  if (!userId) return new Response("Unauthorized", { status: 401 });
 
   const res = await prisma.booking.findMany({
     where: {

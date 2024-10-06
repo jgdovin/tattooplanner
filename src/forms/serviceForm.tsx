@@ -36,11 +36,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useEffect, useState } from "react";
-import { locationsAtom, LocationType } from "@/store/location";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
-import { getArtistLocations } from "@/actions/location";
-import { useAtom } from "jotai";
+import { getArtistLocationsQuery } from "@/app/queries/dashboard/location";
+import { LocationType } from "./locationForm";
 
 export const formSchema = z.object({
   id: z.string().optional(),
@@ -62,15 +61,13 @@ export function ServiceForm({ submitAction, form, isEditing }: any) {
     durations[0] === "00" ? "0" : durations[0]
   );
   const [durationMinutes, setDurationMinutes] = useState(durations[1]);
-  const [locations, setLocations] = useAtom(locationsAtom);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const res = getArtistLocations().then(async (data) => {
-      setLocations(data as LocationType[]);
-      setLoading(false);
-    });
-  }, [setLocations]);
+  const {
+    data: artistLocations,
+    isFetching,
+    isPending,
+    error,
+  } = getArtistLocationsQuery();
 
   useEffect(() => {
     form.setValue("duration", `${durationHours}:${durationMinutes}`);
@@ -80,11 +77,16 @@ export function ServiceForm({ submitAction, form, isEditing }: any) {
     if (isEditing) {
       return;
     }
-    form.setValue("locations", locations);
-  }, [locations]);
+    form.setValue("locations", artistLocations);
+  }, [artistLocations]);
 
   const formText = isEditing ? "Update" : "Create";
 
+  if (error) return <div>Error: {error.message}</div>;
+
+  if (isFetching || isPending) {
+    return <div>Loading...</div>;
+  }
   return (
     <Card className="w-full max-w-2xl mx-auto">
       <CardHeader>
@@ -187,7 +189,7 @@ export function ServiceForm({ submitAction, form, isEditing }: any) {
             <div className="grid gap-2">
               <Label htmlFor="locations">Locations</Label>
 
-              {locations.map((location: LocationType) => {
+              {artistLocations.map((location: LocationType) => {
                 return (
                   <FormField
                     key={location.id}
@@ -233,7 +235,7 @@ export function ServiceForm({ submitAction, form, isEditing }: any) {
         </Form>
       </CardContent>
       <CardFooter>
-        <Button form="serviceForm" type="submit" disabled={loading}>
+        <Button form="serviceForm" type="submit" disabled={isFetching}>
           {formText} Service
         </Button>
       </CardFooter>
