@@ -44,12 +44,6 @@ export default function Page({ params }: { params: { id: string } }) {
   if (error) return <div>Error: {error.message}</div>;
 
   return (
-    <LocationForm
-      isEditing={true}
-      form={form}
-      submitAction={(submittedData) => {
-        console.log(submittedData);
-      }}
-    />
+    <LocationForm isEditing={true} form={form} submitAction={submitAction} />
   );
 }

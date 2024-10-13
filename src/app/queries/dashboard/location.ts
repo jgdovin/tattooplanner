@@ -34,7 +34,6 @@ export const createLocationMutation = ({
 }) => {
   return useMutation({
     mutationFn: (newLocation: LocationType) => {
-      console.log("test");
       return axios.post("/api/artist/location", newLocation);
     },
     onSuccess: () => {

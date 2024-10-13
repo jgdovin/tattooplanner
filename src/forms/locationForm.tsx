@@ -50,10 +50,6 @@ export const formSchema = z.object({
   zip: z.string(),
   id: z.string().optional(),
   requiresSurveyForBooking: z.boolean().optional(),
-  surveyId: z.preprocess(
-    (surveyId) => (surveyId === "" ? undefined : surveyId),
-    z.string().optional()
-  ),
   monStart: z.string().optional(),
   monEnd: z.string().optional(),
   monClosed: z.boolean(),
@@ -151,7 +147,6 @@ export function LocationForm({
   const [loading, setLoading] = useState(true);
 
   const { handleSubmit } = form;
-  console.log(form);
   useEffect(() => {
     setLoading(false);
   }, []);
@@ -245,7 +240,7 @@ export function LocationForm({
               </div>
               <div className="grid gap-2">
                 <InputField name="facebook" form={form} label="Facebook" />
-                <HiddenField name="surveyId" form={form} />
+                <HiddenField name="id" form={form} />
               </div>
               <div className="grid gap-2">
                 {form.error && <div>{form.error.message}</div>}

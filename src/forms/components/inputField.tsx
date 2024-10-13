@@ -284,13 +284,12 @@ export const LocationInputField = ({ name, form, label, ...props }: any) => (
   />
 );
 
-export const HiddenField = ({ name, form, value }: any) => (
+export const HiddenField = ({ name, form }: any) => (
   <FormField
     control={form.control}
     name={name}
     render={({ field }) => {
-      console.log(field.value);
-      return <input type="text" {...field} value={field.value || undefined} />;
+      return <input type="hidden" {...field} value={field.value} />;
     }}
   />
 );

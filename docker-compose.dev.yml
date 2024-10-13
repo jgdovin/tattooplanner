@@ -2,10 +2,16 @@ services:
   postgres:
     image: postgres:latest
     container_name: postgres
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
+    restart: always
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    env_file:
+      - .env
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     ports:
       - "5432:5432"
     networks:
@@ -13,10 +19,10 @@ services:
   next-app:
     container_name: next-app
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     env_file:
       - .env
-    rebuild: always
     build:
       context: .
       dockerfile: Dockerfile.dev
@@ -29,17 +35,19 @@ services:
           target: /app
           ignore:
             - .git
-            - node_modules
         - action: rebuild
           path: package.json
     # Set environment variables based on the .env file
     volumes:
-      - ./public:/app/public:ro
+      - ./:/app
+      - /app/node_modules
     ports:
       - 3000:3000
     networks:
       - app-net
 
+volumes:
+  db-data:
 networks:
   app-net:
     driver: bridge

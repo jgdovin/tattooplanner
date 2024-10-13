@@ -34,6 +34,7 @@ model Customer {
   name              String
   email             String
   phone             String
+  isGuest           Boolean          @default(false)
   validated         Boolean          @default(false)
   mostRecentPin     String?
   mostRecentPinDate DateTime?        @default(now())
