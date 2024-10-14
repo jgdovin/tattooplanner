@@ -1,7 +1,7 @@
 "use server";
 
 import prisma from "@/lib/prisma";
-import { LocationType } from "@/store/location";
+import { LocationType } from "@/types/location";
 import { auth } from "@clerk/nextjs/server";
 
 export async function getLocation(id: string) {

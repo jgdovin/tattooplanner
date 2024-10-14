@@ -1,14 +1,7 @@
 "use client";
-import {
-  updateLocationMutation,
-  useLocationQuery,
-} from "@/app/queries/dashboard/location";
-import {
-  EMPTY_LOCATION_DATA,
-  formSchema,
-  LocationForm,
-  LocationType,
-} from "@/forms/locationForm";
+import { updateLocationMutation, useLocationQuery } from "@/dashboard/location";
+import { EMPTY_LOCATION_DATA, LocationForm } from "@/forms/locationForm";
+import { formSchema, LocationType } from "@/types/location";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
@@ -35,7 +28,6 @@ export default function Page({ params }: { params: { id: string } }) {
   }, [data, form]);
 
   const submitAction = (submittedData: LocationType) => {
-    console.log("submitting action");
     updateLocation.mutate({ ...submittedData });
   };
 

@@ -1,7 +1,7 @@
 "use server";
 import prisma from "@/lib/prisma";
-import { LocationType } from "@/store/location";
-import { ServiceType } from "@/store/service";
+import { LocationType } from "@/types/location";
+import { ServiceType } from "@/types/service";
 import { auth } from "@clerk/nextjs/server";
 import { Prisma } from "@prisma/client";
 

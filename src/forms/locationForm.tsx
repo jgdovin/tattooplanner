@@ -22,57 +22,15 @@ import {
   TimeField,
 } from "./components/inputField";
 
-import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { LocationType } from "@/types/location";
 
 interface LocationFormProps {
   submitAction: any;
   form: any;
   isEditing: boolean;
 }
-
-export const formSchema = z.object({
-  name: z.string().min(3),
-  nickname: z.string(),
-  description: z.string(),
-  phone: z.string(),
-  email: z.string().email(),
-  website: z.string(),
-  x: z.string(),
-  instagram: z.string(),
-  facebook: z.string(),
-  type: z.enum(["PHYSICAL", "MOBILE"]),
-  address1: z.string(),
-  address2: z.string(),
-  city: z.string(),
-  state: z.string(),
-  zip: z.string(),
-  id: z.string().optional(),
-  requiresSurveyForBooking: z.boolean().optional(),
-  monStart: z.string().optional(),
-  monEnd: z.string().optional(),
-  monClosed: z.boolean(),
-  tueStart: z.string().optional(),
-  tueEnd: z.string().optional(),
-  tueClosed: z.boolean(),
-  wedStart: z.string().optional(),
-  wedEnd: z.string().optional(),
-  wedClosed: z.boolean(),
-  thuStart: z.string().optional(),
-  thuEnd: z.string().optional(),
-  thuClosed: z.boolean(),
-  friStart: z.string().optional(),
-  friEnd: z.string().optional(),
-  friClosed: z.boolean(),
-  satStart: z.string().optional(),
-  satEnd: z.string().optional(),
-  satClosed: z.boolean(),
-  sunStart: z.string().optional(),
-  sunEnd: z.string().optional(),
-  sunClosed: z.boolean(),
-  // timezone: z.string().optional(),
-});
 
 export const LOCATION_TYPES_TYPE = {
   PHYSICAL: "PHYSICAL",
@@ -122,10 +80,7 @@ export const EMPTY_LOCATION_DATA: LocationType = {
   sunEnd: DEFAULT_CLOSE_TIME,
   sunClosed: true,
   requiresSurveyForBooking: false,
-  // surveyId: EMPTY_STRING,
 };
-
-export type LocationType = z.infer<typeof formSchema>;
 
 const daysOfWeek = [
   ["sun", "Sunday"],

@@ -41,12 +41,12 @@ export default function LayoutClient({
                 />
                 <MenuLink
                   text="Locations"
-                  href="/dashboard/settings/locations"
+                  href="/dashboard/locations"
                   icon={faBuilding}
                 />
                 <MenuLink
                   text="Services"
-                  href="/dashboard/settings/services"
+                  href="/dashboard/services"
                   icon={faPaintBrush}
                 />
                 <MenuLink

@@ -1,6 +1,6 @@
 "use client";
 
-import { getSurveyQuery } from "@/app/queries/dashboard/survey";
+import { getSurveyQuery } from "@/dashboard/survey";
 import { Survey } from "survey-react-ui";
 import { Model, Serializer } from "survey-core";
 import "survey-core/defaultV2.min.css";

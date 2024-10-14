@@ -8,7 +8,7 @@ import {
   createSurveyMutation,
   deleteSurveyQuery,
   getSurveysQuery,
-} from "@/app/queries/dashboard/survey";
+} from "@/dashboard/survey";
 
 export default function Client() {
   const queryClient = useQueryClient();

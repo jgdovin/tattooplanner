@@ -1,7 +1,7 @@
 "use client";
-import { createLocationMutation } from "@/app/queries/dashboard/location";
-import { formSchema, LocationForm, LocationType } from "@/forms/locationForm";
-import { EMPTY_LOCATION_DATA } from "@/forms/locationForm";
+import { createLocationMutation } from "@/dashboard/location";
+import { LocationForm, EMPTY_LOCATION_DATA } from "@/forms/locationForm";
+import { formSchema, LocationType } from "@/types/location";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";

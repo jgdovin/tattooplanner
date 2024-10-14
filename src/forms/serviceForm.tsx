@@ -38,20 +38,8 @@ import {
 import { useEffect, useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
-import { getArtistLocationsQuery } from "@/app/queries/dashboard/location";
-import { LocationType } from "./locationForm";
-
-export const formSchema = z.object({
-  id: z.string().optional(),
-  name: z.string().min(3, { message: "Name must be at least 3 characters" }),
-  description: z.string(),
-  price: z.number().default(0),
-  duration: z.string(),
-  cancellationFee: z.number().default(0),
-  hidePriceFromCustomers: z.boolean().default(false),
-  bookableByCustomers: z.boolean().default(true),
-  locations: z.array(z.any()).default([]),
-});
+import { getArtistLocationsQuery } from "@/dashboard/location";
+import { LocationType } from "@/types/location";
 
 export function ServiceForm({ submitAction, form, isEditing }: any) {
   const { handleSubmit, getValues } = form;

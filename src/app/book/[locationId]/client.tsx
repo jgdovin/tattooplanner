@@ -5,7 +5,7 @@ import { useTheme } from "next-themes";
 import { useAtom } from "jotai";
 import dayjs from "dayjs";
 
-import { LocationType } from "@/store/location";
+import { LocationType } from "@/types/location";
 
 import {
   fetchBookServiceAtom,

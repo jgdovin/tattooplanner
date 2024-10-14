@@ -5,10 +5,7 @@ import { ICreatorOptions } from "survey-creator-core";
 import { useRouter } from "next/navigation";
 
 import LoadingPage from "@/components/custom/LoadingPage";
-import {
-  getSurveyQuery,
-  updateSurveyMutation,
-} from "@/app/queries/dashboard/survey";
+import { getSurveyQuery, updateSurveyMutation } from "@/dashboard/survey";
 import { useEffect, useState } from "react";
 import {
   surveyCreatorDefaults,
