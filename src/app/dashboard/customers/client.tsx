@@ -5,8 +5,8 @@ import { useCustomerColumns } from "./columns";
 import { CustomerDialog } from "./customerDialog";
 import { useEffect, useState } from "react";
 import { useAtom } from "jotai";
-import { customersAtom } from "@/store/customer";
-import { getCustomers } from "@/actions/customer";
+import { customersAtom } from "@/lib/store/customer";
+import { getCustomers } from "@/lib/actions/customer";
 
 export default function Client() {
   const [customers, setCustomers] = useAtom(customersAtom);

@@ -1,4 +1,4 @@
-import { sendConfirmationEmail } from "@/actions/book";
+import { sendConfirmationEmail } from "@/lib/actions/book";
 import { auth } from "@clerk/nextjs/server";
 import { getServerSession } from "next-auth";
 

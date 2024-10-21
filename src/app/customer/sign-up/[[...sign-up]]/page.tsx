@@ -1,6 +1,6 @@
 "use client";
 
-import { getLocationsArtistId } from "@/actions/book";
+import { getLocationsArtistId } from "@/lib/actions/book";
 import { SignUp } from "@clerk/nextjs";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";

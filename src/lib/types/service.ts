@@ -1,4 +1,4 @@
-import { formSchema as locationSchema } from "@/types/location";
+import { formSchema as locationSchema } from "@/lib/types/location";
 import { z } from "zod";
 
 export const formSchema = z.object({

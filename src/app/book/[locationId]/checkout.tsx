@@ -1,12 +1,12 @@
 "use client";
-import { createBooking } from "@/actions/book";
-import { submitPayment } from "@/actions/square";
+import { createBooking } from "@/lib/actions/book";
+import { submitPayment } from "@/lib/actions/square";
 
 import {
   fetchBookingDateAtom,
   successAtom,
   fetchBookServiceAtom,
-} from "@/store/checkout";
+} from "@/lib/store/checkout";
 import { SignedIn, SignedOut, SignInButton, useUser } from "@clerk/nextjs";
 import { useAtom } from "jotai";
 import { redirect } from "next/navigation";
@@ -86,11 +86,10 @@ export default function Checkout({
             >
               <SignedIn>
                 <CreditCard />
-                
-                </SignedIn>
-                <SignedOut>
-                  You must sign in to complete checkout (for now)
-                </SignedOut>
+              </SignedIn>
+              <SignedOut>
+                You must sign in to complete checkout (for now)
+              </SignedOut>
             </PaymentForm>
           </div>
         </div>

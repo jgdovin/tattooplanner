@@ -1,16 +1,16 @@
 "use client";
 
-import { Service } from "@/app/dashboard/settings/services/columns";
-import { LocationType } from "@/types/location";
+import { LocationType } from "@/lib/types/location";
 
 import ShopInfo from "./components/ShopInfo";
 import ServiceSelector from "./components/ServiceSelector";
+import { ServiceType } from "@/lib/types/service";
 
 export default function SelectAService({
   services,
   location,
 }: {
-  services: Service[];
+  services: ServiceType[];
   location: LocationType;
 }) {
   return (

@@ -12,7 +12,7 @@ import {
 
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 
-import { formSchema, ServiceForm } from "@/forms/serviceForm";
+import { formSchema, ServiceForm } from "@/components/forms/serviceForm";
 import * as z from "zod";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";

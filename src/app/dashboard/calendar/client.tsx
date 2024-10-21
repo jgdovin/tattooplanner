@@ -1,6 +1,6 @@
 "use client";
 
-import { getArtistBookings } from "@/actions/booking";
+import { getArtistBookings } from "@/lib/actions/booking";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import dayjs from "dayjs";

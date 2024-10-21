@@ -3,8 +3,8 @@ import {
   deleteTemplate,
   getTemplate,
   updateTemplate,
-} from "@/actions/emailTemplate";
-import { formSchema } from "@/forms/emailTemplateForm";
+} from "@/lib/actions/emailTemplate";
+import { formSchema } from "@/components/forms/emailTemplateForm";
 import { atom } from "jotai";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -54,7 +54,7 @@ export const addTemplateAtom = atom(
 
     set(templatesAtom, await addTemplate(get(templatesAtom), template));
     const res = (await createTemplate(template)) as EmailTemplateType;
-    
+
     if (!res.id) {
       toast.error("Template creation failed");
       set(templatesAtom, oldTemplates);

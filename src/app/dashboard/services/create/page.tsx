@@ -1,12 +1,12 @@
 "use client";
-import { createServiceMutation } from "@/dashboard/service";
-import { ServiceType, formSchema } from "@/types/service";
+import { createServiceMutation } from "@/lib/queries/service";
+import { ServiceType, formSchema } from "@/lib/types/service";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { EMPTY_SERVICE_DATA } from "@/types/service";
-import { ServiceForm } from "@/forms/serviceForm";
+import { EMPTY_SERVICE_DATA } from "@/lib/types/service";
+import { ServiceForm } from "@/components/forms/serviceForm";
 
 export default function Page() {
   const router = useRouter();

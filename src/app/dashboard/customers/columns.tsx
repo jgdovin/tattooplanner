@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { deleteCustomerAtom, fetchCustomerAtom } from "@/store/customer";
+import { deleteCustomerAtom, fetchCustomerAtom } from "@/lib/store/customer";
 import { SetStateAction, useAtom } from "jotai";
 import { Dispatch } from "react";
 

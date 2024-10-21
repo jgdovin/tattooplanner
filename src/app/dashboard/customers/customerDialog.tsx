@@ -12,7 +12,7 @@ import {
 
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 
-import { formSchema, CustomerForm } from "@/forms/customerForm";
+import { formSchema, CustomerForm } from "@/components/forms/customerForm";
 import * as z from "zod";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
@@ -23,7 +23,7 @@ import {
   addCustomerAtom,
   updateCustomerAtom,
   fetchCustomerAtom,
-} from "@/store/customer";
+} from "@/lib/store/customer";
 
 interface CustomerDialogProps {
   isOpen: boolean;

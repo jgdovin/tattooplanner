@@ -1,4 +1,4 @@
-import { getArtistRecentBookings } from "@/actions/booking";
+import { getArtistRecentBookings } from "@/lib/actions/booking";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScissorsIcon, CalendarIcon } from "lucide-react";
 

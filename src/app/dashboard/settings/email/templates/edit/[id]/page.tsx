@@ -1,4 +1,4 @@
-import { getTemplate } from "@/actions/emailTemplate";
+import { getTemplate } from "@/lib/actions/emailTemplate";
 import Client from "./client";
 import MyError from "./myError";
 import { redirect } from "next/navigation";

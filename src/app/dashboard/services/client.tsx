@@ -1,7 +1,7 @@
 "use client";
 import { DataTable } from "@/components/custom/data-table";
 import { useServiceColumns } from "./columns";
-import { getArtistLocationsQuery } from "@/dashboard/location";
+import { getArtistLocationsQuery } from "@/lib/queries/location";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";

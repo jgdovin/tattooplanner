@@ -11,8 +11,8 @@ import {
   increaseStepAtom,
   fetchBookingDateAtom,
   fetchBookServiceAtom,
-} from "@/store/checkout";
-import { getLocationAvailability } from "@/actions/book";
+} from "@/lib/store/checkout";
+import { getLocationAvailability } from "@/lib/actions/book";
 
 export default function SelectADate({ locationId }: { locationId: string }) {
   const [bookingDate, setBookingDate] = useAtom(fetchBookingDateAtom);

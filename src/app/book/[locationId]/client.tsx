@@ -5,14 +5,14 @@ import { useTheme } from "next-themes";
 import { useAtom } from "jotai";
 import dayjs from "dayjs";
 
-import { LocationType } from "@/types/location";
+import { LocationType } from "@/lib/types/location";
 
 import {
   fetchBookServiceAtom,
   currentStepAtom,
   fetchBookingDateAtom,
   successAtom,
-} from "@/store/checkout";
+} from "@/lib/store/checkout";
 
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
@@ -31,7 +31,7 @@ import {
   IncreaseStepButton,
 } from "./components/Buttons";
 import { SignedIn, SignedOut, SignOutButton } from "@clerk/nextjs";
-import { CustomerType } from "@/store/customer";
+import { CustomerType } from "@/lib/store/customer";
 
 import Link from "next/link";
 

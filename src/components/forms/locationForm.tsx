@@ -24,7 +24,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { LocationType } from "@/types/location";
+import { LocationType } from "@/lib/types/location";
 
 interface LocationFormProps {
   submitAction: any;

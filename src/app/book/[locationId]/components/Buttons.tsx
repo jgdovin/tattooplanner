@@ -8,7 +8,7 @@ import {
   maxSteps,
   fetchBookServiceAtom,
   clearCheckoutAtom,
-} from "@/store/checkout";
+} from "@/lib/store/checkout";
 import { useAtom } from "jotai";
 
 export const IncreaseStepButton = () => {

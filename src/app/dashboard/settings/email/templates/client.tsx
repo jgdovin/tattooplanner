@@ -4,8 +4,8 @@ import { useTemplateColumns as useTemplateColumns } from "./columns";
 import { TemplateDialog } from "./templateDialog";
 import { useEffect, useState } from "react";
 import { useAtom } from "jotai";
-import { getTemplates } from "@/actions/emailTemplate";
-import { EmailTemplateType, templatesAtom } from "@/store/emailTemplate";
+import { getTemplates } from "@/lib/actions/emailTemplate";
+import { EmailTemplateType, templatesAtom } from "@/lib/store/emailTemplate";
 
 export default function Client() {
   const [templates, setTemplates] = useAtom(templatesAtom);

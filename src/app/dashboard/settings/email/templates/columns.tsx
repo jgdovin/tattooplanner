@@ -1,7 +1,10 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { deleteTemplateAtom, fetchTemplateAtom } from "@/store/emailTemplate";
+import {
+  deleteTemplateAtom,
+  fetchTemplateAtom,
+} from "@/lib/store/emailTemplate";
 
 import { SetStateAction, useAtom } from "jotai";
 import { Dispatch } from "react";

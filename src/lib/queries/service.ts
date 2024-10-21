@@ -1,5 +1,5 @@
-import { LocationType } from "@/types/location";
-import { ServiceType } from "@/types/service";
+import { LocationType } from "@/lib/types/location";
+import { ServiceType } from "@/lib/types/service";
 import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";

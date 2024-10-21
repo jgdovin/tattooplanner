@@ -3,8 +3,8 @@ import {
   deleteCustomer,
   getCustomer,
   updateCustomer,
-} from "@/actions/customer";
-import { formSchema } from "@/forms/customerForm";
+} from "@/lib/actions/customer";
+import { formSchema } from "@/components/forms/customerForm";
 import { atom } from "jotai";
 import { toast } from "sonner";
 import { z } from "zod";

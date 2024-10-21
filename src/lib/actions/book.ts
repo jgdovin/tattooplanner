@@ -1,7 +1,7 @@
 "use server";
 import prisma from "@/lib/prisma";
 import { convertStringDurationToMinutes, getMissingDates } from "@/lib/utils";
-import { LocationType } from "@/types/location";
+import { LocationType } from "@/lib/types/location";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import { getSlots } from "slot-calculator";

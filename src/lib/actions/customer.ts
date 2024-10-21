@@ -1,7 +1,7 @@
 "use server";
 
 import prisma from "@/lib/prisma";
-import { CustomerType } from "@/store/customer";
+import { CustomerType } from "@/lib/store/customer";
 import { auth, createClerkClient } from "@clerk/nextjs/server";
 
 export async function getCustomers() {

@@ -1,14 +1,18 @@
-import { Service } from "@/app/dashboard/settings/services/columns";
 import { convertStringDurationToHoursAndMinutes } from "@/lib/utils";
-import { increaseStepAtom } from "@/store/checkout";
-import { fetchBookServiceAtom } from "@/store/checkout";
+import { increaseStepAtom } from "@/lib/store/checkout";
+import { fetchBookServiceAtom } from "@/lib/store/checkout";
 import { faCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Label } from "@radix-ui/react-label";
 import { RadioGroup, RadioGroupItem } from "@radix-ui/react-radio-group";
 import { useAtom } from "jotai";
+import { ServiceType } from "@/lib/types/service";
 
-export default function ServiceSelector({ services }: { services: Service[] }) {
+export default function ServiceSelector({
+  services,
+}: {
+  services: ServiceType[];
+}) {
   const [, increaseStep] = useAtom(increaseStepAtom);
   const [service, setService] = useAtom(fetchBookServiceAtom);
   return (

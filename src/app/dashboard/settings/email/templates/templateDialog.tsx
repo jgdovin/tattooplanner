@@ -19,13 +19,16 @@ import { useForm } from "react-hook-form";
 import { useAtom } from "jotai";
 
 import { DialogDescription } from "@radix-ui/react-dialog";
-import { formSchema, EmailTemplateForm } from "@/forms/emailTemplateForm";
+import {
+  formSchema,
+  EmailTemplateForm,
+} from "@/components/forms/emailTemplateForm";
 import {
   addTemplateAtom,
   EMPTY_TEMPLATE_DATA,
   fetchTemplateAtom,
   updateTemplateAtom,
-} from "@/store/emailTemplate";
+} from "@/lib/store/emailTemplate";
 
 interface TemplateDialogProps {
   isOpen: boolean;

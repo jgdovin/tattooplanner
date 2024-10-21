@@ -4,7 +4,7 @@ import { useLocationColumns } from "./columns";
 import {
   deleteLocationMutation,
   getArtistLocationsQuery,
-} from "@/dashboard/location";
+} from "@/lib/queries/location";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";

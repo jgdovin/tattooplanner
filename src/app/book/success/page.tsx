@@ -1,5 +1,5 @@
 "use client";
-import { clearCheckoutAtom, successAtom } from "@/store/checkout";
+import { clearCheckoutAtom, successAtom } from "@/lib/store/checkout";
 import { useAtom } from "jotai";
 import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";

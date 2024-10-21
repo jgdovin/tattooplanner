@@ -1,7 +1,10 @@
 "use client";
 
-import { EmailTemplateForm, formSchema } from "@/forms/emailTemplateForm";
-import { updateTemplateAtom } from "@/store/emailTemplate";
+import {
+  EmailTemplateForm,
+  formSchema,
+} from "@/components/forms/emailTemplateForm";
+import { updateTemplateAtom } from "@/lib/store/emailTemplate";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAtom } from "jotai";
 import { useForm } from "react-hook-form";

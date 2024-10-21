@@ -1,13 +1,13 @@
 import prisma from "@/lib/prisma";
 import Client from "./client";
-import { LocationType } from "@/types/location";
+import { LocationType } from "@/lib/types/location";
 import {
   addCustomerToArtist,
   getLoggedInCustomer,
   getLoggedInUser,
-} from "@/auth/util";
-import { CustomerType } from "@/store/customer";
-import { getLocationServices } from "@/actions/book";
+} from "@/lib/auth";
+import { CustomerType } from "@/lib/store/customer";
+import { getLocationServices } from "@/lib/actions/book";
 
 interface bookingProps {
   params: {
