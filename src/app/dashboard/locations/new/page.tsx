@@ -1,22 +1,26 @@
 "use client";
-import { createLocationMutation } from "@/lib/queries/location";
 import {
-  LocationForm,
   EMPTY_LOCATION_DATA,
-} from "@/components/forms/locationForm";
-import { formSchema, LocationType } from "@/lib/types/location";
+  LocationForm,
+} from "@/features/locations/components/forms/LocationForm";
+import { createLocationMutation } from "@/features/locations/server/db/location";
+import {
+  locationSchema,
+  type LocationType,
+} from "@/features/locations/schemas/locations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import ContentCard from "@/components/ContentCard";
 
-export default function Page() {
+export default function NewLocationPage() {
   const router = useRouter();
   const client = useQueryClient();
   const createLocation = createLocationMutation({ client, router });
 
   const form = useForm({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(locationSchema),
     defaultValues: EMPTY_LOCATION_DATA,
   });
 
@@ -25,6 +29,8 @@ export default function Page() {
   };
 
   return (
-    <LocationForm form={form} isEditing={false} submitAction={submitAction} />
+    <ContentCard title="New Location" className="self-center">
+      <LocationForm form={form} isEditing={false} submitAction={submitAction} />
+    </ContentCard>
   );
 }

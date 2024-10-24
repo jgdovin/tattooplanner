@@ -1,12 +1,12 @@
 "use server";
 import prisma from "@/lib/prisma";
 import { convertStringDurationToMinutes, getMissingDates } from "@/lib/utils";
-import { LocationType } from "@/lib/types/location";
+import { LocationType } from "@/features/locations/schemas/locations";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import { getSlots } from "slot-calculator";
-import { sendEmail } from "./mailer";
-import { getLocation } from "./location";
+// import { sendEmail } from "./mailer";
+// import { getLocation } from "./location";
 import { getBooking } from "./booking";
 import { getTemplate } from "./emailTemplate";
 
@@ -280,24 +280,24 @@ export async function sendConfirmationEmail(params: {
     throw new Error("Customer not found");
   }
 
-  const location = await getLocation(locationId);
-  if (!location) {
-    throw new Error("Location not found");
-  }
+  // const location = await getLocation(locationId);
+  // if (!location) {
+  //   throw new Error("Location not found");
+  // }
 
   const booking = await getBooking(bookingId);
   if (!booking) {
     throw new Error("Booking not found");
   }
 
-  sendEmail({
-    to: customer.email,
-    subject: `Booking Confirmation for ${location.name}`,
-    text: `Thank you for booking with ${
-      location.name
-    }. Your booking is confirmed for ${dayjs(booking.start).format(
-      "MMMM DD, YYYY"
-    )} at ${dayjs(booking.start).format("hh:mm A")}.`,
-    html: emailTemplate.body,
-  });
+  // sendEmail({
+  //   to: customer.email,
+  //   subject: `Booking Confirmation for ${location.name}`,
+  //   text: `Thank you for booking with ${
+  //     location.name
+  //   }. Your booking is confirmed for ${dayjs(booking.start).format(
+  //     "MMMM DD, YYYY"
+  //   )} at ${dayjs(booking.start).format("hh:mm A")}.`,
+  //   html: emailTemplate.body,
+  // });
 }

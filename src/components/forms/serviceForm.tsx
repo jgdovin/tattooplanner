@@ -38,7 +38,7 @@ import {
 import { useEffect, useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
-import { getArtistLocationsQuery } from "@/lib/queries/location";
+import { getArtistLocationsQuery } from "@/features/locations/server/db/location";
 import { LocationType } from "@/lib/types/location";
 
 export function ServiceForm({ submitAction, form, isEditing }: any) {

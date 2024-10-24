@@ -1,6 +1,6 @@
 "use client";
 
-import { LocationType } from "@/lib/types/location";
+import { LocationType } from "@/features/locations/schemas/locations";
 
 import ShopInfo from "./components/ShopInfo";
 import ServiceSelector from "./components/ServiceSelector";

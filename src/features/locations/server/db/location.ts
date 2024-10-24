@@ -1,4 +1,4 @@
-import { LocationType } from "@/components/forms/locationForm";
+import { LocationType } from "@/features/locations/schemas/locations";
 import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";

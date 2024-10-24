@@ -6,7 +6,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { EMPTY_SERVICE_DATA } from "@/lib/types/service";
-import { ServiceForm } from "@/components/forms/serviceForm";
+import { ServiceForm } from "@/features/locations/components/forms/ServiceForm";
 
 export default function Page() {
   const router = useRouter();

@@ -1,17 +1,19 @@
-import { ThemeProvider } from "next-themes";
 import type { Metadata } from "next";
-import { Inter as FontSans } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 
-import { Provider as JotaiProvider } from "jotai";
 import { ClerkProvider } from "@clerk/nextjs";
-import { Toaster } from "@/components/ui/sonner";
-import ClientLayout from "./ClientLayout";
 
-const fontSans = FontSans({
-  subsets: ["latin"],
-  variable: "--font-sans",
+const geistSans = localFont({
+  src: "./fonts/GeistVF.woff",
+  variable: "--font-geist-sans",
+  weight: "100 900",
+});
+const geistMono = localFont({
+  src: "./fonts/GeistMonoVF.woff",
+  variable: "--font-geist-mono",
+  weight: "100 900",
 });
 
 export const metadata: Metadata = {
@@ -29,17 +31,11 @@ export default function RootLayout({
       <body
         className={cn(
           "min-h-screen bg-background font-sans antialiased",
-          fontSans.variable
+          geistSans.variable,
+          geistMono.variable
         )}
       >
-        <ClerkProvider>
-          <ThemeProvider attribute="class">
-            <JotaiProvider>
-              <Toaster position="top-center" richColors={true} />
-              <ClientLayout>{children}</ClientLayout>
-            </JotaiProvider>
-          </ThemeProvider>
-        </ClerkProvider>
+        <ClerkProvider>{children}</ClerkProvider>
       </body>
     </html>
   );

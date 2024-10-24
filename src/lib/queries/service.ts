@@ -1,4 +1,4 @@
-import { LocationType } from "@/lib/types/location";
+import { LocationType } from "@/features/locations/schemas/locations";
 import { ServiceType } from "@/lib/types/service";
 import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";

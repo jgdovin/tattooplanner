@@ -1,6 +1,6 @@
 import prisma from "@/lib/prisma";
 import Client from "./client";
-import { LocationType } from "@/lib/types/location";
+import { LocationType } from "@/features/locations/schemas/locations";
 import {
   addCustomerToArtist,
   getLoggedInCustomer,

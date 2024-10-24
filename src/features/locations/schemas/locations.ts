@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const formSchema = z.object({
+export const locationSchema = z.object({
   name: z.string().min(3),
   nickname: z.string(),
   description: z.string(),
@@ -41,4 +41,4 @@ export const formSchema = z.object({
   sunClosed: z.boolean(),
 });
 
-export type LocationType = z.infer<typeof formSchema>;
+export type LocationType = z.infer<typeof locationSchema>;

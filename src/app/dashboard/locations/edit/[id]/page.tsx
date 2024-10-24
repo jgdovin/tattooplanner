@@ -2,12 +2,15 @@
 import {
   updateLocationMutation,
   useLocationQuery,
-} from "@/lib/queries/location";
+} from "@/features/locations/server/db/location";
 import {
   EMPTY_LOCATION_DATA,
   LocationForm,
-} from "@/components/forms/locationForm";
-import { formSchema, LocationType } from "@/lib/types/location";
+} from "@/features/locations/components/forms/LocationForm";
+import {
+  locationSchema,
+  LocationType,
+} from "@/features/locations/schemas/locations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
@@ -25,7 +28,7 @@ export default function Page({ params }: { params: { id: string } }) {
 
   const form = useForm({
     defaultValues: data || EMPTY_LOCATION_DATA,
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(locationSchema),
   });
 
   useEffect(() => {

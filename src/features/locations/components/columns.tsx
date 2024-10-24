@@ -2,22 +2,12 @@
 
 import { Button } from "@/components/ui/button";
 
-import LocationCopyButton from "./locationCopyButton";
+import LocationCopyButton from "@/features/locations/components/LocationCopyButton";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { UseMutationResult } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
-export type Location = {
-  [key: string]: any;
-  id: string;
-  name: string;
-  nickname: string;
-  address1: string;
-};
-
-export const useLocationColumns = (
+export const getLocationColumns = (
   router: AppRouterInstance,
   deleteLocation: UseMutationResult<AxiosResponse<any, any>, Error, string>
 ) => {
