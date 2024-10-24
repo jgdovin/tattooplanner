@@ -31,9 +31,7 @@ export const getLocationColumns = (
           <LocationCopyButton locationId={row.original.id} />
           <Button
             onClick={() => {
-              router.push(
-                `/dashboard/settings/locations/edit/${row.original.id}`
-              );
+              router.push(`/dashboard/locations/edit/${row.original.id}`);
             }}
           >
             Edit
