@@ -1,5 +1,4 @@
 "use client";
-import { createServiceMutation } from "@/lib/queries/service";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
@@ -12,11 +11,12 @@ import {
   serviceSchema,
   ServiceType,
 } from "@/features/services/schemas/services";
+import { createServiceMutation } from "@/features/services/server/db/services";
 
 export default function Page() {
   const router = useRouter();
   const client = useQueryClient();
-  const createLocation = createServiceMutation({ client, router });
+  const createService = createServiceMutation({ client, router });
 
   const form = useForm<ServiceType>({
     resolver: zodResolver(serviceSchema),
@@ -24,7 +24,7 @@ export default function Page() {
   });
 
   const submitAction = (submittedData: ServiceType) => {
-    createLocation.mutate({ ...submittedData });
+    createService.mutate({ ...submittedData });
   };
 
   return (

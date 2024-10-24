@@ -67,3 +67,22 @@ export const deleteServiceMutation = ({ client }: { client: QueryClient }) => {
     },
   });
 };
+
+export const createServiceMutation = ({
+  client,
+  router,
+}: {
+  client: QueryClient;
+  router: AppRouterInstance;
+}) => {
+  return useMutation({
+    mutationFn: (newService: ServiceType) => {
+      return axios.post("/api/services", newService);
+    },
+    onSuccess: () => {
+      toast.success("Service created");
+      client.invalidateQueries({ queryKey: ["artistServices"] });
+      router.push("/dashboard/services");
+    },
+  });
+};

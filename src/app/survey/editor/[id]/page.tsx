@@ -5,7 +5,6 @@ import { ICreatorOptions } from "survey-creator-core";
 import { useRouter } from "next/navigation";
 
 import LoadingPage from "@/components/custom/LoadingPage";
-import { getSurveyQuery, updateSurveyMutation } from "@/lib/queries/survey";
 import { useEffect, useState } from "react";
 import {
   surveyCreatorDefaults,
@@ -14,6 +13,10 @@ import {
 
 import "survey-core/defaultV2.min.css";
 import "survey-creator-core/survey-creator-core.min.css";
+import {
+  getSurveyQuery,
+  updateSurveyMutation,
+} from "@/features/surveys/server/db/surveys";
 
 const creatorOptions: ICreatorOptions = {
   isAutoSave: true,

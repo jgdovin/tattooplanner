@@ -3,14 +3,14 @@ import { DataTable } from "@/components/custom/data-table";
 import { useSurveyColumns } from "./columns";
 
 import { useQueryClient } from "@tanstack/react-query";
-import { Button } from "@/components/ui/button";
+
+import ContentCard from "@/components/ContentCard";
+import { CreateButton } from "@/components/CreateButton";
 import {
   createSurveyMutation,
   deleteSurveyQuery,
   getSurveysQuery,
-} from "@/lib/queries/survey";
-import ContentCard from "@/components/ContentCard";
-import { CreateButton } from "@/components/CreateButton";
+} from "@/features/surveys/server/db/surveys";
 
 export default function Client() {
   const queryClient = useQueryClient();
@@ -22,19 +22,6 @@ export default function Client() {
   const { isPending, error, data, isFetching } = getSurveysQuery();
 
   if (error) return <div>Error: {error.message}</div>;
-
-  // const CreateButton = () => {
-  //   return (
-  //     <Button
-  //       variant="outline"
-  //       onClick={() => {
-  //         createSurvey.mutate({ name: "New Survey", json: {} });
-  //       }}
-  //     >
-  //       Create Survey
-  //     </Button>
-  //   );
-  // };
 
   const columns = useSurveyColumns({ deleteSurvey: deleteSurvey.mutate });
 

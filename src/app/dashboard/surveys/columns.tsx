@@ -42,7 +42,7 @@ export const useSurveyColumns = ({
           </Button>
           <Button
             onClick={() => {
-              window.location.href = `/dashboard/settings/surveys/${row.original.id}`;
+              window.location.href = `/dashboard/surveys/${row.original.id}`;
             }}
           >
             Preview

@@ -18,7 +18,7 @@ export const surveyCreatorMethodSetup = (
       visible: true,
       visibleIndex: 1,
       action: () => {
-        router.push("/dashboard/settings/surveys");
+        router.push("/dashboard/surveys");
       },
     })
   );

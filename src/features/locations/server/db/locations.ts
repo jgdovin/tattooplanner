@@ -39,7 +39,7 @@ export const createLocationMutation = ({
     onSuccess: () => {
       toast.success("Location created");
       client.invalidateQueries({ queryKey: ["artistLocations"] });
-      router.push("/dashboard/settings/locations");
+      router.push("/dashboard/locations");
     },
   });
 };
@@ -58,7 +58,7 @@ export const updateLocationMutation = ({
     onSuccess: () => {
       toast.success("Location updated");
       client.invalidateQueries({ queryKey: ["artistLocations"] });
-      router.push("/dashboard/settings/locations");
+      router.push("/dashboard/locations");
     },
   });
 };
