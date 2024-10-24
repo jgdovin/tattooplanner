@@ -8,7 +8,7 @@ export async function GET() {
   const res = await prisma.survey.findMany({
     where: {
       user: {
-        squareId: userId,
+        clerkId: userId,
       },
       deleted: false,
     },
@@ -29,7 +29,7 @@ export async function POST(req: Request) {
       json: body.json || {},
       user: {
         connect: {
-          squareId: userId,
+          clerkId: userId,
         },
       },
     },

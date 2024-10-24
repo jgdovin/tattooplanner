@@ -2,12 +2,10 @@
 import {
   updateLocationMutation,
   useLocationQuery,
-} from "@/features/locations/server/db/location";
+} from "@/features/locations/server/db/locations";
+import { LocationForm } from "@/features/locations/components/forms/LocationForm";
 import {
   EMPTY_LOCATION_DATA,
-  LocationForm,
-} from "@/features/locations/components/forms/LocationForm";
-import {
   locationSchema,
   LocationType,
 } from "@/features/locations/schemas/locations";
@@ -16,6 +14,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import ContentCard from "@/components/ContentCard";
 
 export default function Page({ params }: { params: { id: string } }) {
   const { id } = params;
@@ -45,6 +44,8 @@ export default function Page({ params }: { params: { id: string } }) {
   if (error) return <div>Error: {error.message}</div>;
 
   return (
-    <LocationForm isEditing={true} form={form} submitAction={submitAction} />
+    <ContentCard title="New Location">
+      <LocationForm isEditing={true} form={form} submitAction={submitAction} />
+    </ContentCard>
   );
 }

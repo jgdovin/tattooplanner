@@ -40,7 +40,7 @@ export function Nav() {
             />
             <MenuLink
               text="Surveys"
-              href="/dashboard/settings/surveys"
+              href="/dashboard/surveys"
               icon={faEnvelope}
             />
             <MenuLink

@@ -61,7 +61,7 @@ export async function POST(req: Request) {
 
     const {
       data: {
-        id: squareId,
+        id: clerkId,
         email_addresses: {
           [0]: { email_address },
         },
@@ -77,20 +77,20 @@ export async function POST(req: Request) {
     if (evt.data.unsafe_metadata?.role === "user") {
       await prisma.user.upsert({
         where: {
-          squareId,
+          clerkId: clerkId,
         },
         update: {
           email: email_address,
           name: `${first_name} ${last_name}`,
-          squareId,
+          clerkId: clerkId,
         },
         create: {
           email: email_address,
           name: `${first_name} ${last_name}`,
-          squareId,
+          clerkId: clerkId,
         },
       });
-      clerkClient.users.updateUser(squareId, {
+      clerkClient.users.updateUser(clerkId, {
         publicMetadata: {
           role: "user",
         },
@@ -104,23 +104,23 @@ export async function POST(req: Request) {
 
       await prisma.customer.upsert({
         where: {
-          squareId,
+          clerkId: clerkId,
         },
         update: {
           email: email_address,
           name: `${first_name} ${last_name}`,
-          squareId,
+          clerkId: clerkId,
           artists: artistConnect,
         },
         create: {
           email: email_address,
           name: `${first_name} ${last_name}`,
-          squareId,
+          clerkId: clerkId,
           phone: "",
           artists: artistConnect,
         },
       });
-      clerkClient.users.updateUser(squareId, {
+      clerkClient.users.updateUser(clerkId, {
         publicMetadata: {
           role: "customer",
         },

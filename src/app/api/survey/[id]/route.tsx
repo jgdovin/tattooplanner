@@ -14,7 +14,7 @@ export async function GET(
     where: {
       id,
       user: {
-        squareId: userId,
+        clerkId: userId,
       },
       deleted: false,
     },
@@ -41,7 +41,7 @@ export async function PUT(
     where: {
       id,
       user: {
-        squareId: userId,
+        clerkId: userId,
       },
       deleted: false,
     },
@@ -67,7 +67,7 @@ export async function DELETE(
     where: {
       id,
       user: {
-        squareId: userId,
+        clerkId: userId,
       },
     },
     data: {

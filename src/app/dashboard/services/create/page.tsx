@@ -1,20 +1,25 @@
 "use client";
 import { createServiceMutation } from "@/lib/queries/service";
-import { ServiceType, formSchema } from "@/lib/types/service";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { EMPTY_SERVICE_DATA } from "@/lib/types/service";
-import { ServiceForm } from "@/features/locations/components/forms/ServiceForm";
+import { ServiceForm } from "@/components/forms/ServiceForm";
+import ContentCard from "@/components/ContentCard";
+
+import {
+  EMPTY_SERVICE_DATA,
+  serviceSchema,
+  ServiceType,
+} from "@/features/services/schemas/services";
 
 export default function Page() {
   const router = useRouter();
   const client = useQueryClient();
   const createLocation = createServiceMutation({ client, router });
 
-  const form = useForm({
-    resolver: zodResolver(formSchema),
+  const form = useForm<ServiceType>({
+    resolver: zodResolver(serviceSchema),
     defaultValues: EMPTY_SERVICE_DATA,
   });
 
@@ -23,6 +28,8 @@ export default function Page() {
   };
 
   return (
-    <ServiceForm form={form} isEditing={false} submitAction={submitAction} />
+    <ContentCard title="New Service">
+      <ServiceForm form={form} isEditing={false} submitAction={submitAction} />
+    </ContentCard>
   );
 }

@@ -10,7 +10,7 @@ export async function GET() {
     const res = await prisma.location.findMany({
       where: {
         user: {
-          squareId: userId,
+          clerkId: userId,
         },
         deleted: false,
       },
@@ -36,7 +36,7 @@ export async function POST(req: Request) {
         ...data,
         user: {
           connect: {
-            squareId: userId,
+            clerkId: userId,
           },
         },
       },

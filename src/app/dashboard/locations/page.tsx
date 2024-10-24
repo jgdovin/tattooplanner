@@ -1,16 +1,14 @@
 "use client";
 import { DataTable } from "@/components/custom/data-table";
-import { getLocationColumns } from "@/features/locations/components/columns";
+import { getLocationColumns } from "./columns";
 import {
   deleteLocationMutation,
   getArtistLocationsQuery,
-} from "@/features/locations/server/db/location";
+} from "@/features/locations/server/db/locations";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useQueryClient } from "@tanstack/react-query";
 import ContentCard from "@/components/ContentCard";
+import { CreateButton } from "@/components/CreateButton";
 
 export default function Page() {
   const router = useRouter();
@@ -22,26 +20,22 @@ export default function Page() {
   const columns = getLocationColumns(router, deleteLocation);
 
   if (isPending) {
-    return <div>Loading...</div>;
+    return <ContentCard>Loading...</ContentCard>;
   }
 
   if (error) {
     return <div>Error: {error.message}</div>;
   }
 
-  const CreateButton = () => (
-    <Button
-      variant="outline"
-      onClick={() => router.push(`/dashboard/locations/new`)}
-    >
-      Create Location <FontAwesomeIcon className="pl-1" icon={faPlus} />
-    </Button>
-  );
-
   return (
     <ContentCard>
       <DataTable
-        CreateButton={CreateButton}
+        CreateButton={() =>
+          CreateButton({
+            feature: "Location",
+            url: "/dashboard/locations/create",
+          })
+        }
         title="Locations"
         columns={columns}
         loading={false}

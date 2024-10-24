@@ -7,8 +7,10 @@ import "survey-core/defaultV2.min.css";
 import { surveyHandler } from "@/lib/surveyHandler";
 Serializer.findProperty("file", "storeDataAsText").defaultValue = false;
 
-export default function Client({ id }: { id: string }) {
-  const { isPending, error, data, isFetching, isSuccess } = getSurveyQuery({
+export default function Page({ params }: { params: { id: string } }) {
+  const { id } = params;
+
+  const { isPending, error, data, isFetching } = getSurveyQuery({
     id,
   });
 

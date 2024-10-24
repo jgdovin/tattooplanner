@@ -1,10 +1,8 @@
 "use client";
+import { LocationForm } from "@/features/locations/components/forms/LocationForm";
+import { createLocationMutation } from "@/features/locations/server/db/locations";
 import {
   EMPTY_LOCATION_DATA,
-  LocationForm,
-} from "@/features/locations/components/forms/LocationForm";
-import { createLocationMutation } from "@/features/locations/server/db/location";
-import {
   locationSchema,
   type LocationType,
 } from "@/features/locations/schemas/locations";
@@ -29,7 +27,7 @@ export default function NewLocationPage() {
   };
 
   return (
-    <ContentCard title="New Location" className="self-center">
+    <ContentCard title="New Location">
       <LocationForm form={form} isEditing={false} submitAction={submitAction} />
     </ContentCard>
   );

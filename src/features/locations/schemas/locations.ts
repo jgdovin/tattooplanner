@@ -1,4 +1,10 @@
+import {
+  EMPTY_STRING,
+  DEFAULT_OPEN_TIME,
+  DEFAULT_CLOSE_TIME,
+} from "@/lib/consts";
 import { z } from "zod";
+import { LOCATION_TYPES_TYPE } from "@/features/locations/components/forms/LocationForm";
 
 export const locationSchema = z.object({
   name: z.string().min(3),
@@ -42,3 +48,44 @@ export const locationSchema = z.object({
 });
 
 export type LocationType = z.infer<typeof locationSchema>;
+
+export const EMPTY_LOCATION_DATA: LocationType = {
+  id: EMPTY_STRING,
+  name: EMPTY_STRING,
+  nickname: EMPTY_STRING,
+  description: EMPTY_STRING,
+  phone: EMPTY_STRING,
+  email: EMPTY_STRING,
+  website: EMPTY_STRING,
+  x: EMPTY_STRING,
+  instagram: EMPTY_STRING,
+  facebook: EMPTY_STRING,
+  type: LOCATION_TYPES_TYPE["PHYSICAL"], // Default value; change if necessary
+  address1: EMPTY_STRING,
+  address2: EMPTY_STRING,
+  city: EMPTY_STRING,
+  state: EMPTY_STRING,
+  zip: EMPTY_STRING,
+  monStart: DEFAULT_OPEN_TIME,
+  monEnd: DEFAULT_CLOSE_TIME,
+  monClosed: false,
+  tueStart: DEFAULT_OPEN_TIME,
+  tueEnd: DEFAULT_CLOSE_TIME,
+  tueClosed: false,
+  wedStart: DEFAULT_OPEN_TIME,
+  wedEnd: DEFAULT_CLOSE_TIME,
+  wedClosed: false,
+  thuStart: DEFAULT_OPEN_TIME,
+  thuEnd: DEFAULT_CLOSE_TIME,
+  thuClosed: false,
+  friStart: DEFAULT_OPEN_TIME,
+  friEnd: DEFAULT_CLOSE_TIME,
+  friClosed: false,
+  satStart: DEFAULT_OPEN_TIME,
+  satEnd: DEFAULT_CLOSE_TIME,
+  satClosed: true,
+  sunStart: DEFAULT_OPEN_TIME,
+  sunEnd: DEFAULT_CLOSE_TIME,
+  sunClosed: true,
+  requiresSurveyForBooking: false,
+};

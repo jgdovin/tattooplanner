@@ -38,7 +38,7 @@ export async function PUT(
       where: {
         id,
         user: {
-          squareId: userId,
+          clerkId: userId,
         },
       },
       data,
@@ -64,7 +64,7 @@ export async function DELETE(
       where: {
         id,
         user: {
-          squareId: userId,
+          clerkId: userId,
         },
       },
       data: {

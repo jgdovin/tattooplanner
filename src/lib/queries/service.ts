@@ -1,26 +1,14 @@
 import { LocationType } from "@/features/locations/schemas/locations";
-import { ServiceType } from "@/lib/types/service";
 import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { toast } from "sonner";
 
-export const getLocationServices = (locationId: string) => {
+export const getServicesByLocation = (locationId: string) => {
   return useQuery({
     queryKey: ["locationServices", locationId],
     queryFn: async () => {
       const res = await axios.get(`/api/services/${locationId}`);
-      return res.data;
-    },
-  });
-};
-
-export const useLocationQuery = (id?: string) => {
-  return useQuery({
-    queryKey: ["location", id],
-    queryFn: async () => {
-      if (!id) return {};
-      const res = await axios.get(`/api/artist/location/${id}`);
       return res.data;
     },
   });
@@ -54,12 +42,12 @@ export const updateLocationMutation = ({
 }) => {
   return useMutation({
     mutationFn: (location: LocationType) => {
-      return axios.put(`/api/artist/location/${location.id}`, location);
+      return axios.put(`/api/location/${location.id}`, location);
     },
     onSuccess: () => {
       toast.success("Location updated");
       client.invalidateQueries({ queryKey: ["artistLocations"] });
-      router.push("/dashboard/settings/locations");
+      router.push("/dashboard/services");
     },
   });
 };
@@ -67,7 +55,7 @@ export const updateLocationMutation = ({
 export const deleteLocationMutation = ({ client }: { client: QueryClient }) => {
   return useMutation({
     mutationFn: (id: string) => {
-      return axios.delete(`/api/artist/location/${id}`);
+      return axios.delete(`/api/services/${id}`);
     },
     onMutate: async (id) => {
       await client.cancelQueries({ queryKey: ["artistLocations"] });

@@ -40,7 +40,6 @@ services:
     # Set environment variables based on the .env file
     volumes:
       - ./:/app
-      - /app/node_modules
     ports:
       - 3000:3000
     networks:

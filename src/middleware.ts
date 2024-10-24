@@ -1,19 +1,19 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
-const isProtectedRoute = createRouteMatcher(["/dashboard(.*)"]);
+const isPublicRoute = createRouteMatcher(["/", "/sign-in(.*)", "/sign-up(.*)"]);
 
 export default clerkMiddleware(
   async (auth, req) => {
     // @ts-ignore: awaiting fix for role not existing in auth
     const { protect, role } = auth();
 
-    if (isProtectedRoute(req)) {
+    if (!isPublicRoute(req)) {
       protect();
       // handle role based access here
     }
   },
   {
-    signInUrl: "/user/sign-in",
+    signInUrl: "/sign-in",
   }
 );
 

@@ -12,7 +12,7 @@ export async function getCustomers() {
     where: {
       artists: {
         some: {
-          squareId: userId,
+          clerkId: userId,
         },
       },
     },
@@ -29,7 +29,7 @@ export async function getCustomer(id: string) {
       id,
       artists: {
         some: {
-          squareId: userId,
+          clerkId: userId,
         },
       },
     },
@@ -63,10 +63,10 @@ export async function createCustomer(body: CustomerType) {
     const res = await prisma.customer.create({
       data: {
         ...body,
-        squareId: user.id,
+        clerkId: user.id,
         artists: {
           connect: {
-            squareId: userId,
+            clerkId: userId,
           },
         },
       },
@@ -87,7 +87,7 @@ export async function updateCustomer(customer: any) {
       id: customer.id,
       artists: {
         some: {
-          squareId: userId,
+          clerkId: userId,
         },
       },
     },
@@ -106,14 +106,14 @@ export async function deleteCustomer(id: string) {
       id,
       artists: {
         some: {
-          squareId: userId,
+          clerkId: userId,
         },
       },
     },
     data: {
       artists: {
         disconnect: {
-          squareId: userId,
+          clerkId: userId,
         },
       },
     },

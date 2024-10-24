@@ -11,7 +11,7 @@ export async function getArtistBookings() {
     where: {
       location: {
         user: {
-          squareId: userId,
+          clerkId: userId,
         },
       },
     },
@@ -32,7 +32,7 @@ export async function getArtistRecentBookings(num: number = 5) {
     where: {
       location: {
         user: {
-          squareId: userId,
+          clerkId: userId,
         },
       },
     },

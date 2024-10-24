@@ -1,34 +1,18 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { UseMutationResult } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
-export type Location = {
-  [key: string]: any;
-  id: string;
-  name: string;
-  nickname: string;
-  address1: string;
-};
-
-export const useServiceColumns = () => {
+export const getServiceColumns = (
+  router: AppRouterInstance,
+  deleteService: UseMutationResult<AxiosResponse<any, any>, Error, string>
+) => {
   return [
     {
       accessorKey: "name",
       header: "Service Name",
-    },
-    {
-      accessorKey: "nickname",
-      header: "Location Nickname",
-    },
-    {
-      accessorKey: "address1",
-      header: "Location Address",
     },
     {
       id: "actions",
@@ -44,10 +28,11 @@ export const useServiceColumns = () => {
           <Button
             onClick={() => {
               const del = confirm(
-                "Are you sure you want to delete this service?"
+                "Are you sure you want to delete this services?"
               );
               if (del) {
-                deleteLocation.mutate(row.original.id);
+                console.log("delete service");
+                deleteService.mutate(row.original.id);
               }
             }}
           >

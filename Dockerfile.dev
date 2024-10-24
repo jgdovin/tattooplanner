@@ -20,8 +20,6 @@ RUN \
 
 COPY . .
 
-RUN npx prisma generate
-
 # Next.js collects completely anonymous telemetry data about general usage. Learn more here: https://nextjs.org/telemetry
 # Uncomment the following line to disable telemetry at run time
 # ENV NEXT_TELEMETRY_DISABLED 1
@@ -31,6 +29,7 @@ RUN npx prisma generate
 USER appuser
 
 CMD \
+  npx prisma generate &&\
   npx prisma migrate deploy &&\
   if [ -f yarn.lock ]; then yarn dev; \
   elif [ -f package-lock.json ]; then npm run dev; \

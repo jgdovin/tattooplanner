@@ -1,15 +1,6 @@
 "use client";
 
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-} from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-
 import { Form } from "@/components/ui/form";
 
 import { useEffect, useState } from "react";
@@ -20,11 +11,10 @@ import {
   LocationInputField,
   TextareaField,
   TimeField,
-} from "../../../../components/forms/components/inputField";
+} from "@/components/forms/components/inputField";
 
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { LocationType } from "@/features/locations/schemas/locations";
+import { Button } from "@/components/ui/button";
 
 interface LocationFormProps {
   submitAction: any;
@@ -36,51 +26,6 @@ export const LOCATION_TYPES_TYPE = {
   PHYSICAL: "PHYSICAL",
   MOBILE: "MOBILE",
 } as const;
-
-const DEFAULT_OPEN_TIME = "09:00";
-const DEFAULT_CLOSE_TIME = "17:00";
-const EMPTY_STRING = "";
-
-export const EMPTY_LOCATION_DATA: LocationType = {
-  id: EMPTY_STRING,
-  name: EMPTY_STRING,
-  nickname: EMPTY_STRING,
-  description: EMPTY_STRING,
-  phone: EMPTY_STRING,
-  email: EMPTY_STRING,
-  website: EMPTY_STRING,
-  x: EMPTY_STRING,
-  instagram: EMPTY_STRING,
-  facebook: EMPTY_STRING,
-  type: LOCATION_TYPES_TYPE["PHYSICAL"], // Default value; change if necessary
-  address1: EMPTY_STRING,
-  address2: EMPTY_STRING,
-  city: EMPTY_STRING,
-  state: EMPTY_STRING,
-  zip: EMPTY_STRING,
-  monStart: DEFAULT_OPEN_TIME,
-  monEnd: DEFAULT_CLOSE_TIME,
-  monClosed: false,
-  tueStart: DEFAULT_OPEN_TIME,
-  tueEnd: DEFAULT_CLOSE_TIME,
-  tueClosed: false,
-  wedStart: DEFAULT_OPEN_TIME,
-  wedEnd: DEFAULT_CLOSE_TIME,
-  wedClosed: false,
-  thuStart: DEFAULT_OPEN_TIME,
-  thuEnd: DEFAULT_CLOSE_TIME,
-  thuClosed: false,
-  friStart: DEFAULT_OPEN_TIME,
-  friEnd: DEFAULT_CLOSE_TIME,
-  friClosed: false,
-  satStart: DEFAULT_OPEN_TIME,
-  satEnd: DEFAULT_CLOSE_TIME,
-  satClosed: true,
-  sunStart: DEFAULT_OPEN_TIME,
-  sunEnd: DEFAULT_CLOSE_TIME,
-  sunClosed: true,
-  requiresSurveyForBooking: false,
-};
 
 const daysOfWeek = [
   ["sun", "Sunday"],
@@ -182,6 +127,13 @@ export function LocationForm({
             {form.error && <div>{form.error.message}</div>}
           </div>
         </div>
+        <Button
+          variant="accent"
+          type="submit"
+          className="grid col-span-4 font-semibold"
+        >
+          Submit
+        </Button>
       </form>
     </Form>
   );

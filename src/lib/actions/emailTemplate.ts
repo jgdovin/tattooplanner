@@ -12,12 +12,12 @@ export async function createTemplate(data: any) {
       ...data,
       user: {
         connect: {
-          squareId: userId,
+          clerkId: userId,
         },
       },
-    }
+    },
   });
-  console.log(res)
+  console.log(res);
   return res;
 }
 
@@ -28,7 +28,7 @@ export async function getTemplate(id: string) {
   try {
     const res = await prisma.emailTemplate.findUnique({
       where: {
-        id
+        id,
       },
     });
 
@@ -48,7 +48,7 @@ export async function getTemplates() {
         OR: [
           {
             user: {
-              squareId: userId,
+              clerkId: userId,
             },
           },
           {
@@ -73,7 +73,7 @@ export async function deleteTemplate(id: string) {
       where: {
         id,
         user: {
-          squareId: userId,
+          clerkId: userId,
         },
       },
     });
@@ -92,7 +92,7 @@ export async function updateTemplate(data: any) {
       where: {
         id: data.id,
         user: {
-          squareId: userId,
+          clerkId: userId,
         },
       },
       data,

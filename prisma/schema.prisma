@@ -16,7 +16,7 @@ datasource db {
 
 model User {
   id            String          @id @default(cuid())
-  squareId      String          @unique
+  clerkId       String          @unique
   name          String?
   email         String?         @unique
   projects      Project[]
@@ -46,7 +46,7 @@ model Customer {
   state             String           @default("")
   zip               String           @default("")
   country           String           @default("US")
-  squareId          String?          @unique
+  clerkId           String?          @unique
   artists           User[]           @relation("UserCustomers")
   createdAt         DateTime         @default(now())
   updatedAt         DateTime         @default(now()) @updatedAt

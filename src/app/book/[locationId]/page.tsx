@@ -7,7 +7,7 @@ import {
   getLoggedInUser,
 } from "@/lib/auth";
 import { CustomerType } from "@/lib/store/customer";
-import { getLocationServices } from "@/lib/actions/book";
+import { getServicesByLocation } from "@/lib/queries/service";
 
 interface bookingProps {
   params: {
@@ -42,7 +42,7 @@ export default async function Page({ params }: bookingProps) {
     addCustomerToArtist(location.user.id);
   }
 
-  const services = await getLocationServices(locationId);
+  const services = await getServicesByLocation(locationId);
 
   const previewOnly = user ? true : false;
   return (

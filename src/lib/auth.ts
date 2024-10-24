@@ -9,7 +9,7 @@ export async function getLoggedInUser() {
 
   const user = await prisma.user.findUnique({
     where: {
-      squareId: userId,
+      clerkId: userId,
     },
   });
 
@@ -22,7 +22,7 @@ export async function getLoggedInCustomer() {
 
   const customer = await prisma.customer.findUnique({
     where: {
-      squareId: userId,
+      clerkId: userId,
     },
   });
 
@@ -35,7 +35,7 @@ export async function addCustomerToArtist(artistId: string) {
 
   await prisma.customer.update({
     where: {
-      squareId: userId,
+      clerkId: userId,
     },
     data: {
       artists: {

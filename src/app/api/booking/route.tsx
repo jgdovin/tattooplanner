@@ -12,7 +12,7 @@ export async function GET(req: Request) {
         locations: {
           some: {
             user: {
-              squareId: userId,
+              clerkId: userId,
             },
           },
         },
