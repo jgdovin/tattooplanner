@@ -15,6 +15,7 @@ import {
 } from "@/features/services/server/db/services";
 import { ServiceForm } from "@/components/forms/ServiceForm";
 import ContentCard from "@/components/ContentCard";
+import { PageWithBackButton } from "@/components/PageWithBackButton";
 
 export default function Page({ params }: { params: { id: string } }) {
   const { id } = params;
@@ -44,8 +45,13 @@ export default function Page({ params }: { params: { id: string } }) {
   if (error) return <div>Error: {error.message}</div>;
 
   return (
-    <ContentCard title="Edit Location">
-      <ServiceForm isEditing={true} form={form} submitAction={submitAction} />
-    </ContentCard>
+    <PageWithBackButton
+      pageTitle="Edit Service"
+      backButtonHref="/dashboard/services"
+    >
+      <ContentCard>
+        <ServiceForm isEditing={true} form={form} submitAction={submitAction} />
+      </ContentCard>
+    </PageWithBackButton>
   );
 }

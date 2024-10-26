@@ -15,6 +15,9 @@ import {
 
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
+import { SlugInput } from "./SlugInput";
+import { UseFormReturn } from "react-hook-form";
+import { LocationType } from "@/features/locations/schemas/locations";
 
 interface LocationFormProps {
   submitAction: any;
@@ -45,6 +48,7 @@ export function LocationForm({
   const [timezones, setTimezones] = useState([]);
   const formText = isEditing ? "Update" : "Create";
   const [loading, setLoading] = useState(true);
+  const [subdomainValid, setSubdomainValid] = useState(false);
 
   const { handleSubmit } = form;
   useEffect(() => {
@@ -56,11 +60,14 @@ export function LocationForm({
       <form
         id="locationForm"
         onSubmit={handleSubmit(submitAction)}
-        className="grid grid-cols-4 gap-2"
+        className="grid grid-cols-2 gap-10"
       >
-        <div className="grid col-span-2 gap-2">
+        <div className="grid gap-2">
           <div className="grid gap-2">
             <InputField name="name" form={form} label="Name" required={true} />
+          </div>
+          <div className="grid gap-2">
+            <SlugInput isEditing={isEditing} form={form} />
           </div>
           <div className="grid gap-2">
             <InputField name="nickname" form={form} label="Nickname" />
@@ -97,7 +104,7 @@ export function LocationForm({
             <LocationInputField name="type" form={form} label="Location Type" />
           </div>
         </div>
-        <div className="w-3/4 mx-auto flex flex-col gap-3 col-span-2">
+        <div className="grid mx-14 gap-3">
           <Label className="font-bold">Hours of Operation</Label>
           {daysOfWeek.map((day, index) => (
             <TimeField
@@ -127,13 +134,15 @@ export function LocationForm({
             {form.error && <div>{form.error.message}</div>}
           </div>
         </div>
-        <Button
-          variant="accent"
-          type="submit"
-          className="grid col-span-4 font-semibold"
-        >
-          Submit
-        </Button>
+        <div className="grid col-span-2">
+          <Button
+            variant="accent"
+            type="submit"
+            className="grid col-span-4 font-semibold"
+          >
+            Submit
+          </Button>
+        </div>
       </form>
     </Form>
   );

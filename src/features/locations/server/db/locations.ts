@@ -8,18 +8,18 @@ export const getArtistLocationsQuery = () => {
   return useQuery({
     queryKey: ["artistLocations"],
     queryFn: async () => {
-      const res = await axios.get("/api/artist/location");
+      const res = await axios.get("/api/location");
       return res.data;
     },
   });
 };
 
-export const useLocationQuery = (id?: string) => {
+export const getLocationsQuery = (id?: string) => {
   return useQuery({
     queryKey: ["location", id],
     queryFn: async () => {
       if (!id) return {};
-      const res = await axios.get(`/api/artist/location/${id}`);
+      const res = await axios.get(`/api/location/${id}`);
       return res.data;
     },
   });
@@ -34,7 +34,7 @@ export const createLocationMutation = ({
 }) => {
   return useMutation({
     mutationFn: (newLocation: LocationType) => {
-      return axios.post("/api/artist/location", newLocation);
+      return axios.post("/api/location", newLocation);
     },
     onSuccess: () => {
       toast.success("Location created");
@@ -53,7 +53,7 @@ export const updateLocationMutation = ({
 }) => {
   return useMutation({
     mutationFn: (location: LocationType) => {
-      return axios.put(`/api/artist/location/${location.id}`, location);
+      return axios.put(`/api/location/${location.id}`, location);
     },
     onSuccess: () => {
       toast.success("Location updated");
@@ -66,7 +66,7 @@ export const updateLocationMutation = ({
 export const deleteLocationMutation = ({ client }: { client: QueryClient }) => {
   return useMutation({
     mutationFn: (id: string) => {
-      return axios.delete(`/api/artist/location/${id}`);
+      return axios.delete(`/api/location/${id}`);
     },
     onMutate: async (id) => {
       await client.cancelQueries({ queryKey: ["artistLocations"] });

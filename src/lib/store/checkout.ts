@@ -1,7 +1,7 @@
+import { EMPTY_SERVICE_DATA } from "@/features/services/schemas/services";
 import dayjs from "dayjs";
 import { atom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
-import { EMPTY_SERVICE_DATA } from "./service";
 
 export const maxSteps = 3;
 

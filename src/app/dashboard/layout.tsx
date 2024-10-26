@@ -16,9 +16,9 @@ export default function RootLayout({
         <Toaster position="top-center" richColors={true} />
         <LayoutClient>
           <Header />
-          <div className="grid grid-cols-[240px_1fr] h-full">
+          <div className="grid grid-cols-[180px_1fr] h-full">
             <Nav />
-            <main className="flex flex-col overflow-auto bg-accent/5">
+            <main className="flex flex-col overflow-auto bg-accent/5 p-10">
               {children}
             </main>
           </div>

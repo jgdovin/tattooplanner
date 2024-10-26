@@ -8,6 +8,7 @@ import { LOCATION_TYPES_TYPE } from "@/features/locations/components/forms/Locat
 
 export const locationSchema = z.object({
   name: z.string().min(3),
+  slug: z.string().min(4),
   nickname: z.string(),
   description: z.string(),
   phone: z.string(),
@@ -51,6 +52,7 @@ export type LocationType = z.infer<typeof locationSchema>;
 
 export const EMPTY_LOCATION_DATA: LocationType = {
   id: EMPTY_STRING,
+  slug: EMPTY_STRING,
   name: EMPTY_STRING,
   nickname: EMPTY_STRING,
   description: EMPTY_STRING,

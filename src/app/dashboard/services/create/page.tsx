@@ -12,6 +12,7 @@ import {
   ServiceType,
 } from "@/features/services/schemas/services";
 import { createServiceMutation } from "@/features/services/server/db/services";
+import { PageWithBackButton } from "@/components/PageWithBackButton";
 
 export default function Page() {
   const router = useRouter();
@@ -28,8 +29,17 @@ export default function Page() {
   };
 
   return (
-    <ContentCard title="New Service">
-      <ServiceForm form={form} isEditing={false} submitAction={submitAction} />
-    </ContentCard>
+    <PageWithBackButton
+      pageTitle="New Service"
+      backButtonHref="/dashboard/services"
+    >
+      <ContentCard>
+        <ServiceForm
+          form={form}
+          isEditing={false}
+          submitAction={submitAction}
+        />
+      </ContentCard>
+    </PageWithBackButton>
   );
 }

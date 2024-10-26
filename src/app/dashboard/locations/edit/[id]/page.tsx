@@ -1,7 +1,7 @@
 "use client";
 import {
   updateLocationMutation,
-  useLocationQuery,
+  getLocationsQuery,
 } from "@/features/locations/server/db/locations";
 import { LocationForm } from "@/features/locations/components/forms/LocationForm";
 import {
@@ -15,17 +15,18 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import ContentCard from "@/components/ContentCard";
+import { PageWithBackButton } from "@/components/PageWithBackButton";
 
 export default function Page({ params }: { params: { id: string } }) {
   const { id } = params;
 
-  const { data, isLoading, error } = useLocationQuery(id);
+  const { data, isLoading, error } = getLocationsQuery(id);
 
   const router = useRouter();
   const client = useQueryClient();
   const updateLocation = updateLocationMutation({ client, router });
 
-  const form = useForm({
+  const form = useForm<LocationType>({
     defaultValues: data || EMPTY_LOCATION_DATA,
     resolver: zodResolver(locationSchema),
   });
@@ -44,8 +45,17 @@ export default function Page({ params }: { params: { id: string } }) {
   if (error) return <div>Error: {error.message}</div>;
 
   return (
-    <ContentCard title="New Location">
-      <LocationForm isEditing={true} form={form} submitAction={submitAction} />
-    </ContentCard>
+    <PageWithBackButton
+      pageTitle="Edit Location"
+      backButtonHref="/dashboard/locations"
+    >
+      <ContentCard>
+        <LocationForm
+          isEditing={true}
+          form={form}
+          submitAction={submitAction}
+        />
+      </ContentCard>
+    </PageWithBackButton>
   );
 }

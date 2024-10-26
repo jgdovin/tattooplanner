@@ -10,11 +10,8 @@ import {
 
 export function Nav() {
   return (
-    <nav className="border-r bg-accent/10 dark:bg-gray-800/40 h-screen">
+    <nav className="border-r bg-accent/10 dark:bg-gray-800/40 w-[180px] h-screen">
       <div className="flex flex-col gap-2">
-        <div className="flex h-[60px] items-center border-b px-6">
-          TattooPlan
-        </div>
         <div className="flex-1 overflow-auto py-2">
           <nav className="grid gap-1 px-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2">
             <MenuLink text="Dashboard" href="/dashboard" icon={faGauge} />

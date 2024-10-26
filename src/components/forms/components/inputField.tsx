@@ -20,7 +20,7 @@ import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { faDollarSign } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export const InputField = ({
   type = "text",
@@ -30,28 +30,30 @@ export const InputField = ({
   className,
   required,
   ...props
-}: any) => (
-  <FormField
-    control={form.control}
-    name={name}
-    render={({ field }) => {
-      return (
-        <FormItem className={`grid gap-1`}>
-          <FormLabel>
-            {required && <span className="text-red-600">* </span>}
-            {label}
-          </FormLabel>
-          <FormControl>
-            <div className="flex flex-col gap-2">
-              <Input type={type} {...props} {...field} />
-              <FormMessage className="col-span-4 text-center" />
-            </div>
-          </FormControl>
-        </FormItem>
-      );
-    }}
-  />
-);
+}: any) => {
+  return (
+    <FormField
+      control={form.control}
+      name={name}
+      render={({ field }) => {
+        return (
+          <FormItem className={`grid gap-1`}>
+            <FormLabel>
+              {required && <span className="text-red-600">* </span>}
+              {label}
+            </FormLabel>
+            <FormControl>
+              <div className="flex flex-col gap-2">
+                <Input type={type} {...props} {...field} />
+                <FormMessage className="col-span-4 text-center" />
+              </div>
+            </FormControl>
+          </FormItem>
+        );
+      }}
+    />
+  );
+};
 
 export const TextareaField = ({ name, form, label, ...props }: any) => (
   <FormField
@@ -177,7 +179,7 @@ export const TimeField = ({ name, form, label }: any) => {
           );
         }}
       />
-      <div className="grid items-center gap-4 ">
+      <div className="grid items-center gap-4 col-span-2">
         <FormField
           control={form.control}
           name={`${name}Closed`}
