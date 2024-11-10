@@ -16,8 +16,6 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { SlugInput } from "./SlugInput";
-import { UseFormReturn } from "react-hook-form";
-import { LocationType } from "@/features/locations/schemas/locations";
 
 interface LocationFormProps {
   submitAction: any;

@@ -3,7 +3,7 @@ import { auth } from "@clerk/nextjs/server";
 
 export async function GET() {
   const { userId } = auth();
-
+  console.log(userId);
   if (!userId) return;
 
   try {

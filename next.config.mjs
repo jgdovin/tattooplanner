@@ -1,7 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
-    swcPlugins: [["@swc-jotai/react-refresh", {}]],
+    swcPlugins: [],
+    staleTimes: {
+      dynamic: 0,
+      static: 180
+    }
   },
 
 };

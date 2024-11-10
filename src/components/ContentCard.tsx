@@ -9,7 +9,7 @@ export default function ContentCard({
 }) {
   return (
     <div
-      className={`bg-white shadow overflow-hidden sm:rounded-lg p-5 max-w-7xl ${
+      className={`bg-white shadow-md border border-gray-300 overflow-hidden sm:rounded-lg p-5 max-w-7xl ${
         className ? className : ""
       }`}
     >

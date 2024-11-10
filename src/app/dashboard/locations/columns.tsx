@@ -28,7 +28,7 @@ export const getLocationColumns = (
       id: "actions",
       cell: ({ row }: any) => (
         <div className="flex flex-row gap-4">
-          <LocationCopyButton locationId={row.original.id} />
+          <LocationCopyButton locationId={row.original.slug} />
           <Button
             onClick={() => {
               router.push(`/dashboard/locations/edit/${row.original.id}`);

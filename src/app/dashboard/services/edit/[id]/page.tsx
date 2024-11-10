@@ -7,7 +7,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, use } from "react";
 import { useForm } from "react-hook-form";
 import {
   updateServiceMutation,
@@ -17,7 +17,8 @@ import { ServiceForm } from "@/components/forms/ServiceForm";
 import ContentCard from "@/components/ContentCard";
 import { PageWithBackButton } from "@/components/PageWithBackButton";
 
-export default function Page({ params }: { params: { id: string } }) {
+export default function Page(props: { params: Promise<{ id: string }> }) {
+  const params = use(props.params);
   const { id } = params;
 
   const { data, isLoading, error } = useServiceQuery(id);

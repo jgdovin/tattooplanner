@@ -19,7 +19,8 @@
     --secondary-foreground: 222.2 47.4% 11.2%;
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 284 100% 78%;
+    --accent: 248 44% 63%;
+    /* color: hsl(248, 44%, 63%) */
     --accent-foreground: 0 0% 0%;
     --destructive: 328 90% 45%;
     --destructive-foreground: 255 100% 100%;
@@ -70,6 +71,7 @@ TODO: cleanup
   }
   body {
     @apply bg-background text-foreground;
+    font-size: 1.1rem;
   }
 }
 /* HTML: <div class="loader"></div> */

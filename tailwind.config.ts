@@ -20,10 +20,7 @@ const config: Config = {
           xl: "1200px",
         },
       },
-      fontFamily: {
-        sans: ["var(--font-geist-sans)", ...fontFamily.sans],
-        mono: ["var(--font-geist-mono)", ...fontFamily.mono],
-      },
+      fontFamily: {},
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",

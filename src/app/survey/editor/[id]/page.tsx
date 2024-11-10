@@ -5,7 +5,7 @@ import { ICreatorOptions } from "survey-creator-core";
 import { useRouter } from "next/navigation";
 
 import LoadingPage from "@/components/custom/LoadingPage";
-import { useEffect, useState } from "react";
+import { useEffect, useState, use } from "react";
 import {
   surveyCreatorDefaults,
   surveyCreatorMethodSetup,
@@ -38,7 +38,8 @@ const creatorOptions: ICreatorOptions = {
 
 surveyCreatorDefaults();
 
-export default function Page({ params }: { params: { id: string } }) {
+export default function Page(props: { params: Promise<{ id: string }> }) {
+  const params = use(props.params);
   const { id } = params;
   const { data, isLoading } = getSurveyQuery({ id });
   const [creatorInstance, setCreatorInstance] =

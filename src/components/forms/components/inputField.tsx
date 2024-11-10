@@ -27,9 +27,7 @@ export const InputField = ({
   name,
   form,
   label,
-  className,
   required,
-  ...props
 }: any) => {
   return (
     <FormField
@@ -43,11 +41,9 @@ export const InputField = ({
               {label}
             </FormLabel>
             <FormControl>
-              <div className="flex flex-col gap-2">
-                <Input type={type} {...props} {...field} />
-                <FormMessage className="col-span-4 text-center" />
-              </div>
+              <Input type={type} {...field} />
             </FormControl>
+            <FormMessage />
           </FormItem>
         );
       }}
@@ -55,33 +51,31 @@ export const InputField = ({
   );
 };
 
-export const TextareaField = ({ name, form, label, ...props }: any) => (
+export const TextareaField = ({ name, form, label }: any) => (
   <FormField
     control={form.control}
     name={name}
     render={({ field }) => {
       return (
-        <FormItem className="grid gap-1">
+        <FormItem>
           <FormLabel>{label}</FormLabel>
           <FormControl>
-            <>
-              <Textarea {...field} {...props} />
-              <FormMessage className="col-span-4 text-center" />
-            </>
+            <Textarea {...field} />
           </FormControl>
+          <FormMessage className="col-span-4 text-center" />
         </FormItem>
       );
     }}
   />
 );
 
-export const CurrencyField = ({ name, form, label, ...props }: any) => (
+export const CurrencyField = ({ name, form, label }: any) => (
   <FormField
     control={form.control}
     name={name}
     render={({ field }) => {
       return (
-        <FormItem className="grid gap-1">
+        <FormItem>
           <FormLabel>{label}</FormLabel>
           <FormControl>
             <div className="flex">
@@ -91,7 +85,6 @@ export const CurrencyField = ({ name, form, label, ...props }: any) => (
               <Input
                 className="rounded-none rounded-r"
                 type="number"
-                {...props}
                 onChange={(e) => field.onChange(parseFloat(e.target.value))}
                 value={parseFloat(field.value)}
               />
@@ -111,7 +104,6 @@ export const SelectField = ({
   children,
   value,
   onChange,
-  ...props
 }: any) => (
   <FormField
     control={form.control}
@@ -122,10 +114,8 @@ export const SelectField = ({
           <FormLabel>{label}</FormLabel>
           <FormControl>
             <Select
-              {...props}
               onValueChange={onChange || field.onChange}
               value={value || field.value}
-              className="w-full"
             >
               {children}
             </Select>
@@ -137,7 +127,7 @@ export const SelectField = ({
   />
 );
 
-export const SwitchField = ({ name, form, label, ...props }: any) => (
+export const SwitchField = ({ name, form, label }: any) => (
   <FormField
     control={form.control}
     name={name}
@@ -146,7 +136,7 @@ export const SwitchField = ({ name, form, label, ...props }: any) => (
         <FormItem className="flex items-center justify-center self-center align-middle gap-1">
           <FormLabel className="pt-2">{label}</FormLabel>
           <FormControl>
-            <Switch {...props} {...field} />
+            <Switch {...field} />
           </FormControl>
           <FormMessage className="col-span-4 text-center" />
         </FormItem>

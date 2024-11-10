@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -43,6 +43,7 @@
     "@tanstack/react-query-devtools": "^5.56.2",
     "@tanstack/react-table": "^8.19.3",
     "@uidotdev/usehooks": "^2.4.1",
+    "@vis.gl/react-google-maps": "^1.4.0",
     "axios": "^1.7.4",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
@@ -54,14 +55,15 @@
     "lucide-react": "^0.417.0",
     "luxon": "^3.5.0",
     "monaco-editor": "^0.51.0",
-    "next": "14.2.5",
+    "next": "15.0.3",
     "next-auth": "^4.24.7",
     "next-themes": "^0.3.0",
+    "node-geocoder": "^4.4.0",
     "nodemailer": "^6.9.14",
     "prisma": "^5.17.0",
-    "react": "^18",
+    "react": "19.0.0-rc-66855b96-20241106",
     "react-day-picker": "8.10.1",
-    "react-dom": "^18",
+    "react-dom": "19.0.0-rc-66855b96-20241106",
     "react-hook-form": "^7.52.1",
     "react-hot-toast": "^2.4.1",
     "react-square-web-payments-sdk": "^3.2.1",
@@ -82,18 +84,24 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@swc-jotai/react-refresh": "^0.1.1",
     "@tanstack/eslint-plugin-query": "^5.56.1",
     "@types/luxon": "^3.4.2",
     "@types/node": "^20",
+    "@types/node-geocoder": "^4.2.6",
     "@types/nodemailer": "^6",
-    "@types/react": "^18.3.3",
-    "@types/react-dom": "^18",
+    "@types/react": "npm:types-react@19.0.0-rc.1",
+    "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1",
     "eslint": "^8",
-    "eslint-config-next": "14.2.5",
+    "eslint-config-next": "15.0.3",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
   },
-  "packageManager": "pnpm@9.12.1+sha512.e5a7e52a4183a02d5931057f7a0dbff9d5e9ce3161e33fa68ae392125b79282a8a8a470a51dfc8a0ed86221442eb2fb57019b0990ed24fab519bf0e1bc5ccfc4"
+  "packageManager": "pnpm@9.12.1+sha512.e5a7e52a4183a02d5931057f7a0dbff9d5e9ce3161e33fa68ae392125b79282a8a8a470a51dfc8a0ed86221442eb2fb57019b0990ed24fab519bf0e1bc5ccfc4",
+  "pnpm": {
+    "overrides": {
+      "@types/react": "npm:types-react@19.0.0-rc.1",
+      "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1"
+    }
+  }
 }

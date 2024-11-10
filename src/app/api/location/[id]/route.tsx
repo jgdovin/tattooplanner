@@ -2,10 +2,8 @@ import prisma from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 import { NextApiResponse } from "next";
 
-export async function GET(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
+export async function GET(req: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const { id } = params;
 
   try {
@@ -22,10 +20,8 @@ export async function GET(
   }
 }
 
-export async function PUT(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
+export async function PUT(req: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const { userId } = auth();
   if (!userId) return new Response("Unauthorized", { status: 401 });
 
@@ -50,10 +46,8 @@ export async function PUT(
   }
 }
 
-export async function DELETE(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(req: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const { userId } = auth();
   if (!userId) return new Response("Unauthorized", { status: 401 });
 

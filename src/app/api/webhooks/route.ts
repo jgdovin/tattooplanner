@@ -14,7 +14,7 @@ export async function POST(req: Request) {
   }
 
   // Get the headers
-  const headerPayload = headers();
+  const headerPayload = await headers();
   const svixId = headerPayload.get("svix-id");
   const svixTimestamp = headerPayload.get("svix-timestamp");
   const svixSignature = headerPayload.get("svix-signature");
@@ -58,7 +58,7 @@ export async function POST(req: Request) {
 
   if (eventType === "user.created") {
     // TODO: Update to handle customer/artist user creation.
-
+    console.log("creating a user");
     const {
       data: {
         id: clerkId,
@@ -67,14 +67,15 @@ export async function POST(req: Request) {
         },
         first_name,
         last_name,
+        unsafe_metadata: { role },
       },
     } = evt;
 
     const clerkClient = createClerkClient({
       secretKey: process.env.CLERK_SECRET_KEY,
     });
-
-    if (evt.data.unsafe_metadata?.role === "user") {
+    console.log(role);
+    if (role === "user") {
       await prisma.user.upsert({
         where: {
           clerkId: clerkId,

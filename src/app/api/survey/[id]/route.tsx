@@ -1,10 +1,8 @@
 import { auth } from "@clerk/nextjs/server";
 import prisma from "@/lib/prisma";
 
-export async function GET(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
+export async function GET(req: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const { userId } = await auth();
   if (!userId) return new Response("Unauthorized", { status: 401 });
 
@@ -25,10 +23,8 @@ export async function GET(
   return Response.json(res);
 }
 
-export async function PUT(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
+export async function PUT(req: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const { userId } = await auth();
   if (!userId) return new Response("Unauthorized", { status: 401 });
 
@@ -54,10 +50,8 @@ export async function PUT(
   return Response.json(res);
 }
 
-export async function DELETE(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(req: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const { userId } = await auth();
   if (!userId) return new Response("Unauthorized", { status: 401 });
 

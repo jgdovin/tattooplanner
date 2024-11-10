@@ -2,10 +2,8 @@ import prisma from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 import { NextRequest } from "next/server";
 
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(req: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const { id } = params;
   const { userId } = await auth();
   if (!userId) return new Response("Unauthorized", { status: 401 });
@@ -21,10 +19,8 @@ export async function DELETE(
   return Response.json(res);
 }
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function GET(req: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const { id } = params;
   const { userId } = await auth();
   if (!userId) return new Response("Unauthorized", { status: 401 });
