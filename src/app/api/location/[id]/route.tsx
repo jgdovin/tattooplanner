@@ -22,7 +22,7 @@ export async function GET(req: Request, props: { params: Promise<{ id: string }>
 
 export async function PUT(req: Request, props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
-  const { userId } = auth();
+  const { userId } = await auth();
   if (!userId) return new Response("Unauthorized", { status: 401 });
 
   const { id } = params;
@@ -48,7 +48,7 @@ export async function PUT(req: Request, props: { params: Promise<{ id: string }>
 
 export async function DELETE(req: Request, props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
-  const { userId } = auth();
+  const { userId } = await auth();
   if (!userId) return new Response("Unauthorized", { status: 401 });
 
   const { id } = params;

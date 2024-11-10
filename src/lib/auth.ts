@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 
 export async function getLoggedInUser() {
-  const { userId } = auth();
+  const { userId } = await auth();
   if (!userId) return;
 
   const user = await prisma.user.findUnique({
@@ -17,7 +17,7 @@ export async function getLoggedInUser() {
 }
 
 export async function getLoggedInCustomer() {
-  const { userId } = auth();
+  const { userId } = await auth();
   if (!userId) return;
 
   const customer = await prisma.customer.findUnique({
@@ -30,7 +30,7 @@ export async function getLoggedInCustomer() {
 }
 
 export async function addCustomerToArtist(artistId: string) {
-  const { userId } = auth();
+  const { userId } = await auth();
   if (!userId) return;
 
   await prisma.customer.update({

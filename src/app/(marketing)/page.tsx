@@ -13,11 +13,10 @@ import { cn } from "@/lib/utils";
 import { SignedIn, SignedOut, SignUpButton } from "@clerk/nextjs";
 import { faArrowRight, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Link from "next/link";
 import { ReactNode } from "react";
 import { RedirectButton } from "./_components/RedirectButton";
 
-export default async function MarketingHomePage() {
+export default function MarketingHomePage() {
   return (
     <>
       <section className="min-h-screen mt-10 bg-[radial-gradient(hsla(276,85%,52%,30%),hsl(146,62%,73%,40%),hsl(var(--background))_60%)] flex items-center justify-center text-center text-balance flex-col gap-8 px-4">

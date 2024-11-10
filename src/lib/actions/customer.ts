@@ -5,7 +5,7 @@ import { CustomerType } from "@/lib/store/customer";
 import { auth, createClerkClient } from "@clerk/nextjs/server";
 
 export async function getCustomers() {
-  const { userId } = auth();
+  const { userId } = await auth();
   if (!userId) return;
 
   const customers = await prisma.customer.findMany({
@@ -21,7 +21,7 @@ export async function getCustomers() {
 }
 
 export async function getCustomer(id: string) {
-  const { userId } = auth();
+  const { userId } = await auth();
   if (!userId) return;
 
   const customer = await prisma.customer.findFirst({
@@ -39,7 +39,7 @@ export async function getCustomer(id: string) {
 }
 
 export async function createCustomer(body: CustomerType) {
-  const { userId } = auth();
+  const { userId } = await auth();
   if (!userId) return;
 
   const clerkClient = createClerkClient({
@@ -79,7 +79,7 @@ export async function createCustomer(body: CustomerType) {
 }
 
 export async function updateCustomer(customer: any) {
-  const { userId } = auth();
+  const { userId } = await auth();
   if (!userId) return;
 
   const res = await prisma.customer.update({
@@ -98,7 +98,7 @@ export async function updateCustomer(customer: any) {
 }
 
 export async function deleteCustomer(id: string) {
-  const { userId } = auth();
+  const { userId } = await auth();
   if (!userId) return;
 
   const res = await prisma.customer.update({

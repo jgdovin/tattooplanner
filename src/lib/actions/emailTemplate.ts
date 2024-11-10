@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 
 export async function createTemplate(data: any) {
-  const { userId } = auth();
+  const { userId } = await auth();
   if (!userId) return;
   delete data.id;
   const res = await prisma.emailTemplate.create({
@@ -22,7 +22,7 @@ export async function createTemplate(data: any) {
 }
 
 export async function getTemplate(id: string) {
-  const { userId } = auth();
+  const { userId } = await auth();
   if (!userId) return;
 
   try {
@@ -39,7 +39,7 @@ export async function getTemplate(id: string) {
 }
 
 export async function getTemplates() {
-  const { userId } = auth();
+  const { userId } = await auth();
   if (!userId) return;
 
   try {
@@ -65,7 +65,7 @@ export async function getTemplates() {
 }
 
 export async function deleteTemplate(id: string) {
-  const { userId } = auth();
+  const { userId } = await auth();
   if (!userId) return;
 
   try {
@@ -84,7 +84,7 @@ export async function deleteTemplate(id: string) {
 }
 
 export async function updateTemplate(data: any) {
-  const { userId } = auth();
+  const { userId } = await auth();
   if (!userId) return;
 
   try {

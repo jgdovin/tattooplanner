@@ -13,11 +13,12 @@ const isPublicRoute = createRouteMatcher([
 export default clerkMiddleware(
   async (auth, req) => {
     // @ts-ignore: awaiting fix for role not existing in auth
-    const { protect, role } = auth();
+    const {
+      role
+    } = await auth();
 
     if (!isPublicRoute(req)) {
-      protect();
-      // handle role based access here
+      await auth.protect();
     }
   },
   {

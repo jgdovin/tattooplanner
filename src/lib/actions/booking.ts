@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 
 export async function getArtistBookings() {
-  const { userId } = auth();
+  const { userId } = await auth();
   if (!userId) return;
 
   const res = await prisma.booking.findMany({
@@ -25,7 +25,7 @@ export async function getArtistBookings() {
 }
 
 export async function getArtistRecentBookings(num: number = 5) {
-  const { userId } = auth();
+  const { userId } = await auth();
   if (!userId) return;
 
   const res = await prisma.booking.findMany({
