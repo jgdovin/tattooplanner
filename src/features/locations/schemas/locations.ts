@@ -4,7 +4,11 @@ import {
   DEFAULT_CLOSE_TIME,
 } from "@/lib/consts";
 import { z } from "zod";
-import { LOCATION_TYPES_TYPE } from "@/features/locations/components/forms/LocationForm";
+
+const LOCATION_TYPES_TYPE = {
+  PHYSICAL: "PHYSICAL",
+  MOBILE: "MOBILE",
+} as const;
 
 export const locationSchema = z.object({
   name: z.string().min(3),

@@ -23,11 +23,6 @@ interface LocationFormProps {
   isEditing: boolean;
 }
 
-export const LOCATION_TYPES_TYPE = {
-  PHYSICAL: "PHYSICAL",
-  MOBILE: "MOBILE",
-} as const;
-
 const daysOfWeek = [
   ["sun", "Sunday"],
   ["mon", "Monday"],
