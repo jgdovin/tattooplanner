@@ -9,22 +9,14 @@ import { AxiosResponse } from "axios";
 
 // TODO: update file to be for projects.
 
-export const getLocationColumns = (
+export const getProjectColumns = (
   router: AppRouterInstance,
   deleteLocation: UseMutationResult<AxiosResponse<any, any>, Error, string>
 ) => {
   return [
     {
       accessorKey: "name",
-      header: "Location Name",
-    },
-    {
-      accessorKey: "nickname",
-      header: "Location Nickname",
-    },
-    {
-      accessorKey: "address1",
-      header: "Location Address",
+      header: "Project Name",
     },
     {
       id: "actions",

@@ -3,7 +3,7 @@ import ContentCard from "@/components/ContentCard";
 import { CreateButton } from "@/components/CreateButton";
 import { DataTable } from "@/components/custom/data-table";
 import { getCustomerQuery } from "@/features/customers/server/db/customers";
-import { oswaldBold, ralewayBold, serif, serifBold } from "@/lib/fonts";
+import { ralewayBold } from "@/lib/fonts";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";

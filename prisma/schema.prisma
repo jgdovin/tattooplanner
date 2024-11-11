@@ -39,11 +39,11 @@ model Customer {
   phone                 String
   isGuest               Boolean                 @default(false)
   validated             Boolean                 @default(false)
-  address1              String                  @default("")
-  address2              String                  @default("")
-  city                  String                  @default("")
-  state                 String                  @default("")
-  zip                   String                  @default("")
+  address1              String?
+  address2              String?
+  city                  String?
+  state                 String?
+  zip                   String?
   country               String                  @default("US")
   clerkId               String?                 @unique
   artists               User[]                  @relation("UserCustomers")

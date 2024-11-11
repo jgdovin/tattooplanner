@@ -6,6 +6,7 @@ import {
   faBuilding,
   faPaintBrush,
   faEnvelope,
+  faCalendar,
 } from "@fortawesome/free-solid-svg-icons";
 
 export function Nav() {
@@ -23,12 +24,17 @@ export function Nav() {
             <MenuLink
               text="Calendar"
               href="/dashboard/calendar"
-              icon={faPalette}
+              icon={faCalendar}
             />
             <MenuLink
               text="Locations"
               href="/dashboard/locations"
               icon={faBuilding}
+            />
+            <MenuLink
+              text="Proects"
+              href="/dashboard/projects"
+              icon={faPalette}
             />
             <MenuLink
               text="Services"

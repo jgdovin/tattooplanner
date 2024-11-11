@@ -1,6 +1,6 @@
 "use client";
 import { DataTable } from "@/components/custom/data-table";
-import { getLocationColumns } from "./columns";
+import { getProjectColumns } from "./columns";
 import {
   deleteLocationMutation,
   getArtistLocationsQuery,
@@ -19,7 +19,7 @@ export default function Page() {
   const { data, error, isPending } = getArtistLocationsQuery();
   const deleteLocation = deleteLocationMutation({ client: queryClient });
 
-  const columns = getLocationColumns(router, deleteLocation);
+  const columns = getProjectColumns(router, deleteLocation);
 
   if (isPending) {
     return <ContentCard>Loading...</ContentCard>;
@@ -34,11 +34,11 @@ export default function Page() {
       <DataTable
         CreateButton={() =>
           CreateButton({
-            feature: "Location",
-            url: "/dashboard/locations/create",
+            feature: "Project",
+            url: "/dashboard/projects/create",
           })
         }
-        title="Locations"
+        title="Projects"
         columns={columns}
         loading={false}
         data={data}

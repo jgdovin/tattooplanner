@@ -1,3 +1,4 @@
+import { LocationType } from "@/features/locations/schemas/locations";
 import { QueryClient, useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
@@ -12,7 +13,7 @@ export const createProjectMutation = ({
 }) => {
   return useMutation({
     mutationFn: (newLocation: LocationType) => {
-      return axios.post("/api/location", newLocation);
+      return axios.post("/api/locations", newLocation);
     },
     onSuccess: () => {
       toast.success("Location created");

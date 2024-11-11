@@ -89,7 +89,7 @@ export const surveyHandler = (survey: Model, completeForm: boolean) => {
         formData.append(file.name, file);
       });
 
-      fetch("/api/survey/fileUpload", {
+      fetch("/api/surveys/fileUpload", {
         method: "POST",
         body: formData,
       })
