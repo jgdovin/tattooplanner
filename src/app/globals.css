@@ -20,8 +20,7 @@
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
     --accent: 248 44% 63%;
-    /* color: hsl(248, 44%, 63%) */
-    --accent-foreground: 0 0% 0%;
+    --accent-foreground: 255 50% 50%;
     --destructive: 328 90% 45%;
     --destructive-foreground: 255 100% 100%;
     --border: 214.3 31.8% 91.4%;
@@ -155,4 +154,11 @@ a:hover {
   50%  {transform: translate(100%,100%)}
   75%  {transform: translate(   0,100%)}
   100% {transform: translate(   0,0)}
+}
+
+@layer utilities {
+  .popover-content-width-full {
+    width: var(--radix-popover-trigger-width);
+    max-height: var(--radix-popover-content-available-height);
+  }
 }

@@ -1,8 +1,8 @@
-import { LocationType } from "@/features/locations/schemas/locations";
-import { QueryClient, useMutation } from "@tanstack/react-query";
+import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { toast } from "sonner";
+import { ProjectType } from "@/features/projects/schemas/projects";
 
 export const createProjectMutation = ({
   client,
@@ -12,13 +12,23 @@ export const createProjectMutation = ({
   router: AppRouterInstance;
 }) => {
   return useMutation({
-    mutationFn: (newLocation: LocationType) => {
-      return axios.post("/api/locations", newLocation);
+    mutationFn: (newLocation: ProjectType) => {
+      return axios.post("/api/projects", newLocation);
     },
     onSuccess: () => {
-      toast.success("Location created");
-      client.invalidateQueries({ queryKey: ["artistLocations"] });
-      router.push("/dashboard/locations");
+      toast.success("Project created");
+      client.invalidateQueries({ queryKey: ["projects"] });
+      router.push("/dashboard/projects");
+    },
+  });
+};
+
+export const getProjectsQuery = () => {
+  return useQuery({
+    queryKey: ["projects"],
+    queryFn: async () => {
+      const res = await axios.get("/api/projects");
+      return res.data;
     },
   });
 };

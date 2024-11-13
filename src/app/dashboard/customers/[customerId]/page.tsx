@@ -4,6 +4,7 @@ import { CreateButton } from "@/components/CreateButton";
 import { DataTable } from "@/components/custom/data-table";
 import { getCustomerQuery } from "@/features/customers/server/db/customers";
 import { ralewayBold } from "@/lib/fonts";
+import { formatPhoneNumber } from "@/lib/utils";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
@@ -34,11 +35,9 @@ export default function Page(props: {
                 </>
               )}
 
-              <li>(727) 444 - 4444</li>
+              <li>{formatPhoneNumber(data.phone)}</li>
               <li>
-                <Link href="mailto:joshgdovin@gmail.com">
-                  joshgdovin@gmail.com
-                </Link>
+                <Link href="mailto:joshgdovin@gmail.com">{data.email}</Link>
               </li>
               <li>
                 <FontAwesomeIcon
@@ -65,7 +64,7 @@ export default function Page(props: {
           CreateButton={() =>
             CreateButton({
               feature: "Project",
-              url: `/dashboard/projects/new?customer=${data.id}`,
+              url: `/dashboard/projects/create?customer=${data.id}`,
             })
           }
           data={[]}

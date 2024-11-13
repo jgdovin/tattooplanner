@@ -43,3 +43,17 @@ export function getMissingDates({
 
   return missingDates;
 }
+
+export function formatPhoneNumber(phoneNumberString: string) {
+  // Remove non-digit characters
+  const cleaned = ("" + phoneNumberString).replace(/\D/g, "");
+
+  // Check if the number is valid (10 digits for US numbers)
+  if (cleaned.length === 10) {
+    return `(${cleaned.slice(0, 3)}) ${cleaned.slice(3, 6)}-${cleaned.slice(
+      6
+    )}`;
+  }
+
+  return phoneNumberString; // Return the original string if not valid
+}

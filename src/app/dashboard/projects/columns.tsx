@@ -6,13 +6,13 @@ import LocationCopyButton from "@/features/locations/components/LocationCopyButt
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { UseMutationResult } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
+import { useRouter } from "next/navigation";
 
 // TODO: update file to be for projects.
 
-export const getProjectColumns = (
-  router: AppRouterInstance,
-  deleteLocation: UseMutationResult<AxiosResponse<any, any>, Error, string>
-) => {
+export const getProjectColumns = () => {
+  const router = useRouter();
+
   return [
     {
       accessorKey: "name",
@@ -29,18 +29,6 @@ export const getProjectColumns = (
             }}
           >
             Edit
-          </Button>
-          <Button
-            onClick={() => {
-              const del = confirm(
-                "Are you sure you want to delete this service?"
-              );
-              if (del) {
-                deleteLocation.mutate(row.original.id);
-              }
-            }}
-          >
-            Delete
           </Button>
         </div>
       ),

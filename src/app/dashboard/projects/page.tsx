@@ -1,25 +1,17 @@
 "use client";
 import { DataTable } from "@/components/custom/data-table";
 import { getProjectColumns } from "./columns";
-import {
-  deleteLocationMutation,
-  getArtistLocationsQuery,
-} from "@/features/locations/server/db/locations";
-import { useRouter } from "next/navigation";
-import { useQueryClient } from "@tanstack/react-query";
+
 import ContentCard from "@/components/ContentCard";
 import { CreateButton } from "@/components/CreateButton";
+import { getProjectsQuery } from "@/features/projects/server/db/projects";
 
 // TODO: update file to be for projects.
 
 export default function Page() {
-  const router = useRouter();
+  const { data, error, isPending } = getProjectsQuery();
 
-  const queryClient = useQueryClient();
-  const { data, error, isPending } = getArtistLocationsQuery();
-  const deleteLocation = deleteLocationMutation({ client: queryClient });
-
-  const columns = getProjectColumns(router, deleteLocation);
+  const columns = getProjectColumns();
 
   if (isPending) {
     return <ContentCard>Loading...</ContentCard>;

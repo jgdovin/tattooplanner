@@ -38,15 +38,7 @@ export function LocationForm({
   form,
   isEditing,
 }: LocationFormProps) {
-  const [timezones, setTimezones] = useState([]);
-  const formText = isEditing ? "Update" : "Create";
-  const [loading, setLoading] = useState(true);
-  const [subdomainValid, setSubdomainValid] = useState(false);
-
   const { handleSubmit } = form;
-  useEffect(() => {
-    setLoading(false);
-  }, []);
 
   return (
     <Form {...form}>

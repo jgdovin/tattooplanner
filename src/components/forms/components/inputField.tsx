@@ -36,12 +36,12 @@ export const InputField = ({
       render={({ field }) => {
         return (
           <FormItem className={`grid gap-1`}>
-            <FormLabel>
+            <FormLabel className="font-bold">
               {required && <span className="text-red-600">* </span>}
               {label}
             </FormLabel>
             <FormControl>
-              <Input type={type} {...field} />
+              <Input type={type} {...field} value={field.value || ""} />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -58,9 +58,9 @@ export const TextareaField = ({ name, form, label }: any) => (
     render={({ field }) => {
       return (
         <FormItem>
-          <FormLabel>{label}</FormLabel>
+          <FormLabel className="font-bold">{label}</FormLabel>
           <FormControl>
-            <Textarea {...field} />
+            <Textarea {...field} value={field.value || ""} />
           </FormControl>
           <FormMessage className="col-span-4 text-center" />
         </FormItem>
@@ -76,7 +76,7 @@ export const CurrencyField = ({ name, form, label }: any) => (
     render={({ field }) => {
       return (
         <FormItem>
-          <FormLabel>{label}</FormLabel>
+          <FormLabel className="font-bold">{label}</FormLabel>
           <FormControl>
             <div className="flex">
               <div className="flex items-center px-4 bg-gray-500 text-white rounded-l">
@@ -111,7 +111,7 @@ export const SelectField = ({
     render={({ field }) => {
       return (
         <FormItem className="grid gap-1">
-          <FormLabel>{label}</FormLabel>
+          <FormLabel className="font-bold">{label}</FormLabel>
           <FormControl>
             <Select
               onValueChange={onChange || field.onChange}
@@ -248,7 +248,7 @@ export const SurveyField = ({ name, form, label, ...props }: any) => {
   );
 };
 
-export const LocationInputField = ({ name, form, label, ...props }: any) => (
+export const LocationInputField = ({ name, form, label }: any) => (
   <FormField
     control={form.control}
     name="type"
